@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UKM Rijal Dakwah - Membentuk Generasi Pemuda Tangguh & Berilmu</title>
+  <meta name="description" content="Official Landing Page UKM Rijal Dakwah. Unduh Guidebook Pendaftaran dan Bergabunglah bersama kami melalui formulir Google Form." />
+
+  <!-- Google Fonts: Amiri (Arabic/Classical), Plus Jakarta Sans (Modern Clean UI), Playfair Display (Serif Elegance) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            deepGreen: '#042D23',
+            forestGreen: '#084838',
+            emeraldGreen: '#0D634E',
+            lightGreen: '#158064',
+            gold: {
+              DEFAULT: '#C59B27',
+              light: '#DFB76C',
+              dark: '#9A7220',
+              amber: '#D4AF37',
+              soft: '#F6ECD5',
+            },
+            cream: {
+              50: '#FAF8F2',
+              100: '#F4EFE2',
+              200: '#ECE3CE',
+              300: '#DDD0B3',
+            },
+            charcoal: '#1A2328',
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            arabic: ['"Amiri"', 'serif'],
+            serif: ['"Playfair Display"', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* STDIIS Islamic Theme Utilities */
+    .bg-islamic-hero {
+      background-color: #042D23;
+      background-image: 
+        radial-gradient(circle at 85% 20%, rgba(197, 155, 39, 0.18) 0%, transparent 45%),
+        radial-gradient(circle at 10% 80%, rgba(13, 99, 78, 0.4) 0%, transparent 50%),
+        linear-gradient(145deg, #042D23 0%, #084838 55%, #032019 100%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C59B27' fill-opacity='0.08' fill-rule='evenodd'%3E%3Cpath d='M30 30L15 15l15-15 15 15-15 15zm0 0l-15 15 15 15 15-15-15-15zm-15-15L0 30l15 15 15-15-15-15zm30 0L45 30l15 15 15-15-15-15z'/%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .bg-islamic-dark {
+      background-color: #042D23;
+      background-image: 
+        radial-gradient(circle at 50% 50%, rgba(197, 155, 39, 0.12) 0%, transparent 70%),
+        linear-gradient(160deg, #032019 0%, #084838 60%, #042D23 100%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C59B27' fill-opacity='0.06' fill-rule='evenodd'%3E%3Cpath d='M30 30L15 15l15-15 15 15-15 15zm0 0l-15 15 15 15 15-15-15-15zm-15-15L0 30l15 15 15-15-15-15zm30 0L45 30l15 15 15-15-15-15z'/%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .bg-cream-pattern {
+      background-color: #FAF8F2;
+      background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0l2.5 15 15 2.5-15 2.5L20 40l-2.5-15L0 20l17.5-2.5z' fill='%23084838' fill-opacity='0.03'/%3E%3C/svg%3E");
+    }
+
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #F6ECD5 0%, #DFB76C 40%, #C59B27 70%, #9A7220 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #DFB76C 0%, #C59B27 100%);
+      color: #042D23;
+      font-weight: 700;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 14px rgba(197, 155, 39, 0.35);
+    }
+    .btn-gold:hover {
+      background: linear-gradient(135deg, #F6ECD5 0%, #DFB76C 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(197, 155, 39, 0.5);
+    }
+
+    .btn-outline-gold {
+      border: 2px solid #C59B27;
+      color: #DFB76C;
+      background: rgba(197, 155, 39, 0.08);
+      transition: all 0.25s ease;
+    }
+    .btn-outline-gold:hover {
+      background: rgba(197, 155, 39, 0.2);
+      border-color: #F6ECD5;
+      color: #FFFFFF;
+      transform: translateY(-2px);
+    }
+
+    .modal-backdrop {
+      background-color: rgba(3, 32, 25, 0.85);
+      backdrop-filter: blur(8px);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 9px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F4EFE2;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #084838;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #C59B27;
+    }
+  </style>
+</head>
+
+<body class="bg-cream-50 text-charcoal font-sans antialiased selection:bg-gold selection:text-deepGreen relative min-h-screen flex flex-col">
+
+  <!-- ========================================================================= -->
+  <!-- 1. TOP BAR (STDIIS Reference Style) -->
+  <!-- ========================================================================= -->
+  <header class="bg-deepGreen text-cream-100 text-xs border-b border-forestGreen/70">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-col sm:flex-row justify-between items-center gap-2">
+      <div class="flex items-center space-x-4">
+        <span class="flex items-center space-x-2 text-gold-light">
+          <i class="fa-solid fa-mosque text-gold"></i>
+          <span class="font-arabic text-sm">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>
+        </span>
+        <span class="text-emerald-700 hidden md:inline">|</span>
+        <span class="hidden md:flex items-center space-x-1.5 text-cream-200">
+          <i class="fa-solid fa-circle-check text-emerald-400 text-[10px]"></i>
+          <span>Penerimaan Anggota Baru UKM Rijal Dakwah 2026/2027</span>
+        </span>
+      </div>
+      <div class="flex items-center space-x-4 text-xs">
+        <a href="https://wa.me/6281234567890?text=Assalamu%27alaikum%20Admin%20UKM%20Rijal%20Dakwah,%20saya%20ingin%20bertanya%20seputar%20pendaftaran" target="_blank" class="hover:text-gold transition-colors flex items-center space-x-1.5">
+          <i class="fa-brands fa-whatsapp text-emerald-400"></i>
+          <span>Helpdesk: +62 812-3456-7890</span>
+        </a>
+        <span class="text-emerald-700">|</span>
+        <a href="https://instagram.com" target="_blank" class="hover:text-gold transition-colors" title="Instagram">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a href="https://youtube.com" target="_blank" class="hover:text-gold transition-colors" title="YouTube">
+          <i class="fa-brands fa-youtube"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- 2. MAIN NAVBAR -->
+  <!-- ========================================================================= -->
+  <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-cream-200 shadow-sm transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        
+        <!-- Brand Identity / Logo -->
+        <a href="#beranda" class="flex items-center space-x-3.5 group">
+          <div class="w-12 h-12 rounded-2xl bg-forestGreen flex items-center justify-center text-gold shadow-md group-hover:scale-105 transition-transform border border-gold/40">
+            <i class="fa-solid fa-kaaba text-2xl"></i>
+          </div>
+          <div>
+            <div class="font-serif font-bold text-xl tracking-tight text-deepGreen group-hover:text-forestGreen transition-colors flex items-center gap-2">
+              RIJAL DAKWAH
+              <span class="text-[10px] uppercase tracking-wider bg-gold/15 text-gold-dark font-sans font-bold px-2.5 py-0.5 rounded-full border border-gold/30">UKM KAMPUS</span>
+            </div>
+            <p class="text-xs text-slate-500 font-medium tracking-wide">Penebar Sunnah & Pencetak Da'i Kampus</p>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <div class="hidden md:flex items-center space-x-7">
+          <a href="#beranda" class="text-sm font-semibold text-charcoal hover:text-forestGreen transition-colors">Beranda</a>
+          <a href="#tentang" class="text-sm font-semibold text-charcoal hover:text-forestGreen transition-colors">Tentang</a>
+          <a href="#departemen" class="text-sm font-semibold text-charcoal hover:text-forestGreen transition-colors">Departemen</a>
+          
+          <!-- CTA 1: Guidebook -->
+          <a href="#guidebook" class="text-sm font-bold text-forestGreen flex items-center gap-2 bg-cream-100 hover:bg-cream-200 px-4 py-2 rounded-xl border border-cream-300 transition-all shadow-sm">
+            <i class="fa-solid fa-book-open text-gold"></i>
+            <span>Guidebook</span>
+          </a>
+
+          <!-- CTA 2: Join Us (Google Form) -->
+          <a href="#join-us" class="btn-gold px-5 py-2.5 rounded-xl text-sm flex items-center gap-2">
+            <i class="fa-solid fa-paper-plane text-xs"></i>
+            <span>Join Us (Daftar)</span>
+          </a>
+        </div>
+
+        <!-- Mobile Hamburger Button -->
+        <div class="flex md:hidden items-center">
+          <button id="mobileMenuBtn" aria-label="Toggle menu" class="text-deepGreen hover:text-gold p-2 rounded-xl focus:outline-none">
+            <i class="fa-solid fa-bars-staggered text-2xl" id="menuIcon"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobileMenu" class="hidden md:hidden bg-white border-b border-cream-200 px-4 pt-3 pb-6 space-y-3 shadow-xl">
+      <a href="#beranda" class="block px-3 py-2 rounded-lg text-base font-semibold text-charcoal hover:bg-cream-100 mobile-link">Beranda</a>
+      <a href="#tentang" class="block px-3 py-2 rounded-lg text-base font-semibold text-charcoal hover:bg-cream-100 mobile-link">Tentang UKM</a>
+      <a href="#departemen" class="block px-3 py-2 rounded-lg text-base font-semibold text-charcoal hover:bg-cream-100 mobile-link">Departemen & Divisi</a>
+      <a href="#guidebook" class="block px-3 py-2.5 rounded-xl text-base font-bold text-forestGreen bg-cream-100 border border-cream-300 mobile-link">
+        <i class="fa-solid fa-book-open mr-2 text-gold"></i> Guidebook Pendaftaran
+      </a>
+      <a href="#join-us" class="block w-full text-center btn-gold px-4 py-3 rounded-xl font-bold mobile-link">
+        <i class="fa-solid fa-paper-plane mr-2"></i> Join Us via Google Form
+      </a>
+    </div>
+  </nav>
+
+  <!-- ========================================================================= -->
+  <!-- 3. HERO SECTION (STDIIS Grand Islamic Banner Style) -->
+  <!-- ========================================================================= -->
+  <section id="beranda" class="relative bg-islamic-hero text-white overflow-hidden py-16 md:py-24 border-b-4 border-gold">
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        
+        <!-- Left Column: Hero Text & The 2 Primary CTAs -->
+        <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+          
+          <!-- Announcement Pill -->
+          <div class="inline-flex items-center gap-2 bg-white/10 border border-gold/40 px-4 py-1.5 rounded-full backdrop-blur-sm text-xs font-semibold text-gold-light shadow-sm">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>OPEN RECRUITMENT UKM RIJAL DAKWAH 2026/2027</span>
+          </div>
+
+          <!-- Arabic Motto Inscription -->
+          <div class="text-gold-light font-arabic text-2xl md:text-3xl tracking-wider select-none font-bold">
+            فَاسْتَبِقُوا الْخَيْرَاتِ • كُونُوا أَنْصَارَ اللَّهِ
+          </div>
+
+          <!-- Headline -->
+          <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white leading-tight">
+            Membina Pemuda <br>
+            <span class="gold-gradient-text">Tangguh & Berilmu</span> <br>
+            Penegak Risalah Dakwah
+          </h1>
+
+          <!-- Description -->
+          <p class="text-base sm:text-lg text-cream-100 font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0">
+            Wadah pembinaan ruhiyah, keilmuan syar'i, kepemimpinan Islam, dan ukhuwah bagi mahasiswa ikhwan/rijal kampus. Mari berkontribusi nyata dalam dakwah tauhid dan sunnah.
+          </p>
+
+          <!-- ========================================== -->
+          <!-- 2 INTI FITUR: 1. GUIDEBOOK | 2. JOIN US   -->
+          <!-- ========================================== -->
+          <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+            
+            <!-- 1. JOIN US BUTTON (Direct Google Form Link) -->
+            <a href="#join-us" class="w-full sm:w-auto btn-gold px-8 py-4 rounded-2xl text-base font-bold flex items-center justify-center gap-3 group">
+              <i class="fa-solid fa-paper-plane group-hover:translate-x-1 transition-transform"></i>
+              <span>Join Us (Google Form)</span>
+            </a>
+
+            <!-- 2. GUIDEBOOK BUTTON (View & Download Guidebook) -->
+            <a href="#guidebook" class="w-full sm:w-auto btn-outline-gold px-7 py-4 rounded-2xl text-base font-bold flex items-center justify-center gap-3 backdrop-blur-sm">
+              <i class="fa-solid fa-book-bookmark text-gold"></i>
+              <span>Pelajari & Unduh Guidebook</span>
+            </a>
+
+          </div>
+
+          <!-- Pillars / Stat Badges -->
+          <div class="pt-8 grid grid-cols-3 gap-4 border-t border-white/15 text-center">
+            <div class="p-2 rounded-xl bg-white/5 border border-white/10">
+              <p class="font-serif font-bold text-2xl md:text-3xl text-gold">100%</p>
+              <p class="text-xs text-cream-200 mt-1 font-medium">Berasas Al-Qur'an & Sunnah</p>
+            </div>
+            <div class="p-2 rounded-xl bg-white/5 border border-white/10">
+              <p class="font-serif font-bold text-2xl md:text-3xl text-gold">6</p>
+              <p class="text-xs text-cream-200 mt-1 font-medium">Departemen Berdaya</p>
+            </div>
+            <div class="p-2 rounded-xl bg-white/5 border border-white/10">
+              <p class="font-serif font-bold text-2xl md:text-3xl text-gold">Ukhuwah</p>
+              <p class="text-xs text-cream-200 mt-1 font-medium">Keluarga Rijal Kampus</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Interactive Quick Steps Card -->
+        <div class="lg:col-span-5 flex justify-center">
+          <div class="relative w-full max-w-md">
+            
+            <!-- Amber Glow behind card -->
+            <div class="absolute -inset-1 bg-gradient-to-r from-gold to-emeraldGreen rounded-3xl blur-xl opacity-30"></div>
+
+            <!-- Card Container -->
+            <div class="relative bg-deepGreen/95 border-2 border-gold/60 rounded-3xl p-6 sm:p-8 backdrop-blur-md shadow-2xl space-y-6">
+              
+              <!-- Card Header -->
+              <div class="flex items-center justify-between border-b border-gold/30 pb-4">
+                <div class="flex items-center space-x-3">
+                  <div class="w-11 h-11 rounded-xl bg-gold/20 flex items-center justify-center text-gold border border-gold/40">
+                    <i class="fa-solid fa-compass text-xl"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-serif font-bold text-white text-base">Alur Cepat Pendaftaran</h3>
+                    <p class="text-xs text-gold-light">Langkah Mudah Bergabung</p>
+                  </div>
+                </div>
+                <span class="text-xs px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-400/40 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Buka
+                </span>
+              </div>
+
+              <!-- Quick Steps -->
+              <div class="space-y-3 text-sm">
+                
+                <div class="flex items-start space-x-3.5 p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-gold/40 transition-all">
+                  <div class="w-8 h-8 rounded-xl bg-gold text-deepGreen font-extrabold flex items-center justify-center shrink-0 text-sm shadow">1</div>
+                  <div>
+                    <h4 class="font-bold text-white text-sm">Baca Guidebook</h4>
+                    <p class="text-xs text-cream-200 mt-0.5 leading-relaxed">Pahami visi, departemen, dan syarat calon anggota rijal.</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start space-x-3.5 p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-gold/40 transition-all">
+                  <div class="w-8 h-8 rounded-xl bg-gold text-deepGreen font-extrabold flex items-center justify-center shrink-0 text-sm shadow">2</div>
+                  <div>
+                    <h4 class="font-bold text-white text-sm">Isi Google Form</h4>
+                    <p class="text-xs text-cream-200 mt-0.5 leading-relaxed">Lengkapi formulir online dan tentukan pilihan departemen.</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start space-x-3.5 p-3.5 rounded-2xl bg-white/5 border border-white/10 hover:border-gold/40 transition-all">
+                  <div class="w-8 h-8 rounded-xl bg-gold text-deepGreen font-extrabold flex items-center justify-center shrink-0 text-sm shadow">3</div>
+                  <div>
+                    <h4 class="font-bold text-white text-sm">Wawancara & Ta'aruf</h4>
+                    <p class="text-xs text-cream-200 mt-0.5 leading-relaxed">Sesi ta'aruf santai bersama pengurus untuk penyelarasan potensi.</p>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Card Action Button -->
+              <div class="pt-2">
+                <a href="#join-us" class="w-full py-3.5 px-4 rounded-xl btn-gold text-center font-bold text-sm flex items-center justify-center gap-2">
+                  <span>Mulai Pendaftaran Sekarang</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 4. SECTION: TENTANG & 4 NILAI UTAMA -->
+  <!-- ========================================================================= -->
+  <section id="tentang" class="py-16 md:py-24 bg-cream-pattern">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <span class="text-xs font-bold uppercase tracking-widest text-forestGreen bg-cream-200 px-3.5 py-1.5 rounded-full border border-cream-300">
+          Mengenal Lebih Dekat
+        </span>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-deepGreen">
+          Membentuk Karakter Rijal Berlandaskan Sunnah
+        </h2>
+        <div class="w-20 h-1.5 bg-gold mx-auto rounded-full"></div>
+        <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+          UKM Rijal Dakwah hadir sebagai ekosistem kebaikan di lingkungan kampus untuk menumbuhkan pemuda muslim yang kokoh akidahnya, berakhlak mulia, dan siap berkontribusi untuk kemaslahatan umat.
+        </p>
+      </div>
+
+      <!-- 4 Pillars Grid -->
+      <div class="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Pillar 1 -->
+        <div class="bg-white rounded-3xl p-6 border border-cream-200 shadow-sm hover:shadow-lg hover:border-gold/60 transition-all group flex flex-col justify-between">
+          <div>
+            <div class="w-14 h-14 rounded-2xl bg-cream-100 text-forestGreen flex items-center justify-center text-2xl mb-5 group-hover:bg-forestGreen group-hover:text-gold transition-colors border border-cream-300">
+              <i class="fa-solid fa-book-quran"></i>
+            </div>
+            <h3 class="font-serif font-bold text-lg text-deepGreen mb-2">Tarbiyah & Ilmu Syar'i</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Kajian kitab rutin, bimbingan tahsin Al-Qur'an, dan pendalaman dasar-dasar ilmu tauhid serta fiqih ibadah.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-cream-100 text-xs font-semibold text-forestGreen">
+            ✓ Rutin & Berjenjang
+          </div>
+        </div>
+
+        <!-- Pillar 2 -->
+        <div class="bg-white rounded-3xl p-6 border border-cream-200 shadow-sm hover:shadow-lg hover:border-gold/60 transition-all group flex flex-col justify-between">
+          <div>
+            <div class="w-14 h-14 rounded-2xl bg-cream-100 text-forestGreen flex items-center justify-center text-2xl mb-5 group-hover:bg-forestGreen group-hover:text-gold transition-colors border border-cream-300">
+              <i class="fa-solid fa-handshake-angle"></i>
+            </div>
+            <h3 class="font-serif font-bold text-lg text-deepGreen mb-2">Ukhuwah Islamiyah</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Mempererat persaudaraan rijal lewat rihlah alam, mabit, olahraga sunnah (futsal, panahan), dan tolong-menolong.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-cream-100 text-xs font-semibold text-forestGreen">
+            ✓ Solid & Hangat
+          </div>
+        </div>
+
+        <!-- Pillar 3 -->
+        <div class="bg-white rounded-3xl p-6 border border-cream-200 shadow-sm hover:shadow-lg hover:border-gold/60 transition-all group flex flex-col justify-between">
+          <div>
+            <div class="w-14 h-14 rounded-2xl bg-cream-100 text-forestGreen flex items-center justify-center text-2xl mb-5 group-hover:bg-forestGreen group-hover:text-gold transition-colors border border-cream-300">
+              <i class="fa-solid fa-bullhorn"></i>
+            </div>
+            <h3 class="font-serif font-bold text-lg text-deepGreen mb-2">Syiar & Media Kreatif</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Memproduksi konten visual dakwah yang elegan, video pendek inspiratif, podcast mahasiswa, dan buletin Jumat.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-cream-100 text-xs font-semibold text-forestGreen">
+            ✓ Modern & Menginspirasi
+          </div>
+        </div>
+
+        <!-- Pillar 4 -->
+        <div class="bg-white rounded-3xl p-6 border border-cream-200 shadow-sm hover:shadow-lg hover:border-gold/60 transition-all group flex flex-col justify-between">
+          <div>
+            <div class="w-14 h-14 rounded-2xl bg-cream-100 text-forestGreen flex items-center justify-center text-2xl mb-5 group-hover:bg-forestGreen group-hover:text-gold transition-colors border border-cream-300">
+              <i class="fa-solid fa-users-gear"></i>
+            </div>
+            <h3 class="font-serif font-bold text-lg text-deepGreen mb-2">Leadership & Khidmah</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Melatih manajemen kepanitiaan tabligh akbar, public speaking, serta kegiatan sosial kemasyarakatan.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-cream-100 text-xs font-semibold text-forestGreen">
+            ✓ Amanah & Berdaya
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 5. FITUR 1: GUIDEBOOK RESMI (CORE REQUIREMENT #1) -->
+  <!-- ========================================================================= -->
+  <section id="guidebook" class="py-16 md:py-24 bg-white border-y border-cream-200 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <!-- Section Heading -->
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gold-dark bg-gold/15 px-3.5 py-1.5 rounded-full border border-gold/30">
+          <i class="fa-solid fa-book-bookmark text-gold"></i>
+          <span>Fitur 1: Buku Panduan Pendaftaran</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-deepGreen">
+          Guidebook Resmi UKM Rijal Dakwah 2026/2027
+        </h2>
+        <div class="w-20 h-1.5 bg-gold mx-auto rounded-full"></div>
+        <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+          Dokumen panduan lengkap memuat profil organisasi, struktur departemen, jobdesk, kualifikasi calon anggota, serta ketentuan seleksi pendaftaran.
+        </p>
+      </div>
+
+      <!-- Guidebook Showcase Layout -->
+      <div class="mt-14 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        
+        <!-- Left: Realistic Guidebook Cover Mockup -->
+        <div class="lg:col-span-5 flex justify-center">
+          <div class="relative w-full max-w-sm">
+            
+            <!-- Glow Shadow -->
+            <div class="absolute -inset-2 bg-gradient-to-tr from-forestGreen to-gold rounded-3xl blur-xl opacity-25"></div>
+            
+            <!-- Book Cover Mockup -->
+            <div class="relative bg-islamic-dark rounded-3xl p-7 text-white border-2 border-gold shadow-2xl space-y-6 flex flex-col justify-between min-h-[460px]">
+              
+              <!-- Cover Top Header -->
+              <div class="space-y-2">
+                <div class="flex items-center justify-between border-b border-white/20 pb-3">
+                  <span class="text-[10px] uppercase tracking-widest text-gold-light font-bold">BUKU PANDUAN RESMI</span>
+                  <span class="text-[11px] bg-gold/20 text-gold-light px-2.5 py-0.5 rounded-full border border-gold/30 font-semibold">Edisi 2026</span>
+                </div>
+                <div class="text-gold-light font-arabic text-xl pt-2 font-bold">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+              </div>
+
+              <!-- Cover Emblem & Title -->
+              <div class="space-y-3 my-auto text-center py-4">
+                <div class="w-20 h-20 mx-auto rounded-2xl bg-gold/20 border-2 border-gold flex items-center justify-center text-gold text-3xl shadow-inner">
+                  <i class="fa-solid fa-book-open-reader"></i>
+                </div>
+                <h3 class="text-2xl font-serif font-bold text-white tracking-wide">
+                  GUIDEBOOK
+                </h3>
+                <p class="text-xs text-gold-light font-bold tracking-widest uppercase">Open Recruitment 2026/2027</p>
+                <p class="text-xs text-cream-200 italic font-serif">"Menyiapkan Pemuda Penegak Risalah Dakwah"</p>
+              </div>
+
+              <!-- Cover Action Buttons -->
+              <div class="pt-4 border-t border-white/20 space-y-2.5">
+                <button onclick="openGuidebookModal()" class="w-full btn-gold py-3 px-4 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-eye"></i>
+                  <span>Baca Ringkasan Guidebook</span>
+                </button>
+                <button onclick="downloadGuidebookPDF()" class="w-full bg-white/10 hover:bg-white/20 text-white border border-white/30 py-2.5 px-4 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-colors">
+                  <i class="fa-solid fa-file-arrow-down text-gold"></i>
+                  <span>Unduh Dokumen Guidebook</span>
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Guidebook Content Summary / Table of Contents -->
+        <div class="lg:col-span-7 space-y-6">
+          
+          <div class="bg-cream-50 rounded-3xl p-6 sm:p-8 border border-cream-200 shadow-sm space-y-6">
+            
+            <div class="flex items-center justify-between border-b border-cream-200 pb-4">
+              <h3 class="font-serif font-bold text-xl text-deepGreen flex items-center gap-2.5">
+                <i class="fa-solid fa-list-check text-gold"></i>
+                <span>Ringkasan Isi Pokok Guidebook</span>
+              </h3>
+              <span class="text-xs font-bold text-forestGreen bg-cream-200 px-3 py-1 rounded-full">PDF & Web View</span>
+            </div>
+
+            <!-- 4 Grid Content Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              
+              <div class="bg-white p-4 rounded-2xl border border-cream-200 hover:border-gold/50 transition-all shadow-sm">
+                <div class="flex items-start gap-3">
+                  <span class="w-7 h-7 rounded-lg bg-forestGreen text-gold text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+                  <div>
+                    <h4 class="font-bold text-sm text-charcoal">Profil & Landasan Syar'i</h4>
+                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">Visi misi, arah perjuangan dakwah kampus, dan komitmen keislaman.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white p-4 rounded-2xl border border-cream-200 hover:border-gold/50 transition-all shadow-sm">
+                <div class="flex items-start gap-3">
+                  <span class="w-7 h-7 rounded-lg bg-forestGreen text-gold text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+                  <div>
+                    <h4 class="font-bold text-sm text-charcoal">Jobdesk 6 Departemen</h4>
+                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">Rincian peran Kaderisasi, Syiar Media, Kajian, Humas, Logistik & Danus.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white p-4 rounded-2xl border border-cream-200 hover:border-gold/50 transition-all shadow-sm">
+                <div class="flex items-start gap-3">
+                  <span class="w-7 h-7 rounded-lg bg-forestGreen text-gold text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+                  <div>
+                    <h4 class="font-bold text-sm text-charcoal">Syarat & Berkas Calon</h4>
+                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">Kriteria ikhwan, dokumen pendaftaran, dan etika anggota rijal.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white p-4 rounded-2xl border border-cream-200 hover:border-gold/50 transition-all shadow-sm">
+                <div class="flex items-start gap-3">
+                  <span class="w-7 h-7 rounded-lg bg-forestGreen text-gold text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">4</span>
+                  <div>
+                    <h4 class="font-bold text-sm text-charcoal">Timeline & Tahapan Seleksi</h4>
+                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">Jadwal seleksi online, wawancara ta'aruf, dan welcoming party.</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Download CTA Strip -->
+            <div class="p-5 rounded-2xl bg-white border-2 border-dashed border-gold/50 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div class="flex items-center gap-3.5 text-center sm:text-left">
+                <div class="w-12 h-12 rounded-xl bg-forestGreen text-gold flex items-center justify-center shrink-0 text-xl shadow">
+                  <i class="fa-solid fa-file-pdf"></i>
+                </div>
+                <div>
+                  <p class="font-bold text-sm text-deepGreen">Unduh Dokumen Lengkap Guidebook</p>
+                  <p class="text-xs text-slate-500">Guidebook_UKM_Rijal_Dakwah_2026.pdf (Resmi)</p>
+                </div>
+              </div>
+              <button onclick="downloadGuidebookPDF()" class="btn-gold px-6 py-3 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-download"></i>
+                <span>Unduh File Sekarang</span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 6. SECTION: DEPARTEMEN & BIDANG KONTRIBUSI -->
+  <!-- ========================================================================= -->
+  <section id="departemen" class="py-16 md:py-24 bg-cream-pattern">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <span class="text-xs font-bold uppercase tracking-widest text-forestGreen bg-cream-200 px-3.5 py-1.5 rounded-full border border-cream-300">
+          Pilihan Divisi
+        </span>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-deepGreen">
+          Departemen di UKM Rijal Dakwah
+        </h2>
+        <div class="w-20 h-1.5 bg-gold mx-auto rounded-full"></div>
+        <p class="text-slate-600 text-sm sm:text-base">
+          Sesuaikan minat, bakat, dan potensi antum dengan bidang pengabdian yang tersedia.
+        </p>
+      </div>
+
+      <div class="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- Dept 1 -->
+        <div class="bg-white rounded-3xl p-6 border border-cream-200 shadow-sm hover:shadow-md hover:border-gold/50 transition-all flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="w-11 h-11 rounded-2xl bg-cream-100 text-forestGreen flex items-center justify-center font-bold text-lg border border-cream-300">
+                <i class="fa-solid fa-user-graduate"></i>
+              </span>
+              <span class="text-[11px] font-bold text-gold-dark bg-gold/15 px-3 py-1 rounded-full border border-gold/30">Kaderisasi</span>
+            </div>
+            <h3 class="font-serif font-bold text-lg text-deepGreen mb-2">Departemen Kaderisasi</h3>
+            <p class="text-xs text-slate-600 leading-relaxed mb-4">
+              Mengawal pembinaan ruhiyah internal, program tahsin/tahfidz pengurus, daurah pekanan, serta penguatan kedisiplinan dan ukhuwah rijal.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-cream-100 text-xs font-semibold text-forestGreen flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-check text-emerald-600"></i>
+            <span>Fokus: Pembinaan, mentoring, ukhuwah</span>
+          </div>
+        </div>
+
+        <!-- Dept 2 -->
+        <div class="bg-white rounded-3xl p-6 border border-cream-200 shadow-sm hover:shadow-md hover:border-gold/50 transition-all flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="w-11 h-11 rounded-2xl bg-cream-100 text-forestGreen flex items-center justify-center font-bold text-lg border border-cream-300">
+                <i class="fa-solid fa-photo-film"></i>
+              </span>
+              <span class="text-[11px] font-bold text-gold-dark bg-gold/15 px-3 py-1 rounded-full border border-gold/30">Syiar & Media</span>
+            </div>
+            <h3 class="font-serif font-bold text-lg text-deepGreen mb-2">Departemen Syiar & Media</h3>
+            <p class="text-xs text-slate-600 leading-relaxed mb-4">
+              Memproduksi poster dakwah kreatif, editing reels/video pendek, rekaman kajian, pengelolaan website, buletin cetak, dan publikasi media sosial.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-cream-100 text-xs font-semibold text-forestGreen flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-check text-emerald-600"></i>
+            <span>Fokus: Desain grafis, video, copywriting</span>
+          </div>
+        </div>
+
+        <!-- Dept 3 -->
+        <div class="bg-white rounded-3xl p-6 border border-cream-200 shadow-sm hover:shadow-md hover:border-gold/50 transition-all flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="w-11 h-11 rounded-2xl bg-cream-100 text-forestGreen flex items-center justify-center font-bold text-lg border border-cream-300">
+                <i class="fa-solid fa-book-open"></i>
+              </span>
+              <span class="text-[11px] font-bold text-gold-dark bg-gold/15 px-3 py-1 rounded-full border border-gold/30">Kajian & Ilmiah</span>
+            </div>
+            <h3 class="font-serif font-bold text-lg text-deepGreen mb-2">Departemen Kajian & Ilmiah</h3>
+            <p class="text-xs text-slate-600 leading-relaxed mb-4">
+              Menyusun silabus kajian tematik & kitab, berkoordinasi dengan pemateri/asatidzah, serta membuat resume ilmiah dan bedah literatur syar'i.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-cream-100 text-xs font-semibold text-forestGreen flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-check text-emerald-600"></i>
+            <span>Fokus: Thalabul ilmi, kurikulum kajian</span>
+          </div>
+        </div>
+
+        <!-- Dept 4 -->
+        <div class="bg-white rounded-3xl p-6 border border-cream-200 shadow-sm hover:shadow-md hover:border-gold/50 transition-all flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="w-11 h-11 rounded-2xl bg-cream-100 text-forestGreen flex items-center justify-center font-bold text-lg border border-cream-300">
+                <i class="fa-solid fa-comments"></i>
+              </span>
+              <span class="text-[11px] font-bold text-gold-dark bg-gold/15 px-3 py-1 rounded-full border border-gold/30">Humas & Sosial</span>
+            </div>
+            <h3 class="font-serif font-bold text-lg text-deepGreen mb-2">Departemen Humas & Eksternal</h3>
+            <p class="text-xs text-slate-600 leading-relaxed mb-4">
+              Membangun komunikasi dengan DKM masjid kampus, ormawa lain, lembaga dakwah luar kampus, serta menyelenggarakan bakti sosial peduli dhuafa.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-cream-100 text-xs font-semibold text-forestGreen flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-check text-emerald-600"></i>
+            <span>Fokus: Kemitraan, PR, bakti sosial</span>
+          </div>
+        </div>
+
+        <!-- Dept 5 -->
+        <div class="bg-white rounded-3xl p-6 border border-cream-200 shadow-sm hover:shadow-md hover:border-gold/50 transition-all flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="w-11 h-11 rounded-2xl bg-cream-100 text-forestGreen flex items-center justify-center font-bold text-lg border border-cream-300">
+                <i class="fa-solid fa-boxes-stacked"></i>
+              </span>
+              <span class="text-[11px] font-bold text-gold-dark bg-gold/15 px-3 py-1 rounded-full border border-gold/30">Logistik & Sarpras</span>
+            </div>
+            <h3 class="font-serif font-bold text-lg text-deepGreen mb-2">Departemen Sarana & Logistik</h3>
+            <p class="text-xs text-slate-600 leading-relaxed mb-4">
+              Mengelola inventaris perlengkapan dakwah, penataan panggung kajian, teknis audio sound system, dan operasional kesekretariatan.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-cream-100 text-xs font-semibold text-forestGreen flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-check text-emerald-600"></i>
+            <span>Fokus: Operasional, teknis sound & event</span>
+          </div>
+        </div>
+
+        <!-- Dept 6 -->
+        <div class="bg-white rounded-3xl p-6 border border-cream-200 shadow-sm hover:shadow-md hover:border-gold/50 transition-all flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="w-11 h-11 rounded-2xl bg-cream-100 text-forestGreen flex items-center justify-center font-bold text-lg border border-cream-300">
+                <i class="fa-solid fa-coins"></i>
+              </span>
+              <span class="text-[11px] font-bold text-gold-dark bg-gold/15 px-3 py-1 rounded-full border border-gold/30">Kewirausahaan</span>
+            </div>
+            <h3 class="font-serif font-bold text-lg text-deepGreen mb-2">Departemen Usaha Mandiri</h3>
+            <p class="text-xs text-slate-600 leading-relaxed mb-4">
+              Mengembangkan kemandirian dana dakwah melalui bazar buku islami, penjualan merchandise dakwah, kurma, madu, dan sponsorship halal.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-cream-100 text-xs font-semibold text-forestGreen flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-check text-emerald-600"></i>
+            <span>Fokus: Wirausaha syar'i & sponsorship</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 7. FITUR 2: JOIN US / PENDAFTARAN GOOGLE FORM (CORE REQUIREMENT #2) -->
+  <!-- ========================================================================= -->
+  <section id="join-us" class="py-16 md:py-24 bg-islamic-dark text-white relative overflow-hidden border-y-4 border-gold">
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <!-- Section Heading -->
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gold-light bg-white/10 px-4 py-1.5 rounded-full border border-gold/40">
+          <i class="fa-solid fa-paper-plane text-gold"></i>
+          <span>Fitur 2: Formulir Pendaftaran</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl md:text-5xl font-serif font-bold text-white">
+          Daftar Sekarang Melalui <br>
+          <span class="gold-gradient-text">Google Form Resmi</span>
+        </h2>
+        <div class="w-20 h-1.5 bg-gold mx-auto rounded-full"></div>
+        <p class="text-cream-100 text-sm sm:text-base leading-relaxed">
+          Ambil peran dalam barisan penolong agama Allah di lingkungan kampus. Isi formulir pendaftaran online di bawah ini.
+        </p>
+      </div>
+
+      <!-- Main Registration Card -->
+      <div class="mt-14 max-w-4xl mx-auto">
+        
+        <div class="bg-white rounded-3xl p-6 sm:p-10 text-charcoal shadow-2xl border-4 border-gold relative">
+          
+          <!-- Card Header Info -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-cream-200 pb-6">
+            <div class="flex items-center space-x-4 text-center sm:text-left">
+              <div class="w-14 h-14 rounded-2xl bg-forestGreen text-gold flex items-center justify-center text-2xl shrink-0 shadow">
+                <i class="fa-brands fa-google"></i>
+              </div>
+              <div>
+                <h3 class="font-serif font-bold text-xl sm:text-2xl text-deepGreen">Formulir Pendaftaran Online</h3>
+                <p class="text-xs text-slate-500 font-medium mt-0.5">Tersambung langsung ke Google Form Resmi UKM Rijal Dakwah</p>
+              </div>
+            </div>
+            <span class="text-xs bg-emerald-100 text-emerald-800 font-bold px-3.5 py-1.5 rounded-full border border-emerald-300 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Pendaftaran Dibuka
+            </span>
+          </div>
+
+          <!-- Syarat & Checklist Ringkas -->
+          <div class="py-6 space-y-3">
+            <h4 class="font-bold text-sm text-deepGreen flex items-center gap-2">
+              <i class="fa-solid fa-clipboard-check text-gold"></i>
+              <span>Hal yang Perlu Disiapkan Sebelum Mengisi Google Form:</span>
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm text-slate-600">
+              <div class="flex items-start gap-2.5 p-2 rounded-xl bg-cream-50">
+                <i class="fa-solid fa-check text-emerald-600 mt-1 shrink-0"></i>
+                <span>Akun Google aktif untuk login formulir.</span>
+              </div>
+              <div class="flex items-start gap-2.5 p-2 rounded-xl bg-cream-50">
+                <i class="fa-solid fa-check text-emerald-600 mt-1 shrink-0"></i>
+                <span>Data diri (Nama, NIM, Jurusan, No. WhatsApp).</span>
+              </div>
+              <div class="flex items-start gap-2.5 p-2 rounded-xl bg-cream-50">
+                <i class="fa-solid fa-check text-emerald-600 mt-1 shrink-0"></i>
+                <span>Pilihan departemen prioritas 1 dan 2.</span>
+              </div>
+              <div class="flex items-start gap-2.5 p-2 rounded-xl bg-cream-50">
+                <i class="fa-solid fa-check text-emerald-600 mt-1 shrink-0"></i>
+                <span>Motivasi singkat bergabung dalam dakwah kampus.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Box: Google Form Link + Copy + Embed Modal -->
+          <div class="p-6 sm:p-8 rounded-2xl bg-cream-100 border border-cream-300 space-y-5 text-center">
+            
+            <div>
+              <p class="text-sm font-semibold text-deepGreen">
+                Klik tombol utama di bawah ini untuk membuka formulir pendaftaran di tab baru:
+              </p>
+              <p class="text-xs text-slate-500 mt-1">
+                Link: <code id="formUrlDisplay" class="bg-white px-2 py-0.5 rounded border text-forestGreen font-mono font-bold">https://forms.gle/sampleRijalDakwah2026</code>
+              </p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-1">
+              
+              <!-- Direct Link to Google Form -->
+              <a id="mainGoogleFormBtn" href="https://forms.gle/sampleRijalDakwah2026" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto btn-gold px-9 py-4 rounded-2xl text-base font-bold flex items-center justify-center gap-3 shadow-xl group">
+                <i class="fa-solid fa-arrow-up-right-from-square text-sm group-hover:scale-110 transition-transform"></i>
+                <span>Buka Google Form Pendaftaran</span>
+              </a>
+
+              <!-- Copy Link Button -->
+              <button onclick="copyGoogleFormLink()" class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-white border border-cream-300 text-charcoal hover:bg-cream-200 text-sm font-bold flex items-center justify-center gap-2 transition-colors shadow-sm">
+                <i class="fa-solid fa-copy text-gold"></i>
+                <span id="copyBtnText">Salin Link Form</span>
+              </button>
+
+              <!-- Optional In-Page Embed Toggle Button -->
+              <button onclick="openFormEmbedModal()" class="w-full sm:w-auto px-5 py-4 rounded-2xl bg-forestGreen text-white hover:bg-deepGreen text-sm font-bold flex items-center justify-center gap-2 transition-colors shadow-sm">
+                <i class="fa-solid fa-window-maximize text-gold"></i>
+                <span>Lihat Preview Form</span>
+              </button>
+
+            </div>
+
+          </div>
+
+          <!-- Timeline Selection Steps -->
+          <div class="pt-8 mt-6 border-t border-cream-200">
+            <h4 class="font-serif font-bold text-base text-deepGreen mb-4 text-center">
+              Timeline Tahapan Rekrutmen 2026
+            </h4>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
+              <div class="p-3 rounded-2xl bg-cream-50 border border-cream-200">
+                <span class="text-[11px] font-bold text-gold-dark bg-gold/15 px-2.5 py-0.5 rounded-full">Tahap 1</span>
+                <p class="font-bold text-xs sm:text-sm text-deepGreen mt-1.5">Pendaftaran Form</p>
+                <p class="text-[11px] text-slate-500 mt-0.5">1 - 30 Sept 2026</p>
+              </div>
+              <div class="p-3 rounded-2xl bg-cream-50 border border-cream-200">
+                <span class="text-[11px] font-bold text-gold-dark bg-gold/15 px-2.5 py-0.5 rounded-full">Tahap 2</span>
+                <p class="font-bold text-xs sm:text-sm text-deepGreen mt-1.5">Seleksi Berkas</p>
+                <p class="text-[11px] text-slate-500 mt-0.5">1 - 3 Okt 2026</p>
+              </div>
+              <div class="p-3 rounded-2xl bg-cream-50 border border-cream-200">
+                <span class="text-[11px] font-bold text-gold-dark bg-gold/15 px-2.5 py-0.5 rounded-full">Tahap 3</span>
+                <p class="font-bold text-xs sm:text-sm text-deepGreen mt-1.5">Wawancara Ta'aruf</p>
+                <p class="text-[11px] text-slate-500 mt-0.5">5 - 7 Okt 2026</p>
+              </div>
+              <div class="p-3 rounded-2xl bg-cream-50 border border-cream-200">
+                <span class="text-[11px] font-bold text-gold-dark bg-gold/15 px-2.5 py-0.5 rounded-full">Tahap 4</span>
+                <p class="font-bold text-xs sm:text-sm text-deepGreen mt-1.5">Orientasi Anggota</p>
+                <p class="text-[11px] text-slate-500 mt-0.5">10 Okt 2026</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Helpdesk info -->
+          <div class="mt-6 pt-4 border-t border-cream-100 text-center">
+            <p class="text-xs text-slate-500">
+              Butuh bantuan atau konfirmasi berkas? Hubungi kami via 
+              <a href="https://wa.me/6281234567890?text=Assalamu%27alaikum%20Panitia%20Open%20Recruitment%20UKM%20Rijal%20Dakwah,%20saya%20ingin%20konfirmasi%20pendaftaran" target="_blank" class="text-emerald-700 font-bold hover:underline inline-flex items-center gap-1 ml-1">
+                <i class="fa-brands fa-whatsapp text-emerald-600"></i> WhatsApp Panitia
+              </a>
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 8. SECTION: FAQ SEPUTAR PENDAFTARAN -->
+  <!-- ========================================================================= -->
+  <section class="py-16 md:py-24 bg-cream-pattern">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center space-y-3 mb-12">
+        <span class="text-xs font-bold uppercase tracking-widest text-forestGreen bg-cream-200 px-3.5 py-1.5 rounded-full border border-cream-300">
+          Tanya Jawab
+        </span>
+        <h2 class="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-deepGreen">
+          Frequently Asked Questions (FAQ)
+        </h2>
+        <div class="w-20 h-1.5 bg-gold mx-auto rounded-full"></div>
+      </div>
+
+      <!-- FAQ Accordion -->
+      <div class="space-y-4">
+        
+        <div class="bg-white rounded-2xl border border-cream-200 shadow-sm overflow-hidden">
+          <button class="faq-toggle w-full p-5 text-left font-bold text-sm sm:text-base text-deepGreen flex justify-between items-center hover:bg-cream-50 transition-colors">
+            <span>Apakah harus sudah mahir membaca Al-Qur'an dan bahasa Arab?</span>
+            <i class="fa-solid fa-chevron-down text-xs text-gold transition-transform duration-300"></i>
+          </button>
+          <div class="faq-content hidden px-5 pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-cream-100 pt-3">
+            Tidak harus mahir. Yang utama adalah niat yang ikhlas, kemauan untuk belajar, dan komitmen bersama. Di UKM Rijal Dakwah ada program pembinaan tahsin, tahfidz, dan dasar-dasar ilmu syar'i untuk seluruh anggota.
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-cream-200 shadow-sm overflow-hidden">
+          <button class="faq-toggle w-full p-5 text-left font-bold text-sm sm:text-base text-deepGreen flex justify-between items-center hover:bg-cream-50 transition-colors">
+            <span>Bagaimana jika saya berasal dari jurusan umum / non-agama?</span>
+            <i class="fa-solid fa-chevron-down text-xs text-gold transition-transform duration-300"></i>
+          </button>
+          <div class="faq-content hidden px-5 pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-cream-100 pt-3">
+            Sangat terbuka dan dipersilakan! UKM Rijal Dakwah terbuka bagi seluruh mahasiswa muslim dari berbagai fakultas dan program studi. Keahlian umum seperti IT, desain, manajemen, dan komunikasi sangat dibutuhkan dalam dakwah kampus.
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-cream-200 shadow-sm overflow-hidden">
+          <button class="faq-toggle w-full p-5 text-left font-bold text-sm sm:text-base text-deepGreen flex justify-between items-center hover:bg-cream-50 transition-colors">
+            <span>Apakah kegiatan UKM akan mengganggu jadwal perkuliahan?</span>
+            <i class="fa-solid fa-chevron-down text-xs text-gold transition-transform duration-300"></i>
+          </button>
+          <div class="faq-content hidden px-5 pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-cream-100 pt-3">
+            Insya Allah tidak. Seluruh agenda UKM dijadwalkan di luar jam kuliah formal dan dirancang fleksibel dengan mengutamakan keseimbangan antara prestasi akademik dan amanah dakwah.
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-cream-200 shadow-sm overflow-hidden">
+          <button class="faq-toggle w-full p-5 text-left font-bold text-sm sm:text-base text-deepGreen flex justify-between items-center hover:bg-cream-50 transition-colors">
+            <span>Di mana saya bisa membaca detail aturan dan kode etik anggota?</span>
+            <i class="fa-solid fa-chevron-down text-xs text-gold transition-transform duration-300"></i>
+          </button>
+          <div class="faq-content hidden px-5 pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-cream-100 pt-3">
+            Seluruh aturan, kode etik, visi misi, serta tugas pokok setiap departemen tertuang lengkap di dalam <strong>Guidebook Resmi</strong> yang dapat diunduh pada menu Guidebook di atas.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 9. FOOTER (STDIIS Reference Layout & Contact Cues) -->
+  <!-- ========================================================================= -->
+  <footer class="bg-islamic-dark text-cream-200 text-sm border-t-4 border-gold pt-16 pb-8 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-forestGreen">
+        
+        <!-- Col 1: Identity & About -->
+        <div class="lg:col-span-5 space-y-4">
+          <div class="flex items-center space-x-3.5">
+            <div class="w-11 h-11 rounded-2xl bg-gold/20 flex items-center justify-center text-gold border border-gold/40">
+              <i class="fa-solid fa-kaaba text-xl"></i>
+            </div>
+            <div>
+              <span class="font-serif font-bold text-xl text-white tracking-wide">UKM RIJAL DAKWAH</span>
+              <p class="text-xs text-gold-light">Unit Kegiatan Mahasiswa Dakwah Kampus</p>
+            </div>
+          </div>
+          <p class="text-xs sm:text-sm text-cream-300 leading-relaxed max-w-sm">
+            Organisasi kemahasiswaan yang berkhidmat dalam pembinaan karakter pemuda muslim berlandaskan Al-Qur'an dan Sunnah menurut pemahaman Salafus Shalih.
+          </p>
+          <div class="flex space-x-3 pt-2">
+            <a href="https://instagram.com" target="_blank" class="w-9 h-9 rounded-xl bg-forestGreen text-gold-light hover:bg-gold hover:text-deepGreen flex items-center justify-center transition-colors border border-gold/30">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="https://youtube.com" target="_blank" class="w-9 h-9 rounded-xl bg-forestGreen text-gold-light hover:bg-gold hover:text-deepGreen flex items-center justify-center transition-colors border border-gold/30">
+              <i class="fa-brands fa-youtube"></i>
+            </a>
+            <a href="https://wa.me/6281234567890" target="_blank" class="w-9 h-9 rounded-xl bg-forestGreen text-gold-light hover:bg-gold hover:text-deepGreen flex items-center justify-center transition-colors border border-gold/30">
+              <i class="fa-brands fa-whatsapp"></i>
+            </a>
+            <a href="mailto:info@rijaldakwah.org" class="w-9 h-9 rounded-xl bg-forestGreen text-gold-light hover:bg-gold hover:text-deepGreen flex items-center justify-center transition-colors border border-gold/30">
+              <i class="fa-solid fa-envelope"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 2: Quick Links -->
+        <div class="lg:col-span-3 space-y-3">
+          <h4 class="font-serif font-bold text-white text-base border-b border-gold/30 pb-2">Navigasi Utama</h4>
+          <ul class="space-y-2 text-xs sm:text-sm">
+            <li><a href="#beranda" class="hover:text-gold transition-colors flex items-center gap-2"><i class="fa-solid fa-angle-right text-gold text-xs"></i> Beranda</a></li>
+            <li><a href="#tentang" class="hover:text-gold transition-colors flex items-center gap-2"><i class="fa-solid fa-angle-right text-gold text-xs"></i> Profil & Pilar</a></li>
+            <li><a href="#guidebook" class="hover:text-gold transition-colors flex items-center gap-2"><i class="fa-solid fa-angle-right text-gold text-xs"></i> Unduh Guidebook</a></li>
+            <li><a href="#join-us" class="hover:text-gold transition-colors flex items-center gap-2"><i class="fa-solid fa-angle-right text-gold text-xs"></i> Formulir Pendaftaran</a></li>
+            <li><a href="#departemen" class="hover:text-gold transition-colors flex items-center gap-2"><i class="fa-solid fa-angle-right text-gold text-xs"></i> Struktur Departemen</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Contact & Address (STDIIS Reference Format) -->
+        <div class="lg:col-span-4 space-y-3">
+          <h4 class="font-serif font-bold text-white text-base border-b border-gold/30 pb-2">Sekretariat & Kontak</h4>
+          <div class="space-y-3 text-xs sm:text-sm text-cream-300">
+            <div class="flex items-start space-x-3">
+              <i class="fa-solid fa-location-dot text-gold mt-1 shrink-0"></i>
+              <span>Gedung Pusat Kegiatan Mahasiswa (PKM) Lt. 2, Kampus Perguruan Tinggi Islam, Indonesia</span>
+            </div>
+            <div class="flex items-center space-x-3">
+              <i class="fa-solid fa-phone text-gold shrink-0"></i>
+              <span>(0331) 4436803 / Ext. UKM-RD</span>
+            </div>
+            <div class="flex items-center space-x-3">
+              <i class="fa-solid fa-mobile-screen-button text-gold shrink-0"></i>
+              <span>0812-3456-7890 (Panitia Rekrutmen)</span>
+            </div>
+            <div class="flex items-center space-x-3">
+              <i class="fa-solid fa-envelope text-gold shrink-0"></i>
+              <span>rekrutmen@rijaldakwah.org</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-cream-300 gap-4">
+        <p>&copy; 2026 UKM Rijal Dakwah. All Rights Reserved. Terinspirasi oleh dakwah Islam yang lurus.</p>
+        <p class="text-gold-light font-arabic text-sm font-bold">جَزَاكُمُ اللَّهُ خَيْرًا</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 1: RINGKASAN GUIDEBOOK INTERAKTIF -->
+  <!-- ========================================================================= -->
+  <div id="guidebookModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop">
+    <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl border-2 border-gold overflow-hidden animate-in">
+      
+      <!-- Modal Header -->
+      <div class="bg-islamic-hero text-white p-5 flex items-center justify-between border-b border-gold/30">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-gold/20 flex items-center justify-center text-gold border border-gold/30">
+            <i class="fa-solid fa-book-open"></i>
+          </div>
+          <div>
+            <h3 class="font-serif font-bold text-base text-white">Ringkasan Guidebook Pendaftaran</h3>
+            <p class="text-xs text-gold-light">UKM Rijal Dakwah Periode 2026/2027</p>
+          </div>
+        </div>
+        <button onclick="closeGuidebookModal()" class="text-cream-200 hover:text-white text-xl p-1 rounded-lg focus:outline-none">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 overflow-y-auto space-y-6 text-sm text-slate-700">
+        
+        <!-- Section 1 -->
+        <div class="space-y-2">
+          <h4 class="font-serif font-bold text-deepGreen text-base flex items-center gap-2 border-b border-cream-200 pb-1">
+            <i class="fa-solid fa-star-and-crescent text-gold"></i>
+            <span>1. Visi & Misi Organisasi</span>
+          </h4>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            <strong>Visi:</strong> Menjadi pelopor organisasi dakwah kemahasiswaan yang kokoh dalam manhaj ilmiah, unggul dalam pembentukan akhlak pemuda rijal, dan produktif dalam memberikan kemanfaatan nyata bagi umat.
+          </p>
+          <ul class="text-xs sm:text-sm text-slate-600 list-disc list-inside space-y-1">
+            <li>Menyelenggarakan kajian berkala berbasis Al-Qur'an dan Sunnah.</li>
+            <li>Membina ukhuwah islamiyah dan integritas pemuda kampus.</li>
+            <li>Mengembangkan media dakwah digital yang profesional.</li>
+          </ul>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="space-y-2">
+          <h4 class="font-serif font-bold text-deepGreen text-base flex items-center gap-2 border-b border-cream-200 pb-1">
+            <i class="fa-solid fa-id-card-clip text-gold"></i>
+            <span>2. Kualifikasi Calon Anggota</span>
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            <div class="p-2.5 rounded-xl bg-cream-50 border border-cream-200">✓ Mahasiswa aktif Ikhwan (S1/D4/D3).</div>
+            <div class="p-2.5 rounded-xl bg-cream-50 border border-cream-200">✓ Berakhlak baik & siap menjaga adab penuntut ilmu.</div>
+            <div class="p-2.5 rounded-xl bg-cream-50 border border-cream-200">✓ Siap mengikuti pembinaan rutin pekanan.</div>
+            <div class="p-2.5 rounded-xl bg-cream-50 border border-cream-200">✓ Berkomitmen pada amanah organisasi dakwah.</div>
+          </div>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="space-y-2">
+          <h4 class="font-serif font-bold text-deepGreen text-base flex items-center gap-2 border-b border-cream-200 pb-1">
+            <i class="fa-solid fa-folder-open text-gold"></i>
+            <span>3. Berkas yang Diperlukan di Google Form</span>
+          </h4>
+          <ul class="text-xs text-slate-600 list-disc list-inside space-y-1">
+            <li>Scan / Foto Kartu Tanda Mahasiswa (KTM) aktif.</li>
+            <li>Pas foto formal terbaru dengan latar polos (3x4).</li>
+            <li>Alasan dan motivasi bergabung pada formulir online.</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="bg-cream-100 p-4 border-t border-cream-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <button onclick="downloadGuidebookPDF()" class="w-full sm:w-auto bg-forestGreen hover:bg-deepGreen text-white px-5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow">
+          <i class="fa-solid fa-download text-gold"></i>
+          <span>Unduh Versi Lengkap (PDF)</span>
+        </button>
+        <button onclick="closeGuidebookModal(); document.getElementById('join-us').scrollIntoView({behavior: 'smooth'})" class="w-full sm:w-auto btn-gold px-5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2">
+          <span>Lanjut Isi Google Form</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL 2: FORM EMBED / PREVIEW MODAL -->
+  <!-- ========================================================================= -->
+  <div id="formEmbedModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-backdrop">
+    <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl border-2 border-gold overflow-hidden">
+      
+      <div class="bg-islamic-hero text-white p-5 flex items-center justify-between border-b border-gold/30">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-gold/20 flex items-center justify-center text-gold border border-gold/30">
+            <i class="fa-brands fa-google"></i>
+          </div>
+          <div>
+            <h3 class="font-serif font-bold text-base text-white">Preview Formulir Google Form</h3>
+            <p class="text-xs text-gold-light">Pendaftaran Online Calon Anggota UKM Rijal Dakwah</p>
+          </div>
+        </div>
+        <button onclick="closeFormEmbedModal()" class="text-cream-200 hover:text-white text-xl p-1 rounded-lg focus:outline-none">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="p-6 overflow-y-auto space-y-5 text-sm text-slate-700 bg-cream-50">
+        
+        <div class="bg-white p-5 rounded-2xl border border-cream-300 shadow-sm space-y-4">
+          <div class="border-b border-cream-200 pb-3">
+            <h4 class="font-serif font-bold text-lg text-deepGreen">Formulir Pendaftaran UKM Rijal Dakwah 2026/2027</h4>
+            <p class="text-xs text-slate-500 mt-1">Silakan buka langsung di Google Form untuk pengalaman pengisian terbaik dengan akun Google antum.</p>
+          </div>
+
+          <div class="space-y-3 text-xs sm:text-sm">
+            <div class="p-3 bg-cream-50 rounded-xl border border-cream-200">
+              <span class="font-bold text-deepGreen">1. Data Pribadi</span>
+              <p class="text-slate-500 text-xs mt-0.5">Nama lengkap, NIM, Program Studi, Angkatan, No. WhatsApp aktif.</p>
+            </div>
+            <div class="p-3 bg-cream-50 rounded-xl border border-cream-200">
+              <span class="font-bold text-deepGreen">2. Pilihan Departemen</span>
+              <p class="text-slate-500 text-xs mt-0.5">Kaderisasi / Syiar Media / Kajian & Keilmuan / Humas / Sarana & Logistik / Danus.</p>
+            </div>
+            <div class="p-3 bg-cream-50 rounded-xl border border-cream-200">
+              <span class="font-bold text-deepGreen">3. Minat & Pengalaman Organisasi</span>
+              <p class="text-slate-500 text-xs mt-0.5">Riwayat kepanitiaan, keahlian khusus (desain, audio, MC, dll), dan motivasi.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="bg-cream-100 p-4 border-t border-cream-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <button onclick="copyGoogleFormLink()" class="w-full sm:w-auto bg-white border border-cream-300 px-5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2">
+          <i class="fa-solid fa-copy text-gold"></i>
+          <span>Salin Link Google Form</span>
+        </button>
+        <a href="https://forms.gle/sampleRijalDakwah2026" target="_blank" class="w-full sm:w-auto btn-gold px-6 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2">
+          <span>Buka Google Form di Tab Baru</span>
+          <i class="fa-solid fa-arrow-up-right-from-square"></i>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- TOAST NOTIFICATION -->
+  <!-- ========================================================================= -->
+  <div id="toastNotification" class="fixed bottom-6 right-6 z-50 hidden bg-deepGreen text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-gold flex items-center space-x-3 transition-all transform translate-y-4">
+    <div class="w-8 h-8 rounded-full bg-gold text-deepGreen flex items-center justify-center text-sm font-bold">
+      <i class="fa-solid fa-check" id="toastIcon"></i>
+    </div>
+    <div>
+      <p class="font-bold text-xs" id="toastTitle">Berhasil!</p>
+      <p class="text-[11px] text-cream-200" id="toastMsg">Link Google Form berhasil disalin ke clipboard.</p>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT LOGIC -->
+  <!-- ========================================================================= -->
+  <script>
+    // 1. Mobile Menu Toggle
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuIcon = document.getElementById('menuIcon');
+
+    mobileBtn.addEventListener('click', () => {
+      const isHidden = mobileMenu.classList.toggle('hidden');
+      if (isHidden) {
+        menuIcon.classList.remove('fa-xmark');
+        menuIcon.classList.add('fa-bars-staggered');
+      } else {
+        menuIcon.classList.remove('fa-bars-staggered');
+        menuIcon.classList.add('fa-xmark');
+      }
+    });
+
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuIcon.classList.remove('fa-xmark');
+        menuIcon.classList.add('fa-bars-staggered');
+      });
+    });
+
+    // 2. Guidebook Modal Handling
+    const guidebookModal = document.getElementById('guidebookModal');
+    function openGuidebookModal() {
+      guidebookModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeGuidebookModal() {
+      guidebookModal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+    guidebookModal.addEventListener('click', (e) => {
+      if (e.target === guidebookModal) closeGuidebookModal();
+    });
+
+    // 3. Form Embed Modal Handling
+    const formEmbedModal = document.getElementById('formEmbedModal');
+    function openFormEmbedModal() {
+      formEmbedModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeFormEmbedModal() {
+      formEmbedModal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+    formEmbedModal.addEventListener('click', (e) => {
+      if (e.target === formEmbedModal) closeFormEmbedModal();
+    });
+
+    // 4. Dynamic Guidebook Document Downloader
+    function downloadGuidebookPDF() {
+      showToast("Mengunduh Guidebook...", "File Guidebook_UKM_Rijal_Dakwah_2026.pdf sedang disiapkan.");
+      
+      const content = `========================================================================
+GUIDEBOOK OPEN RECRUITMENT UKM RIJAL DAKWAH 2026/2027
+Sekretariat: Gedung Pusat Kegiatan Mahasiswa (PKM) Lt. 2
+========================================================================
+
+بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+
+1. PROFIL ORGANISASI
+UKM Rijal Dakwah adalah wadah pembinaan kemahasiswaan yang berkhidmat dalam 
+pengembangan karakter pemuda muslim berlandaskan Al-Qur'an dan Sunnah 
+menurut pemahaman Salafus Shalih.
+
+2. VISI & MISI
+Visi:
+Mencetak kader rijal dakwah yang kokoh dalam ilmu syar'i, tangguh dalam karakter,
+serta berkontribusi aktif dalam syiar Islam di kampus dan masyarakat.
+
+Misi:
+- Menyelenggarakan kajian ilmiah tematik dan tahsin berkala.
+- Mengembangkan media dakwah digital yang profesional dan santun.
+- Membina ukhuwah islamiyah antar mahasiswa rijal.
+- Mengadakan bakti sosial dan khidmah kepada umat.
+
+3. STRUKTUR DEPARTEMEN
+1) Departemen Kaderisasi (Pembinaan internal, tahsin, daurah)
+2) Departemen Syiar & Media (Desain grafis, website, video dakwah, buletin)
+3) Departemen Kajian & Ilmiah (Kurikulum kajian, koordinasi pemateri/asatidzah)
+4) Departemen Humas & Eksternal (Kerjasama antar-lembaga, bakti sosial)
+5) Departemen Sarana & Logistik (Inventaris, teknis sound & perlengkapan)
+6) Departemen Kewirausahaan / Danus (Merchandise dakwah & kemandirian finansial)
+
+4. SYARAT & KETENTUAN PENDAFTARAN
+- Mahasiswa muslim aktif (Ikhwan / Rijal).
+- Memiliki kemauan belajar dan komitmen waktu.
+- Mengisi formulir pendaftaran resmi di Google Form:
+  https://forms.gle/sampleRijalDakwah2026
+
+5. TIMELINE PENDAFTARAN 2026
+- 1 - 30 September 2026 : Pendaftaran Online via Google Form
+- 1 - 3 Oktober 2026   : Seleksi Berkas Administrasi
+- 5 - 7 Oktober 2026   : Wawancara & Ta'aruf
+- 10 Oktober 2026      : Welcoming Party & Orientasi Anggota Baru
+
+Kontak Panitia:
+WhatsApp: +62 812-3456-7890
+Email: rekrutmen@rijaldakwah.org
+========================================================================`;
+
+      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Guidebook_UKM_Rijal_Dakwah_2026.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // 5. Copy Google Form Link to Clipboard
+    function copyGoogleFormLink() {
+      const formUrl = "https://forms.gle/sampleRijalDakwah2026";
+      navigator.clipboard.writeText(formUrl).then(() => {
+        showToast("Tersalin!", "Link Google Form berhasil disalin ke clipboard antum.");
+        const btnText = document.getElementById('copyBtnText');
+        if (btnText) {
+          btnText.textContent = "Tersalin ✓";
+          setTimeout(() => {
+            btnText.textContent = "Salin Link Form";
+          }, 3000);
+        }
+      }).catch(err => {
+        showToast("Link Form:", formUrl);
+      });
+    }
+
+    // 6. FAQ Accordion Handling
+    document.querySelectorAll('.faq-toggle').forEach(button => {
+      button.addEventListener('click', () => {
+        const content = button.nextElementSibling;
+        const icon = button.querySelector('i');
+        const isHidden = content.classList.toggle('hidden');
+        if (!isHidden) {
+          icon.style.transform = 'rotate(180deg)';
+        } else {
+          icon.style.transform = 'rotate(0deg)';
+        }
+      });
+    });
+
+    // 7. Toast Notification Helper
+    function showToast(title, message) {
+      const toast = document.getElementById('toastNotification');
+      document.getElementById('toastTitle').textContent = title;
+      document.getElementById('toastMsg').textContent = message;
+      toast.classList.remove('hidden');
+      toast.classList.remove('translate-y-4');
+      setTimeout(() => {
+        toast.classList.add('translate-y-4');
+        setTimeout(() => toast.classList.add('hidden'), 300);
+      }, 3500);
+    }
+  </script>
+
+</body>
+</html>
