@@ -4,40 +4,43 @@
  * Portal Wawancara UKM Rijal Dakwah STDI Imam Syafi'i Jember
  * =============================================================================
  * 
- * File ini menangani sinkronisasi data penilaian secara real-time antar perangkat
- * melalui Firebase Realtime Database (Google Cloud) & GitHub Database JSON.
+ * File ini menangani sinkronisasi data penilaian secara otomatis antar perangkat
+ * melalui dua opsi cloud (pilih salah satu atau keduanya):
  * 
- * Bekerja secara otomatis:
- * 1. Setiap kali tombol "Simpan Nilai & Catatan" diklik, data disimpan ke Cloud.
- * 2. Perangkat lain yang sedang membuka web akan langsung terupdate secara real-time.
- * 3. Jika offline, data tersimpan di LocalStorage dan siap disinkronkan saat online.
- * 4. Mendukung ekspor langsung ke format file 'database-penilaian.json' untuk GitHub.
+ * OPSI 1: Firebase Realtime Database (Sangat direkomendasikan - Realtime <300ms)
+ * OPSI 2: Google Apps Script Web App (Tersimpan langsung ke tab Google Sheet panitia)
  */
 
 (function(window) {
   'use strict';
 
-  // Key untuk penyimpanan konfigurasi lokal di browser
   const CONFIG_STORAGE_KEY = 'rd_cloud_firebase_config_v1';
   const GITHUB_SEED_FILE = './database-penilaian.json';
 
   /**
-   * KONFIGURASI FIREBASE DEFAULT
+   * ===========================================================================
+   * KONFIGURASI BASIS DATA CLOUD (PILIH SALAH SATU)
+   * ===========================================================================
    * 
-   * Antum bisa langsung memasukkan konfigurasi Firebase di bawah ini, ATAU
-   * memasukkannya melalui menu "Cadangan & Pengaturan" -> "Pengaturan Cloud" di web.
+   * [PILIHAN 1 - PALING CEPAT]: Firebase Realtime Database (Google Cloud)
+   * 1. Buat project gratis di https://console.firebase.google.com/
+   * 2. Buka "Build" -> "Realtime Database" -> "Create Database" (Start in test mode)
+   * 3. Salin URL database dan tempel pada 'databaseURL' di bawah:
    * 
-   * Cara mendapatkan config gratis (hanya 2 menit):
-   * 1. Buka https://console.firebase.google.com/
-   * 2. Buat project baru (contoh: "rijal-dakwah-wawancara")
-   * 3. Di menu kiri, klik "Build" -> "Realtime Database" -> "Create Database"
-   * 4. Pilih lokasi (Singapore / United States), pilih "Start in test mode"
-   * 5. Di Project Settings -> General -> "Your apps", pilih Web (</>) dan salin config-nya ke bawah:
+   * [PILIHAN 2 - LANGSUNG KE GOOGLE SHEET]: Google Apps Script
+   * 1. Buka Google Sheet Formulir Rijal Dakwah -> Ekstensi -> Apps Script
+   * 2. Salin kode dari file 'google-apps-script.js' -> Terapkan sebagai Aplikasi Web
+   * 3. Salin URL Web App dan tempel pada 'appsScriptUrl' di bawah:
    */
-  const DEFAULT_FIREBASE_CONFIG = {
+  const DEFAULT_CONFIG = {
+    // Pilihan 1: Firebase Realtime Database URL
+    databaseURL: "", // Contoh: "https://rijal-dakwah-wawancara-default-rtdb.asia-southeast1.firebasedatabase.app"
+    
+    // Pilihan 2: Google Apps Script Web App URL
+    appsScriptUrl: "https://script.google.com/macros/s/AKfycbynakEGabRfxbDVjm38njXF6hh4q8qWBHWC5Rc21kbRNuZNs3IH3i7I8xDl_xM080sacA/exec",
+
     apiKey: "",
     authDomain: "",
-    databaseURL: "", // Contoh: "https://rijal-dakwah-default-rtdb.asia-southeast1.firebasedatabase.app"
     projectId: "",
     storageBucket: "",
     messagingSenderId: "",
@@ -52,32 +55,27 @@
       this.connectedRef = null;
       this.isOnline = false;
       this.isCloudActive = false;
+      this.activeProvider = 'none'; // 'firebase' | 'apps_script' | 'none'
+      this.pollTimer = null;
       this.listeners = {
         status: [],
         scores: []
       };
-      this.currentConfig = this.loadStoredConfig() || DEFAULT_FIREBASE_CONFIG;
+      this.currentConfig = this.loadStoredConfig() || DEFAULT_CONFIG;
     }
 
-    /**
-     * Sanitasi key agar kompatibel dengan Firebase & JSON.
-     * Karakter '.', '#', '$', '/', '[', ']' dilarang di path Firebase.
-     */
     sanitizeKey(key) {
       if (!key) return 'unknown_key';
       return String(key).replace(/[\.\#\$\/\[\]]/g, '_');
     }
 
-    /**
-     * Memuat konfigurasi Firebase dari localStorage jika pernah disimpan
-     */
     loadStoredConfig() {
       try {
         const stored = localStorage.getItem(CONFIG_STORAGE_KEY);
         if (stored) {
           const parsed = JSON.parse(stored);
-          if (parsed && (parsed.databaseURL || parsed.apiKey)) {
-            return parsed;
+          if (parsed && (parsed.databaseURL || parsed.appsScriptUrl || parsed.apiKey)) {
+            return { ...DEFAULT_CONFIG, ...parsed };
           }
         }
       } catch (e) {
@@ -86,12 +84,9 @@
       return null;
     }
 
-    /**
-     * Menyimpan konfigurasi baru ke localStorage
-     */
     saveConfig(newConfig) {
       try {
-        this.currentConfig = { ...DEFAULT_FIREBASE_CONFIG, ...newConfig };
+        this.currentConfig = { ...DEFAULT_CONFIG, ...this.currentConfig, ...newConfig };
         localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(this.currentConfig));
         return this.init();
       } catch (e) {
@@ -100,132 +95,135 @@
       }
     }
 
-    /**
-     * Mendapatkan konfigurasi saat ini
-     */
     getConfig() {
       return this.currentConfig;
     }
 
-    /**
-     * Mendaftarkan listener status koneksi
-     */
     onStatusChange(callback) {
       if (typeof callback === 'function') {
         this.listeners.status.push(callback);
-        // Kirim status awal
         callback(this.getStatus());
       }
     }
 
-    /**
-     * Mendaftarkan listener pembaruan skor dari cloud
-     */
     onScoresUpdated(callback) {
       if (typeof callback === 'function') {
         this.listeners.scores.push(callback);
       }
     }
 
-    /**
-     * Trigger event perubahan status
-     */
     notifyStatus(status) {
       this.listeners.status.forEach(cb => {
         try { cb(status); } catch (e) { console.error(e); }
       });
     }
 
-    /**
-     * Trigger event skor diperbarui dari cloud
-     */
     notifyScoresUpdated(data, source = 'cloud') {
       this.listeners.scores.forEach(cb => {
         try { cb(data, source); } catch (e) { console.error(e); }
       });
     }
 
-    /**
-     * Mendapatkan status lengkap database saat ini
-     */
     getStatus() {
-      if (this.isCloudActive && this.isOnline) {
+      if (this.isCloudActive && this.activeProvider === 'firebase') {
+        if (this.isOnline) {
+          return {
+            mode: 'cloud',
+            provider: 'Firebase Realtime Database',
+            status: 'connected',
+            label: 'Cloud: Terhubung (Firebase)',
+            color: 'emerald',
+            isLive: true
+          };
+        } else {
+          return {
+            mode: 'cloud',
+            provider: 'Firebase Realtime Database',
+            status: 'connecting',
+            label: 'Cloud: Menghubungkan...',
+            color: 'amber',
+            isLive: false
+          };
+        }
+      } else if (this.isCloudActive && this.activeProvider === 'apps_script') {
         return {
           mode: 'cloud',
-          provider: 'Firebase Realtime Database',
+          provider: 'Google Sheets (Apps Script)',
           status: 'connected',
-          label: 'Cloud Realtime Aktif',
+          label: 'Cloud: Terhubung (Google Sheet)',
           color: 'emerald',
           isLive: true
         };
-      } else if (this.isCloudActive && !this.isOnline) {
-        return {
-          mode: 'cloud',
-          provider: 'Firebase Realtime Database',
-          status: 'connecting',
-          label: 'Menghubungkan Cloud...',
-          color: 'amber',
-          isLive: false
-        };
       } else {
         return {
-          mode: 'local',
-          provider: 'LocalStorage / GitHub File',
-          status: 'local_only',
-          label: 'Mode Lokal (Offline)',
-          color: 'slate',
+          mode: 'unconfigured',
+          provider: 'LocalStorage (Belum Ada Cloud)',
+          status: 'unconfigured',
+          label: '⚠️ Cloud Belum Terhubung (Lokal)',
+          color: 'amber',
           isLive: false
         };
       }
     }
 
-    /**
-     * Inisialisasi engine basis data
-     */
     async init() {
-      // 1. Cek apakah Firebase SDK tersedia di window
-      const hasFirebase = typeof window.firebase !== 'undefined' && typeof window.firebase.database === 'function';
-      const hasValidConfig = this.currentConfig && (
-        (this.currentConfig.databaseURL && this.currentConfig.databaseURL.trim().length > 10) ||
-        (this.currentConfig.apiKey && this.currentConfig.apiKey.trim().length > 10)
-      );
+      // Bersihkan polling lama jika ada
+      if (this.pollTimer) {
+        clearInterval(this.pollTimer);
+        this.pollTimer = null;
+      }
 
-      if (hasFirebase && hasValidConfig) {
+      const cfg = this.currentConfig;
+      const hasFirebaseUrl = cfg && cfg.databaseURL && cfg.databaseURL.trim().length > 10;
+      const hasAppsScriptUrl = cfg && cfg.appsScriptUrl && cfg.appsScriptUrl.trim().length > 15;
+
+      // 1. Cek opsi Firebase
+      if (hasFirebaseUrl) {
         try {
           this.initFirebase();
           return true;
         } catch (err) {
-          console.error('Gagal inisialisasi Firebase:', err);
-          this.isCloudActive = false;
-          this.notifyStatus(this.getStatus());
+          console.error('Inisialisasi Firebase gagal:', err);
         }
-      } else {
-        this.isCloudActive = false;
-        this.notifyStatus(this.getStatus());
       }
 
-      // 2. Fallback awal: Muat data dari file database-penilaian.json di GitHub jika ada
+      // 2. Cek opsi Google Apps Script
+      if (hasAppsScriptUrl) {
+        try {
+          this.initAppsScript();
+          return true;
+        } catch (err) {
+          console.error('Inisialisasi Apps Script gagal:', err);
+        }
+      }
+
+      // 3. Jika belum dikonfigurasi sama sekali
+      this.isCloudActive = false;
+      this.activeProvider = 'none';
+      this.notifyStatus(this.getStatus());
+
+      // Muat data baseline dari repository GitHub jika ada
       this.tryLoadFromGitHubJson();
       return false;
     }
 
-    /**
-     * Inisialisasi Firebase SDK
-     */
     initFirebase() {
+      if (typeof window.firebase === 'undefined' || typeof window.firebase.database !== 'function') {
+        throw new Error("Firebase SDK belum termuat.");
+      }
+
       if (this.firebaseApp) {
         try {
-          // Reset listener lama bila re-init
           if (this.scoresRef) this.scoresRef.off();
           if (this.connectedRef) this.connectedRef.off();
           this.firebaseApp.delete();
         } catch (e) {}
       }
 
-      // Format databaseURL jika user hanya mengisi sebagian
       let config = { ...this.currentConfig };
-      if (!config.databaseURL && config.projectId) {
-        config.databaseURL = `https://${config.projectId}-default-rtdb.firebaseio.com`;
+      if (!config.projectId && config.databaseURL) {
+        const match = config.databaseURL.match(/https:\/\/([a-z0-9\-]+)/i);
+        if (match) config.projectId = match[1];
       }
 
       this.firebaseApp = window.firebase.initializeApp(config, 'RD_Portal_' + Date.now());
@@ -234,27 +232,51 @@
       this.connectedRef = this.firebaseDb.ref('.info/connected');
 
       this.isCloudActive = true;
+      this.activeProvider = 'firebase';
 
-      // Pantau status koneksi real-time
       this.connectedRef.on('value', (snap) => {
         this.isOnline = snap.val() === true;
         this.notifyStatus(this.getStatus());
       });
 
-      // Pantau perubahan data di seluruh perangkat
       this.scoresRef.on('value', (snapshot) => {
         const cloudScores = snapshot.val();
         if (cloudScores && typeof cloudScores === 'object') {
           this.notifyScoresUpdated(cloudScores, 'cloud');
         }
-      }, (error) => {
-        console.error('Firebase error pada pembacaan skor:', error);
       });
     }
 
-    /**
-     * Simpan nilai pendaftar ke Cloud & LocalStorage
-     */
+    initAppsScript() {
+      this.isCloudActive = true;
+      this.activeProvider = 'apps_script';
+      this.isOnline = true;
+      this.notifyStatus(this.getStatus());
+
+      // Ambil data nilai pertama kali
+      this.fetchFromAppsScript();
+
+      // Polling setiap 10 detik agar seluruh perangkat selalu update
+      this.pollTimer = setInterval(() => {
+        this.fetchFromAppsScript();
+      }, 10000);
+    }
+
+    async fetchFromAppsScript() {
+      if (!this.currentConfig.appsScriptUrl) return;
+      try {
+        const res = await fetch(`${this.currentConfig.appsScriptUrl}?action=getScores&_t=${Date.now()}`);
+        if (res.ok) {
+          const json = await res.json();
+          if (json && json.scores && typeof json.scores === 'object') {
+            this.notifyScoresUpdated(json.scores, 'cloud');
+          }
+        }
+      } catch (err) {
+        console.warn('Gagal mengambil data dari Google Apps Script:', err);
+      }
+    }
+
     async saveScore(applicantKey, scoreData) {
       const safeKey = this.sanitizeKey(applicantKey);
       const dataToSave = {
@@ -264,42 +286,66 @@
         updatedAt: scoreData.updatedAt || new Date().toISOString()
       };
 
-      // 1. Simpan ke Firebase Realtime Database bila aktif
-      if (this.isCloudActive && this.firebaseDb && this.scoresRef) {
+      // 1. Simpan ke Firebase bila aktif
+      if (this.isCloudActive && this.activeProvider === 'firebase' && this.scoresRef) {
         try {
           await this.scoresRef.child(safeKey).set(dataToSave);
-          return { success: true, cloud: true, key: applicantKey };
+          return { success: true, cloud: true, provider: 'firebase', key: applicantKey };
         } catch (error) {
-          console.warn('Gagal menyimpan langsung ke Firebase, menyimpan lokal:', error);
+          console.warn('Gagal kirim ke Firebase:', error);
           return { success: true, cloud: false, fallback: true, error: error.message };
         }
       }
 
+      // 2. Simpan ke Google Apps Script bila aktif
+      if (this.isCloudActive && this.activeProvider === 'apps_script' && this.currentConfig.appsScriptUrl) {
+        try {
+          fetch(this.currentConfig.appsScriptUrl, {
+            method: 'POST',
+            mode: 'no-cors', // Penting untuk bypass CORS Apps Script
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ key: safeKey, data: dataToSave })
+          }).catch(e => console.warn(e));
+
+          return { success: true, cloud: true, provider: 'apps_script', key: applicantKey };
+        } catch (error) {
+          return { success: true, cloud: false, fallback: true, error: error.message };
+        }
+      }
+
+      // 3. Jika belum ada cloud
       return { success: true, cloud: false, localOnly: true };
     }
 
-    /**
-     * Hapus / Reset nilai pendaftar
-     */
     async deleteScore(applicantKey) {
       const safeKey = this.sanitizeKey(applicantKey);
 
-      if (this.isCloudActive && this.firebaseDb && this.scoresRef) {
+      if (this.isCloudActive && this.activeProvider === 'firebase' && this.scoresRef) {
         try {
           await this.scoresRef.child(safeKey).remove();
           return { success: true, cloud: true };
         } catch (error) {
-          console.warn('Gagal menghapus dari Firebase:', error);
           return { success: false, error: error.message };
+        }
+      }
+
+      if (this.isCloudActive && this.activeProvider === 'apps_script' && this.currentConfig.appsScriptUrl) {
+        try {
+          fetch(this.currentConfig.appsScriptUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'delete', key: safeKey })
+          }).catch(e => console.warn(e));
+          return { success: true, cloud: true };
+        } catch (e) {
+          return { success: false, error: e.message };
         }
       }
 
       return { success: true, cloud: false };
     }
 
-    /**
-     * Muat data baseline dari file database-penilaian.json di repository GitHub
-     */
     async tryLoadFromGitHubJson() {
       try {
         const res = await fetch(`${GITHUB_SEED_FILE}?_nocache=${Date.now()}`);
@@ -309,14 +355,9 @@
             this.notifyScoresUpdated(json.scores, 'github_file');
           }
         }
-      } catch (e) {
-        // Abaikan jika offline / file belum ada di hosting
-      }
+      } catch (e) {}
     }
 
-    /**
-     * Buat format database JSON resmi untuk di-commit ke GitHub
-     */
     generateDatabaseJSON(currentScores = {}, rawApplicants = []) {
       const now = new Date().toISOString();
       const scoredCount = Object.keys(currentScores).length;
@@ -342,9 +383,6 @@
       };
     }
 
-    /**
-     * Unduh file 'database-penilaian.json' siap commit ke GitHub
-     */
     exportDatabaseJSON(currentScores = {}, rawApplicants = []) {
       const dbObj = this.generateDatabaseJSON(currentScores, rawApplicants);
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dbObj, null, 2));
@@ -357,7 +395,6 @@
     }
   }
 
-  // Daftarkan instance tunggal secara global
   window.RD_Database = new RDDatabaseManager();
 
 })(window);

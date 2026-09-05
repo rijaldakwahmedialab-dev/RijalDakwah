@@ -2566,6 +2566,8 @@
         applicantId: applicant.id,
         applicantNim: applicant["NIM:"] || "",
         applicantName: applicant["Nama lengkap:"] || "",
+        applicantProdi: applicant["Prodi:"] || "",
+        applicantDivisi: applicant["Divisi Utama"] || applicant["Bergabung Sebagai"] || "",
         status: status,
         scoreAdab: adab,
         scoreVisi: visi,
@@ -2587,17 +2589,18 @@
         RD_Database.saveScore(key, interviewScores[key]).then((res) => {
           if (res && res.cloud) {
             if (!isSilent) {
-              showToast("Tersimpan & Sinkron Cloud", `Nilai untuk ${applicant["Nama lengkap:"] || "calon"} berhasil disinkronkan ke seluruh perangkat.`);
+              const providerLabel = res.provider === 'firebase' ? 'Firebase Realtime' : 'Google Sheets';
+              showToast("Tersimpan & Sinkron Cloud ✓", `Nilai untuk ${applicant["Nama lengkap:"] || "calon"} berhasil disinkronkan ke seluruh perangkat (${providerLabel}).`);
             }
           } else {
             if (!isSilent) {
-              showToast("Tersimpan Lokal", `Nilai untuk ${applicant["Nama lengkap:"] || "calon"} tersimpan di peramban ini.`);
+              showToast("⚠️ Tersimpan di HP Ini Saja", `Belum tersambung ke HP lain karena URL Cloud di database.js masih kosong. Hubungkan Firebase atau Google Apps Script.`, "amber");
             }
           }
         }).catch((err) => {
           console.error("Gagal sync ke cloud:", err);
           if (!isSilent) {
-            showToast("Tersimpan Lokal", `Tersimpan di peramban (Cloud belum terhubung).`, "amber");
+            showToast("Tersimpan Lokal", `Tersimpan di peramban (Koneksi cloud gagal).`, "amber");
           }
         });
       } else {
@@ -3003,27 +3006,27 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
 
       if (status.isLive) {
         dot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
-        text.textContent = "Cloud: Sinkron Realtime";
+        text.textContent = status.label;
         if (badge) badge.className = "inline-flex items-center gap-1.5 text-xs px-2.5 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-500/50 hover:border-emerald-400 text-emerald-300 transition-all cursor-pointer shadow-sm active:scale-95";
         if (modalPill) {
           modalPill.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/40";
-          modalPill.textContent = "● Terhubung Real-Time";
+          modalPill.textContent = "● " + status.label;
         }
       } else if (status.status === 'connecting') {
         dot.className = "w-2 h-2 rounded-full bg-amber-400 animate-ping";
-        text.textContent = "Cloud: Menghubungkan...";
+        text.textContent = status.label;
         if (badge) badge.className = "inline-flex items-center gap-1.5 text-xs px-2.5 py-0.5 rounded-full bg-slate-900/80 border border-amber-500/50 text-amber-300 transition-all cursor-pointer shadow-sm active:scale-95";
         if (modalPill) {
           modalPill.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-400/40";
           modalPill.textContent = "◐ Menghubungkan...";
         }
       } else {
-        dot.className = "w-2 h-2 rounded-full bg-slate-400";
-        text.textContent = "Cloud: Mode Lokal";
-        if (badge) badge.className = "inline-flex items-center gap-1.5 text-xs px-2.5 py-0.5 rounded-full bg-slate-900/80 border border-slate-700 hover:border-gold text-slate-300 transition-all cursor-pointer shadow-sm active:scale-95";
+        dot.className = "w-2 h-2 rounded-full bg-amber-400 animate-pulse";
+        text.textContent = "⚠️ Cloud Belum Terhubung (Lokal)";
+        if (badge) badge.className = "inline-flex items-center gap-1.5 text-xs px-2.5 py-0.5 rounded-full bg-amber-950/80 border border-amber-500/70 hover:border-amber-400 text-amber-300 transition-all cursor-pointer shadow-sm active:scale-95";
         if (modalPill) {
-          modalPill.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-slate-700/50 text-slate-300 border border-slate-600";
-          modalPill.textContent = "○ Mode Lokal (Offline)";
+          modalPill.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-950/70 text-amber-300 border border-amber-500/50";
+          modalPill.textContent = "⚠️ Belum Terhubung (Lokal Saja)";
         }
       }
     }
@@ -3092,17 +3095,20 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
           alert("Format JSON konfigurasi tidak valid!");
           return;
         }
+      } else if (rawVal.includes("script.google.com")) {
+        newConfig = { appsScriptUrl: rawVal };
       } else if (rawVal) {
         newConfig = { databaseURL: rawVal };
       } else {
-        alert("Harap masukkan Firebase Database URL atau JSON config!");
+        alert("Harap masukkan Firebase Database URL atau Google Apps Script Web App URL!");
         return;
       }
 
       RD_Database.saveConfig(newConfig);
-      showToast("Konfigurasi Disimpan", "Mencoba menghubungkan ke Firebase Realtime Database...");
+      showToast("Konfigurasi Disimpan", "Menghubungkan ke Cloud Database...");
       toggleCloudConfigInput();
     }
+
 
     function exportDatabaseJsonForGithub() {
       if (window.RD_Database) {

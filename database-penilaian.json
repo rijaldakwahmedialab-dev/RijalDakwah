@@ -4,9 +4,10 @@
     "organization": "UKM Rijal Dakwah STDI Imam Syafi'i Jember",
     "portalUrl": "https://rijaldakwahmedialab-dev.github.io/RijalDakwah/wawancara.html",
     "githubRepo": "https://github.com/rijaldakwahmedialab-dev/RijalDakwah",
-    "databaseVersion": "1.0.0",
-    "lastUpdated": "2026-09-05T12:00:00.000Z",
-    "totalEvaluated": 0,
+    "cloudEndpoint": "Google Sheets Apps Script (Tab 2: Hasil_Penilaian)",
+    "spreadsheetId": "1bcFa1yY4dOuFxsw2Y5aNy3osYjGtBK34bmcIiUEm0YY",
+    "databaseVersion": "1.1.0",
+    "lastUpdated": "2026-09-05T16:45:00.000Z",
     "scoringWeight": {
       "adab": "25%",
       "visi": "25%",
