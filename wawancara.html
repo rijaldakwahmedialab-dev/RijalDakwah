@@ -177,38 +177,32 @@
   <!-- 1. TOP BAR -->
   <!-- ========================================================================= -->
   <header class="bg-deepGreen text-cream-100 text-xs border-b border-forestGreen/70 no-print">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-col sm:flex-row justify-between items-center gap-2">
-      <div class="flex items-center space-x-3 sm:space-x-4 flex-wrap justify-center">
-        <span class="flex items-center space-x-2 text-gold-light">
-          <i class="fa-solid fa-mosque text-gold"></i>
-          <span class="font-arabic text-sm">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>
-        </span>
-        <span class="text-emerald-700 hidden md:inline">|</span>
-        <span class="hidden md:flex items-center space-x-1.5 text-cream-200">
-          <i class="fa-solid fa-user-tie text-gold text-[10px]"></i>
-          <span>Portal Wawancara & Evaluasi Calon Anggota 2026/2027</span>
-        </span>
-        <span class="text-emerald-700 hidden lg:inline">|</span>
-        <span class="inline-flex items-center gap-1.5 text-xs px-2.5 py-0.5 rounded-full bg-emerald-950/70 border border-emerald-500/40 text-emerald-300">
-          <span id="liveStatusDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span id="liveStatusText">Live Google Sheets</span>
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-1.5 sm:py-2 flex flex-col sm:flex-row justify-between items-center gap-1.5 sm:gap-2">
+      <div class="flex items-center justify-center gap-2 flex-wrap">
+        <span class="flex items-center space-x-1.5 text-gold-light">
+          <i class="fa-solid fa-mosque text-gold text-xs"></i>
+          <span class="font-arabic text-xs sm:text-sm">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>
         </span>
         <span class="text-emerald-700 hidden sm:inline">|</span>
+        <span class="inline-flex items-center gap-1.5 text-[10px] sm:text-xs px-2 sm:px-2.5 py-0.5 rounded-full bg-emerald-950/70 border border-emerald-500/40 text-emerald-300">
+          <span id="liveStatusDot" class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="liveStatusText">Live Google Sheets</span>
+        </span>
         <button 
           type="button" 
           onclick="openBackupModal('cloud')" 
           id="cloudStatusBadge"
-          class="inline-flex items-center gap-1.5 text-xs px-2.5 py-0.5 rounded-full bg-slate-900/80 border border-gold/40 hover:border-gold text-cream-100 transition-all cursor-pointer shadow-sm active:scale-95"
+          class="inline-flex items-center gap-1.5 text-[10px] sm:text-xs px-2 sm:px-2.5 py-0.5 rounded-full bg-slate-900/80 border border-gold/40 hover:border-gold text-cream-100 transition-all cursor-pointer shadow-sm active:scale-95"
           title="Status Sinkronisasi Cloud Antar-Perangkat (Klik untuk Pengaturan & Database)"
         >
-          <span id="cloudStatusDot" class="w-2 h-2 rounded-full bg-amber-400"></span>
+          <span id="cloudStatusDot" class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-amber-400"></span>
           <span id="cloudStatusText">Cloud: Memeriksa...</span>
         </button>
       </div>
-      <div class="flex items-center space-x-3 text-xs">
-        <span id="syncTimestamp" class="text-cream-300 text-[11px] hidden sm:inline">Memuat...</span>
+      <div class="flex items-center justify-center space-x-2 sm:space-x-3 text-[10px] sm:text-xs">
+        <span id="syncTimestamp" class="text-cream-300 text-[10px] sm:text-[11px] hidden xs:inline sm:inline">Memuat...</span>
         <span class="text-emerald-700 hidden sm:inline">|</span>
-        <a href="https://t.me/aburobiah" target="_blank" class="hover:text-gold transition-colors flex items-center space-x-1.5 text-cream-200">
+        <a href="https://t.me/aburobiah" target="_blank" class="hover:text-gold transition-colors flex items-center space-x-1 text-cream-200">
           <i class="fa-brands fa-telegram text-sky-400"></i>
           <span>Helpdesk Panitia</span>
         </a>
@@ -220,60 +214,60 @@
   <!-- 2. MAIN NAVBAR -->
   <!-- ========================================================================= -->
   <nav class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-cream-200 shadow-sm transition-all no-print">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-20">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16 sm:h-20 gap-2">
         
         <!-- Brand Identity / Logo -->
-        <div class="flex items-center space-x-3.5">
-          <div class="w-12 h-12 rounded-2xl bg-white p-1.5 flex items-center justify-center shadow-md border border-forestGreen/20">
+        <div class="flex items-center space-x-2 sm:space-x-3.5 min-w-0">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-white p-1 sm:p-1.5 flex items-center justify-center shadow-md border border-forestGreen/20 shrink-0">
             <img src="logo-rijal-dakwah.png" alt="Logo UKM Rijal Dakwah" class="w-full h-full object-contain" />
           </div>
-          <div>
-            <div class="font-serif font-bold text-lg sm:text-xl tracking-tight text-deepGreen flex items-center gap-2">
-              <span>RIJAL DAKWAH</span>
-              <span class="text-[10px] uppercase tracking-wider bg-gold/20 text-gold-dark font-sans font-extrabold px-2.5 py-0.5 rounded-full border border-gold/40">
-                PORTAL WAWANCARA
+          <div class="min-w-0">
+            <div class="flex items-center gap-1 sm:gap-2 flex-wrap sm:flex-nowrap">
+              <span class="font-serif font-bold text-sm sm:text-xl tracking-tight text-deepGreen truncate">RIJAL DAKWAH</span>
+              <span class="text-[9px] sm:text-[10px] uppercase tracking-wider bg-gold/20 text-gold-dark font-sans font-extrabold px-1.5 sm:px-2.5 py-0.5 rounded-full border border-gold/40 shrink-0">
+                PORTAL
               </span>
             </div>
-            <p class="text-[10px] sm:text-xs text-slate-500 font-medium tracking-wide">
+            <p class="text-[9px] sm:text-xs text-slate-500 font-medium tracking-wide truncate hidden sm:block">
               Panel Penguji & Lembar Penilaian Calon Anggota
             </p>
           </div>
         </div>
 
         <!-- Right Action Buttons -->
-        <div class="flex items-center space-x-2 sm:space-x-3">
+        <div class="flex items-center space-x-1 sm:space-x-2.5 shrink-0">
           <!-- Refresh Data Button -->
           <button 
             type="button" 
             onclick="syncDataFromSheets(true)" 
             id="btnRefresh"
-            class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-cream-100 hover:bg-cream-200 text-forestGreen border border-cream-300 flex items-center gap-2 transition-all shadow-sm active:scale-95"
+            class="p-2 sm:px-3.5 sm:py-2 rounded-xl text-xs font-semibold bg-cream-100 hover:bg-cream-200 text-forestGreen border border-cream-300 flex items-center gap-1.5 transition-all shadow-sm active:scale-95"
             title="Sinkronkan data terbaru dari Google Spreadsheet"
           >
-            <i id="syncIcon" class="fa-solid fa-arrows-rotate text-gold"></i>
-            <span class="hidden sm:inline">Perbarui Data</span>
+            <i id="syncIcon" class="fa-solid fa-arrows-rotate text-gold text-xs"></i>
+            <span class="hidden md:inline">Perbarui</span>
           </button>
 
           <!-- Export Rekap Nilai -->
           <button 
             type="button" 
             onclick="exportInterviewRecap()" 
-            class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-2 transition-all shadow-sm active:scale-95"
+            class="p-2 sm:px-3.5 sm:py-2 rounded-xl text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1.5 transition-all shadow-sm active:scale-95"
             title="Ekspor Rekapitulasi Penilaian ke File Excel/CSV"
           >
-            <i class="fa-solid fa-file-excel text-emerald-600"></i>
-            <span class="hidden sm:inline">Ekspor Rekap</span>
+            <i class="fa-solid fa-file-excel text-emerald-600 text-xs"></i>
+            <span class="hidden md:inline">Rekap</span>
           </button>
 
-          <!-- Parent Website Link (REQUIRED) -->
+          <!-- Parent Website Link -->
           <a 
             href="index.html" 
-            class="btn-gold px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow-md hover:scale-[1.02] transition-transform"
+            class="btn-gold px-2.5 py-2 sm:px-4 sm:py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-md hover:scale-[1.02] transition-transform shrink-0"
             title="Kembali ke Halaman Beranda Utama UKM Rijal Dakwah"
           >
-            <i class="fa-solid fa-arrow-left"></i>
-            <span class="font-bold">Ke Web Utama</span>
+            <i class="fa-solid fa-arrow-left text-xs"></i>
+            <span class="font-bold hidden xs:inline sm:inline">Web Utama</span>
           </a>
         </div>
 
@@ -783,6 +777,39 @@
 
     </div>
   </div>
+
+  <!-- ========================================================================= -->
+  <!-- FLOATING MINI-TIMER PEWAWANCARA (STICKY UI) -->
+  <!-- ========================================================================= -->
+  <aside id="miniInterviewTimer" class="fixed bottom-4 left-4 z-40 no-print" aria-label="Timer Wawancara">
+    <div id="miniInterviewTimerWidget" class="bg-deepGreen/95 backdrop-blur-md border-2 border-gold/60 text-white rounded-2xl px-2.5 py-1.5 sm:px-3 sm:py-2 shadow-2xl flex items-center gap-2 transition-all">
+      <button 
+        type="button" 
+        id="btnTimerToggle" 
+        onclick="toggleInterviewTimer()" 
+        class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gold/20 hover:bg-gold/30 flex items-center justify-center transition-all active:scale-90"
+        title="Klik: Mulai / Jeda Timer"
+      >
+        <i id="timerIcon" class="fa-solid fa-play text-xs text-gold"></i>
+      </button>
+      
+      <div class="cursor-pointer select-none px-1" onclick="toggleTimerMode()" title="Klik untuk ganti mode: Stopwatch (UP) / 10 Menit (10M) / 15 Menit (15M)">
+        <div class="flex items-center gap-1.5">
+          <span id="timerDisplay" class="font-mono font-extrabold text-xs sm:text-sm text-gold-light tracking-wider">00:00</span>
+          <span id="timerModeBadge" class="text-[8px] sm:text-[9px] uppercase px-1 py-0.5 rounded bg-gold/20 text-gold font-bold">UP</span>
+        </div>
+      </div>
+
+      <button 
+        type="button" 
+        onclick="resetInterviewTimer()" 
+        class="w-6 h-6 rounded-lg text-cream-300 hover:text-white hover:bg-white/10 flex items-center justify-center transition-colors text-xs"
+        title="Reset Timer (Kembali ke awal)"
+      >
+        <i class="fa-solid fa-rotate-right text-[11px]"></i>
+      </button>
+    </div>
+  </aside>
 
   <!-- Toast Notification -->
   <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none no-print">
@@ -1450,7 +1477,7 @@
         else if (role === 'anggota') anggotaCount++;
 
         const scoreData = getApplicantScore(a);
-        if (scoreData && scoreData.status === 'scored') {
+        if (scoreData && (scoreData.status === 'scored' || scoreData.finalScore > 0 || scoreData.recommendation || (scoreData.scoreAdab > 0 && scoreData.scoreVisi > 0))) {
           scoredCount++;
         }
       });
@@ -2518,14 +2545,49 @@
     // LOCALSTORAGE & SCORING STORAGE
     // =========================================================================
     function getApplicantKey(applicant) {
+      if (!applicant) return 'unknown_key';
       const nim = (applicant["NIM:"] || "").trim();
-      if (nim) return `nim_${nim}`;
+      if (nim) return `nim_${nim.replace(/[\.\#\$\/\[\]\s]/g, '_')}`;
       return `id_${applicant.id}`;
     }
 
     function getApplicantScore(applicant) {
-      const key = getApplicantKey(applicant);
-      return interviewScores[key] || null;
+      if (!applicant) return null;
+      const nim = (applicant["NIM:"] || "").trim();
+      const id = applicant.id;
+
+      if (nim) {
+        const safeNimKey = `nim_${nim.replace(/[\.\#\$\/\[\]\s]/g, '_')}`;
+        if (interviewScores[safeNimKey]) return interviewScores[safeNimKey];
+
+        const rawNimKey = `nim_${nim}`;
+        if (interviewScores[rawNimKey]) return interviewScores[rawNimKey];
+
+        // Pencocokan fleksibel jika terdapat perbedaan format karakter
+        const cleanNim = nim.replace(/[^a-zA-Z0-9]/g, '');
+        for (const k in interviewScores) {
+          const item = interviewScores[k];
+          if (!item) continue;
+          if (item.applicantNim && item.applicantNim.replace(/[^a-zA-Z0-9]/g, '') === cleanNim) {
+            return item;
+          }
+          if (k.replace(/[^a-zA-Z0-9]/g, '').endsWith(cleanNim)) {
+            return item;
+          }
+        }
+      }
+
+      if (id) {
+        const idKey = `id_${id}`;
+        if (interviewScores[idKey]) return interviewScores[idKey];
+        for (const k in interviewScores) {
+          if (interviewScores[k] && interviewScores[k].applicantId === id) {
+            return interviewScores[k];
+          }
+        }
+      }
+
+      return null;
     }
 
     function saveCurrentScore(id, isSilent = false) {
@@ -3031,23 +3093,46 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
       }
     }
 
+    function flashCloudSyncIndicator() {
+      const badge = document.getElementById("cloudStatusBadge");
+      const dot = document.getElementById("cloudStatusDot");
+      if (badge) {
+        badge.classList.add("ring-2", "ring-emerald-400", "bg-emerald-800");
+        setTimeout(() => {
+          badge.classList.remove("ring-2", "ring-emerald-400", "bg-emerald-800");
+        }, 1500);
+      }
+      if (dot) {
+        dot.classList.add("bg-emerald-300", "scale-125");
+        setTimeout(() => {
+          dot.classList.remove("bg-emerald-300", "scale-125");
+        }, 1500);
+      }
+    }
+
     function handleCloudScoresReceived(cloudScores, source) {
       if (!cloudScores || typeof cloudScores !== 'object') return;
 
       let changedCount = 0;
-      Object.values(cloudScores).forEach((item) => {
+      Object.entries(cloudScores).forEach(([key, item]) => {
         if (!item || typeof item !== 'object') return;
         
-        // Dapatkan key asli
-        const originalKey = item._originalKey || item._safeKey || (item.applicantNim ? `nim_${item.applicantNim}` : (item.applicantId ? `id_${item.applicantId}` : null));
-        if (!originalKey) return;
+        const safeKey = key.replace(/[\.\#\$\/\[\]\s]/g, '_');
+        const scoreObj = {
+          ...item,
+          status: item.status || 'scored'
+        };
 
-        // Jika nilai di cloud lebih baru atau lokal belum punya
-        const existing = interviewScores[originalKey];
-        if (!existing || !existing.updatedAt || (item.updatedAt && new Date(item.updatedAt) >= new Date(existing.updatedAt))) {
-          interviewScores[originalKey] = item;
-          changedCount++;
+        interviewScores[safeKey] = scoreObj;
+
+        // Simpan juga alias dengan format raw jika ada NIM
+        if (item.applicantNim) {
+          const rawNim = item.applicantNim.trim();
+          interviewScores[`nim_${rawNim}`] = scoreObj;
+          interviewScores[`nim_${rawNim.replace(/[\.\#\$\/\[\]\s]/g, '_')}`] = scoreObj;
         }
+
+        changedCount++;
       });
 
       if (changedCount > 0) {
@@ -3060,18 +3145,119 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
           const activeInputs = ['interviewNotesInput', 'scoreAdab', 'scoreVisi', 'scoreKeahlian', 'scoreKomitmen'];
           const isUserTyping = activeInputs.includes(document.activeElement?.id);
           
-          // Jika pewawancara sedang tidak mengetik catatan, segarkan detail agar menampilkan nilai terbaru dari device lain
           if (!isUserTyping) {
             renderDetailPane(selectedApplicantId);
           }
         }
 
-        if (source === 'cloud') {
-          showToast("Sinkron Cloud", `${changedCount} data penilaian baru diperbarui dari cloud.`);
-        } else if (source === 'github_file') {
-          showToast("Database GitHub", `Memuat ${changedCount} penilaian baseline dari file repositori.`);
+        // Efek kedip-kedip hijau halus pada status cloud (tidak memunculkan popup yang mengganggu)
+        flashCloudSyncIndicator();
+      }
+    }
+
+    // =========================================================================
+    // FLOATING MINI INTERVIEW TIMER CONTROLLER
+    // =========================================================================
+    let timerSeconds = 0;
+    let timerRunning = false;
+    let timerInterval = null;
+    let timerMode = 'countup'; // 'countup' | 'countdown10' | 'countdown15'
+    const TIMER_TARGETS = {
+      countup: 0,
+      countdown10: 10 * 60,
+      countdown15: 15 * 60
+    };
+
+    function formatTimer(secs) {
+      const m = Math.floor(secs / 60);
+      const s = secs % 60;
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function updateTimerDisplay() {
+      const display = document.getElementById("timerDisplay");
+      const badge = document.getElementById("timerModeBadge");
+      const widget = document.getElementById("miniInterviewTimerWidget");
+      if (!display) return;
+
+      display.textContent = formatTimer(timerSeconds);
+
+      if (widget) {
+        if (timerRunning) {
+          widget.classList.add("ring-2", "ring-emerald-400", "shadow-emerald-900/40");
+          widget.classList.remove("border-gold/60");
+        } else {
+          widget.classList.remove("ring-2", "ring-emerald-400", "shadow-emerald-900/40");
+          widget.classList.add("border-gold/60");
+        }
+
+        const isWarning = (timerMode === 'countup' && timerSeconds >= 10 * 60) || 
+                          (timerMode !== 'countup' && timerSeconds <= 60 && timerSeconds > 0);
+        if (isWarning) {
+          display.className = "font-mono font-extrabold text-xs sm:text-sm text-amber-400 tracking-wider animate-pulse";
+        } else {
+          display.className = "font-mono font-extrabold text-xs sm:text-sm text-gold-light tracking-wider";
         }
       }
+
+      if (badge) {
+        if (timerMode === 'countup') badge.textContent = "UP";
+        else if (timerMode === 'countdown10') badge.textContent = "10M";
+        else if (timerMode === 'countdown15') badge.textContent = "15M";
+      }
+    }
+
+    function toggleInterviewTimer() {
+      const btnIcon = document.getElementById("timerIcon");
+      if (timerRunning) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        if (btnIcon) btnIcon.className = "fa-solid fa-play text-xs text-gold";
+      } else {
+        timerRunning = true;
+        if (btnIcon) btnIcon.className = "fa-solid fa-pause text-xs text-emerald-400";
+        
+        if (timerMode !== 'countup' && timerSeconds <= 0) {
+          timerSeconds = TIMER_TARGETS[timerMode];
+        }
+
+        timerInterval = setInterval(() => {
+          if (timerMode === 'countup') {
+            timerSeconds++;
+          } else {
+            if (timerSeconds > 0) {
+              timerSeconds--;
+            } else {
+              clearInterval(timerInterval);
+              timerRunning = false;
+              if (btnIcon) btnIcon.className = "fa-solid fa-rotate-right text-xs text-amber-400";
+            }
+          }
+          updateTimerDisplay();
+        }, 1000);
+      }
+      updateTimerDisplay();
+    }
+
+    function resetInterviewTimer() {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      if (timerMode === 'countup') {
+        timerSeconds = 0;
+      } else {
+        timerSeconds = TIMER_TARGETS[timerMode];
+      }
+      const btnIcon = document.getElementById("timerIcon");
+      if (btnIcon) btnIcon.className = "fa-solid fa-play text-xs text-gold";
+      updateTimerDisplay();
+    }
+
+    function toggleTimerMode() {
+      if (timerMode === 'countup') timerMode = 'countdown10';
+      else if (timerMode === 'countdown10') timerMode = 'countdown15';
+      else timerMode = 'countup';
+
+      resetInterviewTimer();
     }
 
     function toggleCloudConfigInput() {

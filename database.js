@@ -256,10 +256,25 @@
       // Ambil data nilai pertama kali
       this.fetchFromAppsScript();
 
-      // Polling setiap 10 detik agar seluruh perangkat selalu update
+      // Polling setiap 5 detik agar seluruh perangkat selalu sinkron
       this.pollTimer = setInterval(() => {
         this.fetchFromAppsScript();
-      }, 10000);
+      }, 5000);
+
+      // Ambil data langsung saat browser kembali difokuskan / tab dibuka kembali di HP
+      if (typeof window !== 'undefined' && !this._hasBoundFocus) {
+        this._hasBoundFocus = true;
+        window.addEventListener('focus', () => {
+          if (this.isCloudActive && this.activeProvider === 'apps_script') {
+            this.fetchFromAppsScript();
+          }
+        });
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible' && this.isCloudActive && this.activeProvider === 'apps_script') {
+            this.fetchFromAppsScript();
+          }
+        });
+      }
     }
 
     async fetchFromAppsScript() {
