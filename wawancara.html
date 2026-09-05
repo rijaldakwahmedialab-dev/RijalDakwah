@@ -1,0 +1,2958 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal Seleksi Wawancara - UKM Rijal Dakwah STDIIS</title>
+  <meta name="description" content="Portal Khusus Panitia Wawancara Rekrutmen Anggota & Pengurus UKM Rijal Dakwah STDI Imam Syafi'i Jember Periode 2026/2027." />
+  <link rel="icon" type="image/png" href="logo-rijal-dakwah.png" />
+
+  <!-- Google Fonts: Amiri (Arabic/Classical), Plus Jakarta Sans (Modern Clean UI), Playfair Display (Serif Elegance) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- SheetJS (xlsx) via CDN for Excel/CSV Export -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            deepGreen: '#0C2B33',
+            forestGreen: '#20616F',
+            emeraldGreen: '#2A7885',
+            lightGreen: '#46918C',
+            gold: {
+              DEFAULT: '#C59B27',
+              light: '#DFB76C',
+              dark: '#9A7220',
+              amber: '#D4AF37',
+              soft: '#F6ECD5',
+            },
+            cream: {
+              50: '#FAFBFB',
+              100: '#EFF5F4',
+              200: '#DEEBEA',
+              300: '#C8DCDB',
+            },
+            charcoal: '#132629',
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            arabic: ['"Amiri"', 'serif'],
+            serif: ['"Playfair Display"', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* STDIIS Islamic Theme Utilities */
+    .bg-islamic-hero {
+      background-color: #0C2B33;
+      background-image: 
+        radial-gradient(circle at 85% 20%, rgba(197, 155, 39, 0.22) 0%, transparent 45%),
+        radial-gradient(circle at 10% 80%, rgba(32, 97, 111, 0.45) 0%, transparent 50%),
+        linear-gradient(145deg, #0C2B33 0%, #17454F 55%, #081E24 100%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C59B27' fill-opacity='0.08' fill-rule='evenodd'%3E%3Cpath d='M30 30L15 15l15-15 15 15-15 15zm0 0l-15 15 15 15 15-15-15-15zm-15-15L0 30l15 15 15-15-15-15zm30 0L45 30l15 15 15-15-15-15z'/%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .bg-islamic-dark {
+      background-color: #0C2B33;
+      background-image: 
+        radial-gradient(circle at 50% 50%, rgba(197, 155, 39, 0.15) 0%, transparent 70%),
+        linear-gradient(160deg, #081E24 0%, #17454F 60%, #0C2B33 100%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C59B27' fill-opacity='0.06' fill-rule='evenodd'%3E%3Cpath d='M30 30L15 15l15-15 15 15-15 15zm0 0l-15 15 15 15 15-15-15-15zm-15-15L0 30l15 15 15-15-15-15zm30 0L45 30l15 15 15-15-15-15z'/%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .bg-cream-pattern {
+      background-color: #FAFBFB;
+      background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0l2.5 15 15 2.5-15 2.5L20 40l-2.5-15L0 20l17.5-2.5z' fill='%2320616F' fill-opacity='0.035'/%3E%3C/svg%3E");
+    }
+
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #F6ECD5 0%, #DFB76C 40%, #C59B27 70%, #9A7220 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #DFB76C 0%, #C59B27 100%);
+      color: #0C2B33;
+      font-weight: 700;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 14px rgba(197, 155, 39, 0.35);
+    }
+    .btn-gold:hover {
+      background: linear-gradient(135deg, #F6ECD5 0%, #DFB76C 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(197, 155, 39, 0.5);
+    }
+
+    .btn-outline-gold {
+      border: 2px solid #C59B27;
+      color: #DFB76C;
+      background: rgba(197, 155, 39, 0.08);
+      transition: all 0.25s ease;
+    }
+    .btn-outline-gold:hover {
+      background: rgba(197, 155, 39, 0.2);
+      border-color: #F6ECD5;
+      color: #FFFFFF;
+      transform: translateY(-2px);
+    }
+
+    .card-hover-lift {
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .card-hover-lift:hover {
+      transform: translateY(-3px);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #EFF5F4;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #20616F;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #C59B27;
+    }
+
+    /* Custom range slider styling */
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 18px;
+      width: 18px;
+      border-radius: 50%;
+      background: #C59B27;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      border: 2px solid #ffffff;
+    }
+
+    /* Print styles */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-only {
+        display: block !important;
+      }
+      .print-page-break {
+        page-break-after: always;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-cream-50 text-charcoal font-sans antialiased selection:bg-gold selection:text-deepGreen min-h-screen flex flex-col">
+
+  <!-- ========================================================================= -->
+  <!-- 1. TOP BAR -->
+  <!-- ========================================================================= -->
+  <header class="bg-deepGreen text-cream-100 text-xs border-b border-forestGreen/70 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-col sm:flex-row justify-between items-center gap-2">
+      <div class="flex items-center space-x-3 sm:space-x-4 flex-wrap justify-center">
+        <span class="flex items-center space-x-2 text-gold-light">
+          <i class="fa-solid fa-mosque text-gold"></i>
+          <span class="font-arabic text-sm">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>
+        </span>
+        <span class="text-emerald-700 hidden md:inline">|</span>
+        <span class="hidden md:flex items-center space-x-1.5 text-cream-200">
+          <i class="fa-solid fa-user-tie text-gold text-[10px]"></i>
+          <span>Portal Wawancara & Evaluasi Calon Anggota 2026/2027</span>
+        </span>
+        <span class="text-emerald-700 hidden lg:inline">|</span>
+        <span class="inline-flex items-center gap-1.5 text-xs px-2.5 py-0.5 rounded-full bg-emerald-950/70 border border-emerald-500/40 text-emerald-300">
+          <span id="liveStatusDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span id="liveStatusText">Live Google Sheets</span>
+        </span>
+      </div>
+      <div class="flex items-center space-x-3 text-xs">
+        <span id="syncTimestamp" class="text-cream-300 text-[11px] hidden sm:inline">Memuat...</span>
+        <span class="text-emerald-700 hidden sm:inline">|</span>
+        <a href="https://t.me/aburobiah" target="_blank" class="hover:text-gold transition-colors flex items-center space-x-1.5 text-cream-200">
+          <i class="fa-brands fa-telegram text-sky-400"></i>
+          <span>Helpdesk Panitia</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- 2. MAIN NAVBAR -->
+  <!-- ========================================================================= -->
+  <nav class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-cream-200 shadow-sm transition-all no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-20">
+        
+        <!-- Brand Identity / Logo -->
+        <div class="flex items-center space-x-3.5">
+          <div class="w-12 h-12 rounded-2xl bg-white p-1.5 flex items-center justify-center shadow-md border border-forestGreen/20">
+            <img src="logo-rijal-dakwah.png" alt="Logo UKM Rijal Dakwah" class="w-full h-full object-contain" />
+          </div>
+          <div>
+            <div class="font-serif font-bold text-lg sm:text-xl tracking-tight text-deepGreen flex items-center gap-2">
+              <span>RIJAL DAKWAH</span>
+              <span class="text-[10px] uppercase tracking-wider bg-gold/20 text-gold-dark font-sans font-extrabold px-2.5 py-0.5 rounded-full border border-gold/40">
+                PORTAL WAWANCARA
+              </span>
+            </div>
+            <p class="text-[10px] sm:text-xs text-slate-500 font-medium tracking-wide">
+              Panel Penguji & Lembar Penilaian Calon Anggota
+            </p>
+          </div>
+        </div>
+
+        <!-- Right Action Buttons -->
+        <div class="flex items-center space-x-2 sm:space-x-3">
+          <!-- Refresh Data Button -->
+          <button 
+            type="button" 
+            onclick="syncDataFromSheets(true)" 
+            id="btnRefresh"
+            class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-cream-100 hover:bg-cream-200 text-forestGreen border border-cream-300 flex items-center gap-2 transition-all shadow-sm active:scale-95"
+            title="Sinkronkan data terbaru dari Google Spreadsheet"
+          >
+            <i id="syncIcon" class="fa-solid fa-arrows-rotate text-gold"></i>
+            <span class="hidden sm:inline">Perbarui Data</span>
+          </button>
+
+          <!-- Export Rekap Nilai -->
+          <button 
+            type="button" 
+            onclick="exportInterviewRecap()" 
+            class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-2 transition-all shadow-sm active:scale-95"
+            title="Ekspor Rekapitulasi Penilaian ke File Excel/CSV"
+          >
+            <i class="fa-solid fa-file-excel text-emerald-600"></i>
+            <span class="hidden sm:inline">Ekspor Rekap</span>
+          </button>
+
+          <!-- Parent Website Link (REQUIRED) -->
+          <a 
+            href="index.html" 
+            class="btn-gold px-4 py-2 rounded-xl text-xs flex items-center gap-2 shadow-md hover:scale-[1.02] transition-transform"
+            title="Kembali ke Halaman Beranda Utama UKM Rijal Dakwah"
+          >
+            <i class="fa-solid fa-arrow-left"></i>
+            <span class="font-bold">Ke Web Utama</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========================================================================= -->
+  <!-- 3. HERO / SUMMARY STATS BANNER -->
+  <!-- ========================================================================= -->
+  <section class="bg-islamic-hero text-white py-8 border-b-4 border-gold no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+      
+      <!-- Top Title & Badge -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 bg-white/10 border border-gold/40 px-3.5 py-1 rounded-full backdrop-blur-sm text-xs font-semibold text-gold-light mb-2">
+            <i class="fa-solid fa-clipboard-user text-gold"></i>
+            <span>PANEL EVALUATOR & PEWAWANCARA KHUSUS PANITIA</span>
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-serif font-bold text-white tracking-tight">
+            Penilaian Profil & Jawaban <span class="gold-gradient-text">Pendaftar</span>
+          </h1>
+          <p class="text-xs sm:text-sm text-cream-100 max-w-2xl font-normal mt-1 leading-relaxed">
+            Data terhubung langsung dengan Google Sheets formulir pendaftaran. Pilih pendaftar untuk meninjau berkas, mengecek jawaban esai, dan mengisi lembar penilaian langsung.
+          </p>
+        </div>
+
+        <!-- Quick Action Link to Google Sheets -->
+        <div class="flex flex-wrap items-center gap-2">
+          <a 
+            href="https://docs.google.com/spreadsheets/d/1bcFa1yY4dOuFxsw2Y5aNy3osYjGtBK34bmcIiUEm0YY/edit?usp=sharing" 
+            target="_blank" 
+            class="px-3 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 text-cream-100 border border-gold/40 flex items-center gap-2 backdrop-blur-sm transition-colors"
+          >
+            <i class="fa-solid fa-table-cells text-emerald-400"></i>
+            <span>Buka Google Sheets Asli</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-300"></i>
+          </a>
+          <button 
+            type="button" 
+            onclick="openBackupModal()" 
+            class="px-3 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 text-cream-100 border border-white/20 flex items-center gap-1.5 transition-colors"
+            title="Kelola Penyimpanan Nilai & Cadangan"
+          >
+            <i class="fa-solid fa-database text-gold"></i>
+            <span>Backup Nilai</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 pt-2">
+        
+        <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-3 sm:p-4 text-center">
+          <div class="text-xs text-cream-200 font-medium">Total Pendaftar</div>
+          <div id="statTotalApplicants" class="text-2xl sm:text-3xl font-extrabold text-gold-light mt-1">0</div>
+          <div class="text-[10px] text-emerald-300 mt-0.5">Semua Berkas Masuk</div>
+        </div>
+
+        <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-3 sm:p-4 text-center">
+          <div class="text-xs text-cream-200 font-medium">Jalur Pengurus</div>
+          <div id="statPengurus" class="text-2xl sm:text-3xl font-extrabold text-white mt-1">0</div>
+          <div class="text-[10px] text-cream-300 mt-0.5">Struktur Divisi</div>
+        </div>
+
+        <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-3 sm:p-4 text-center">
+          <div class="text-xs text-cream-200 font-medium">Jalur Anggota</div>
+          <div id="statAnggota" class="text-2xl sm:text-3xl font-extrabold text-white mt-1">0</div>
+          <div class="text-[10px] text-cream-300 mt-0.5">Keanggotaan Umum</div>
+        </div>
+
+        <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-3 sm:p-4 text-center">
+          <div class="text-xs text-cream-200 font-medium">Sudah Dinilai</div>
+          <div id="statScored" class="text-2xl sm:text-3xl font-extrabold text-emerald-400 mt-1">0</div>
+          <div id="statScoredPercent" class="text-[10px] text-emerald-300 mt-0.5">0% selesai</div>
+        </div>
+
+        <div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-3 sm:p-4 text-center col-span-2 sm:col-span-4 lg:col-span-1">
+          <div class="text-xs text-cream-200 font-medium">Belum Dinilai</div>
+          <div id="statUnscored" class="text-2xl sm:text-3xl font-extrabold text-amber-300 mt-1">0</div>
+          <div class="text-[10px] text-amber-200 mt-0.5">Antrean Wawancara</div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 4. WORKSPACE: INTERVIEWER INTERACTION AREA -->
+  <!-- ========================================================================= -->
+  <main class="flex-grow py-6 sm:py-8 bg-cream-pattern no-print">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 space-y-6">
+      
+      <!-- Filter & Search Toolbar Card -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 border border-cream-300 shadow-sm space-y-3">
+        
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+          <!-- Text Search Bar -->
+          <div class="md:col-span-4 relative">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <i class="fa-solid fa-magnifying-glass text-forestGreen"></i>
+            </div>
+            <input 
+              type="text" 
+              id="searchInput" 
+              oninput="handleFilterChange()" 
+              placeholder="Cari nama, NIM, telegram, prodi, skillset..." 
+              class="w-full pl-10 pr-9 py-2.5 text-xs sm:text-sm rounded-xl border border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none text-deepGreen bg-cream-50 font-medium transition-all"
+            />
+            <button 
+              type="button" 
+              id="clearSearchBtn" 
+              onclick="clearSearch()" 
+              class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <!-- Jalur Dropdown -->
+          <div class="md:col-span-2">
+            <select 
+              id="filterRole" 
+              onchange="handleFilterChange()" 
+              class="w-full py-2.5 px-3 text-xs sm:text-sm rounded-xl border border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-deepGreen font-medium"
+            >
+              <option value="">Semua Jalur</option>
+              <option value="pengurus">Pengurus</option>
+              <option value="anggota">Anggota</option>
+            </select>
+          </div>
+
+          <!-- Divisi Dropdown (Populated Dynamically) -->
+          <div class="md:col-span-2">
+            <select 
+              id="filterDivisi" 
+              onchange="handleFilterChange()" 
+              class="w-full py-2.5 px-3 text-xs sm:text-sm rounded-xl border border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-deepGreen font-medium"
+            >
+              <option value="">Semua Divisi</option>
+            </select>
+          </div>
+
+          <!-- Program Studi Dropdown (Populated Dynamically) -->
+          <div class="md:col-span-2">
+            <select 
+              id="filterProdi" 
+              onchange="handleFilterChange()" 
+              class="w-full py-2.5 px-3 text-xs sm:text-sm rounded-xl border border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-deepGreen font-medium"
+            >
+              <option value="">Semua Prodi</option>
+            </select>
+          </div>
+
+          <!-- Status Penilaian Dropdown -->
+          <div class="md:col-span-2">
+            <select 
+              id="filterStatus" 
+              onchange="handleFilterChange()" 
+              class="w-full py-2.5 px-3 text-xs sm:text-sm rounded-xl border border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-deepGreen font-medium"
+            >
+              <option value="">Status Penilaian</option>
+              <option value="unscored">Belum Dinilai</option>
+              <option value="in_progress">Sedang Wawancara</option>
+              <option value="scored">Sudah Dinilai</option>
+              <option value="recom_priority">Sangat Prioritas</option>
+              <option value="recom_yes">Direkomendasikan</option>
+              <option value="recom_backup">Cadangan</option>
+              <option value="recom_redirect">Dialihkan</option>
+              <option value="recom_reject">Tidak Lolos</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Quick Filter Pills, Duplicates Toggle & Order -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-2.5 border-t border-cream-200 text-xs text-slate-600">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-slate-500 font-semibold">Filter Cepat:</span>
+            <button 
+              type="button" 
+              onclick="setQuickFilter('unscored')" 
+              class="px-2.5 py-1 rounded-lg bg-cream-100 hover:bg-gold/20 text-deepGreen border border-cream-300 font-medium transition-colors"
+            >
+              Antrean Belum Dinilai
+            </button>
+            <button 
+              type="button" 
+              onclick="setQuickFilter('Media')" 
+              class="px-2.5 py-1 rounded-lg bg-cream-100 hover:bg-gold/20 text-deepGreen border border-cream-300 font-medium transition-colors"
+            >
+              Media
+            </button>
+            <button 
+              type="button" 
+              onclick="setQuickFilter('Dakwah Digital')" 
+              class="px-2.5 py-1 rounded-lg bg-cream-100 hover:bg-gold/20 text-deepGreen border border-cream-300 font-medium transition-colors"
+            >
+              Dakwah Digital
+            </button>
+            <button 
+              type="button" 
+              onclick="setQuickFilter('Keilmuan')" 
+              class="px-2.5 py-1 rounded-lg bg-cream-100 hover:bg-gold/20 text-deepGreen border border-cream-300 font-medium transition-colors"
+            >
+              Keilmuan
+            </button>
+            <button 
+              type="button" 
+              onclick="setQuickFilter('TPQ')" 
+              class="px-2.5 py-1 rounded-lg bg-cream-100 hover:bg-gold/20 text-deepGreen border border-cream-300 font-medium transition-colors"
+            >
+              TPQ
+            </button>
+
+            <!-- Deduplication Checkbox -->
+            <label class="inline-flex items-center gap-1.5 ml-1 px-2.5 py-1 bg-amber-50 text-amber-900 border border-amber-300 rounded-lg cursor-pointer select-none font-semibold hover:bg-amber-100 transition-colors" title="Sembunyikan entri berulang dari pendaftar yang sama, hanya tampilkan submisi terbaru">
+              <input type="checkbox" id="hideDuplicatesCheckbox" onchange="handleFilterChange()" checked class="rounded text-amber-600 focus:ring-amber-500">
+              <span>Sembunyikan Duplikat</span>
+            </label>
+
+            <button 
+              type="button" 
+              onclick="resetAllFilters()" 
+              class="text-xs text-rose-600 hover:underline font-semibold ml-1"
+            >
+              Reset
+            </button>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="text-slate-500 font-medium">Urutan:</span>
+            <select 
+              id="sortBy" 
+              onchange="handleFilterChange()" 
+              class="py-1 px-2 text-xs rounded-lg border border-cream-300 bg-white font-medium text-deepGreen outline-none"
+            >
+              <option value="time_desc">Waktu Daftar (Terbaru)</option>
+              <option value="time_asc">Waktu Daftar (Terlama)</option>
+              <option value="name_asc">Nama (A - Z)</option>
+              <option value="score_desc">Nilai Tertinggi</option>
+              <option value="nim_asc">NIM</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Master-Detail Dual Pane Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- ========================================================================= -->
+        <!-- LEFT COLUMN: DAFTAR ANTREAN PENDAFTAR (APPLICANT QUEUE) -->
+        <!-- ========================================================================= -->
+        <div class="lg:col-span-5 space-y-3">
+          
+          <!-- Queue Header & Counter -->
+          <div class="flex items-center justify-between px-1">
+            <div class="text-xs font-bold text-deepGreen uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-users text-gold"></i>
+              <span>Daftar Pendaftar</span>
+              <span id="filteredCountBadge" class="bg-forestGreen text-white text-[11px] px-2 py-0.5 rounded-full font-bold">0</span>
+            </div>
+            <div class="text-[11px] text-slate-500">
+              Gunakan tombol <kbd class="px-1.5 py-0.5 bg-cream-200 rounded border border-cream-300 text-deepGreen font-mono font-bold">↑</kbd> <kbd class="px-1.5 py-0.5 bg-cream-200 rounded border border-cream-300 text-deepGreen font-mono font-bold">↓</kbd> keyboard
+            </div>
+          </div>
+
+          <!-- Scrollable Applicant Cards List -->
+          <div id="applicantListContainer" class="space-y-2.5 max-h-[calc(100vh-210px)] overflow-y-auto pr-1">
+            <!-- Rendered by JS -->
+            <div class="p-8 text-center text-slate-400 bg-white rounded-2xl border border-cream-300">
+              <i class="fa-solid fa-spinner fa-spin text-2xl text-gold mb-2"></i>
+              <p class="text-xs">Memuat daftar pendaftar...</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- RIGHT COLUMN: LEMBAR BERKAS & PENILAIAN (CANDIDATE DOSSIER) -->
+        <!-- ========================================================================= -->
+        <div class="lg:col-span-7">
+          <div id="detailPaneContainer" class="space-y-6 sticky top-24">
+            
+            <!-- Placeholder when no applicant selected -->
+            <div class="bg-white rounded-3xl p-10 sm:p-14 border border-cream-300 shadow-sm text-center space-y-4">
+              <div class="w-16 h-16 rounded-2xl bg-cream-100 text-forestGreen flex items-center justify-center mx-auto text-2xl border border-cream-300 shadow-sm">
+                <i class="fa-solid fa-address-card text-gold"></i>
+              </div>
+              <div class="max-w-md mx-auto space-y-1">
+                <h3 class="font-serif font-bold text-lg text-deepGreen">
+                  Pilih Calon Anggota dari Daftar
+                </h3>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                  Silakan klik salah satu kartu calon di sebelah kiri untuk melihat profil lengkap, membaca jawaban formulir, dan menginput nilai hasil wawancara.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- 5. PRINT-ONLY EVALUATION FORM (Triggered by window.print()) -->
+  <!-- ========================================================================= -->
+  <div id="printSheetContainer" class="hidden print-only p-8 text-black bg-white max-w-4xl mx-auto">
+    <!-- Will be populated by JS when print is requested -->
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 6. MODAL: BACKUP & LOCALSTORAGE MANAGEMENT -->
+  <!-- ========================================================================= -->
+  <div id="backupModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-deepGreen/80 backdrop-blur-sm no-print">
+    <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border-2 border-gold overflow-hidden animate-in">
+      
+      <div class="bg-islamic-hero text-white p-5 flex items-center justify-between border-b border-gold/30">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-gold/20 flex items-center justify-center border border-gold/40 text-gold text-lg shadow-sm">
+            <i class="fa-solid fa-database"></i>
+          </div>
+          <div>
+            <h3 class="font-serif font-bold text-lg text-white">Cadangan & Pengaturan Penilaian</h3>
+            <p class="text-xs text-cream-200">Kelola catatan dan skor wawancara di peramban ini</p>
+          </div>
+        </div>
+        <button onclick="closeBackupModal()" class="text-cream-300 hover:text-white p-1 rounded-lg">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-5 text-xs text-charcoal">
+        <div class="bg-cream-100 p-4 rounded-2xl border border-cream-300 space-y-2">
+          <div class="font-bold text-deepGreen flex items-center gap-1.5">
+            <i class="fa-solid fa-info-circle text-gold"></i>
+            <span>Penyimpanan Aman di Peramban</span>
+          </div>
+          <p class="text-slate-600 leading-relaxed">
+            Semua nilai dan catatan wawancara disimpan secara otomatis di peramban (LocalStorage) perangkat antum, sehingga aman dan tidak hilang saat halaman dimuat ulang.
+          </p>
+        </div>
+
+        <div class="space-y-2">
+          <label class="font-bold text-deepGreen block">Nama Pewawancara:</label>
+          <input 
+            type="text" 
+            id="interviewerNameGlobal" 
+            onchange="saveInterviewerName(this.value)" 
+            placeholder="Contoh: Ustadz Ahmad / Akhi Zaki" 
+            class="w-full px-3.5 py-2.5 rounded-xl border border-cream-300 bg-cream-50 focus:border-gold outline-none text-deepGreen font-semibold"
+          />
+          <p class="text-[11px] text-slate-500">Nama ini akan dicantumkan secara otomatis pada setiap lembar penilaian yang antum isi.</p>
+        </div>
+
+        <div class="pt-2 border-t border-cream-200 space-y-3">
+          <div class="font-bold text-deepGreen">Operasi Ekspor / Impor Cadangan Data Nilai:</div>
+          <div class="grid grid-cols-2 gap-3">
+            <button 
+              type="button" 
+              onclick="downloadNotesBackup()" 
+              class="w-full py-2.5 px-3 rounded-xl bg-forestGreen text-white font-bold hover:bg-deepGreen transition-colors flex items-center justify-center gap-1.5 shadow-sm"
+            >
+              <i class="fa-solid fa-download text-gold"></i>
+              <span>Unduh JSON Backup</span>
+            </button>
+            <label class="w-full py-2.5 px-3 rounded-xl bg-cream-200 text-deepGreen font-bold hover:bg-cream-300 transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-sm text-center">
+              <i class="fa-solid fa-upload text-forestGreen"></i>
+              <span>Pulihkan JSON</span>
+              <input type="file" id="restoreFileInput" accept=".json" onchange="restoreNotesBackup(event)" class="hidden" />
+            </label>
+          </div>
+        <div class="pt-2 border-t border-cream-200 space-y-2">
+          <div class="font-bold text-deepGreen flex items-center gap-1.5">
+            <i class="fa-solid fa-file-excel text-emerald-600"></i>
+            <span>Muat Data Pendaftar Manual (Excel / CSV):</span>
+          </div>
+          <p class="text-[11px] text-slate-500 leading-relaxed">
+            Jika perangkat sedang tanpa internet atau tidak bisa menghubungi Google Sheets, antum dapat mengunduh spreadsheet sebagai file Excel (.xlsx) / CSV lalu memilihnya di sini:
+          </p>
+          <label class="w-full py-2.5 px-3 rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold hover:bg-emerald-100 transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm text-center">
+            <i class="fa-solid fa-folder-open text-emerald-600"></i>
+            <span>Pilih File Excel (.xlsx / .csv)</span>
+            <input type="file" id="manualSpreadsheetInput" accept=".xlsx,.xls,.csv" onchange="handleManualSpreadsheetUpload(event)" class="hidden" />
+          </label>
+        </div>
+
+        <div class="pt-3 border-t border-cream-200 flex justify-between items-center">
+          <button 
+            type="button" 
+            onclick="clearAllScoringData()" 
+            class="text-rose-600 hover:text-rose-800 font-semibold text-[11px] flex items-center gap-1"
+          >
+            <i class="fa-solid fa-trash-can"></i>
+            <span>Hapus Seluruh Data Nilai</span>
+          </button>
+          <button 
+            type="button" 
+            onclick="closeBackupModal()" 
+            class="px-4 py-2 bg-deepGreen text-white font-bold rounded-xl hover:bg-forestGreen"
+          >
+            Tutup
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none no-print">
+    <div class="bg-deepGreen text-white px-5 py-3.5 rounded-2xl shadow-2xl border-2 border-gold flex items-center gap-3">
+      <div id="toastIcon" class="w-8 h-8 rounded-xl bg-gold/20 flex items-center justify-center text-gold">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <div>
+        <div id="toastTitle" class="font-bold text-xs text-white">Sukses</div>
+        <div id="toastMessage" class="text-[11px] text-cream-200">Catatan penilaian berhasil disimpan.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 7. FOOTER -->
+  <!-- ========================================================================= -->
+  <footer class="bg-islamic-dark text-cream-200 text-xs py-8 border-t-2 border-forestGreen/70 mt-auto no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div class="flex items-center space-x-3 text-center sm:text-left">
+        <img src="logo-rijal-dakwah.png" alt="Logo" class="w-8 h-8 object-contain" />
+        <div>
+          <div class="font-serif font-bold text-white text-sm">UKM RIJAL DAKWAH STDIIS</div>
+          <div class="text-[11px] text-cream-300">Sistem Informasi Seleksi & Wawancara Penerimaan Anggota Baru</div>
+        </div>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a href="index.html" class="text-gold-light hover:underline font-semibold flex items-center gap-1.5">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Kembali ke Web Utama</span>
+        </a>
+        <span class="text-forestGreen">|</span>
+        <span class="text-cream-300 text-[11px]">© 2026 STDI Imam Syafi'i Jember</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT: DATA ENGINE & INTERVIEW LOGIC -->
+  <!-- ========================================================================= -->
+  <script>
+    // Constants & Endpoints
+    const SPREADSHEET_ID = "1bcFa1yY4dOuFxsw2Y5aNy3osYjGtBK34bmcIiUEm0YY";
+    const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json`;
+    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv`;
+    const STORAGE_KEY_SCORES = "rd_interview_scores_v1";
+    const STORAGE_KEY_INTERVIEWER = "rd_interviewer_name_v1";
+
+    // Initial embedded fallback data (guarantees instant zero-lag load even if offline or blocked)
+    const EMBEDDED_FALLBACK_DATA = [
+      {
+        "id": 1,
+        "Timestamp": "03/09/2026 17:00:43",
+        "Nama lengkap:": "Grara Isa Muhammad",
+        "NIM:": "2026.38.4863",
+        "Prodi:": "Ilmu Hadits",
+        "Username telegram:": "@GraraisaM",
+        "Bergabung Sebagai": "pengurus",
+        "Divisi Utama": "Media",
+        "Divisi Cadangan": "Media",
+        "Apa itu Rijal Dakwah?": "Tidak bermakna suatu insan yang memiliki ilmu dan keterampilan yang mulia tanpa wadah yang menaunginya dan menjadi tempatnya untuk mencurahkan apa yang ia punya, dan wadah itu ialah Rijal Dakwah. Tempat berkembang dan penyaluran ilmu yang mahasiswa dapatkan selama masa inkubasi friksi foton ilmu pengetahuan di manapun ia mendapatinya.",
+        "Kenapa Rijal Dakwah harus menerima antum?": "Tidak ada orang yang mengharuskan anda menerima saya, saya pun tidak, bahkan Allah pun tidak. Hanya saja ana ingin belajar mengembangkan Rijal Dakwah beserta ana sendiri, ana berharap dapat diterima di tim media, bukan karena ana jago atau berpengalaman, tapi disitulah hati ana terpaut tanpa keterpaksaan, semoga dengan itu niat ikhlas kian mudah, dan jujur ana juga sudah mempersiapkan apa yang ana punya, kamera, hp, dan mic dll, semoga dengan bergabungnya ana dapat membuat Rijal Dakwah makin bagus, keren, dan dakwahnya semakin lancar. Syukron~",
+        "Skillset": "Video Capturing, Video Editting",
+        "Device": "Powerfull Smartphone, Camera, Mic",
+        "Tools": "Capcut, Canva",
+        "Apakah anda setuju?": "Ya"
+      },
+      {
+        "id": 2,
+        "Timestamp": "04/09/2026 13:17:44",
+        "Nama lengkap:": "Grara Isa Muhammad",
+        "NIM:": "2026.38.4863",
+        "Prodi:": "Ilmu Hadits",
+        "Username telegram:": "@GraraisaM",
+        "Bergabung Sebagai": "pengurus",
+        "Divisi Utama": "Media",
+        "Divisi Cadangan": "Media",
+        "Apa itu Rijal Dakwah?": "Wadah yang menaungi para mahasiswa untuk menyalurkan ilmu yang bermanfaat.",
+        "Kenapa Rijal Dakwah harus menerima antum?": "Mempunyai minat tinggi terhadap fotografi dan videografi, dan juga pernah menjadi: 1. Tim media PP Minhajul Haq dalam acara Majlis Sama' Ramadhan bersama Syaikh Samir bin Yusuf Al-Hakali. 2. Tim media PP Minhajul Haq dalam acara Dauroh Manhajiyyah tahun 2026 bersama Syaikh Samir bin Yusuf 3. Mengikuti kompetisi perlombaan fotografi Internasional 35th Award 4. Tim PDD kelompok pada acara PKKMB STDIIS 2026.",
+        "Skillset": "Video Capturing, Video Editting",
+        "Device": "Powerfull Smartphone, Camera, Mic",
+        "Tools": "Capcut, Canva",
+        "Apakah anda setuju?": "Ya"
+      },
+      {
+        "id": 3,
+        "Timestamp": "04/09/2026 18:16:30",
+        "Nama lengkap:": "Ahmad Zaky Krisnamurti",
+        "NIM:": "2024.03.3218",
+        "Prodi:": "Hukum Keluarga Islam",
+        "Username telegram:": "@AhmadzakyK",
+        "Bergabung Sebagai": "pengurus",
+        "Divisi Utama": "Media",
+        "Divisi Cadangan": "Media",
+        "Apa itu Rijal Dakwah?": "Organisasi kampus yang berkomitmen untuk menyebarkan dakwah Islam",
+        "Kenapa Rijal Dakwah harus menerima antum?": "Saya berkomitmen tinggi untuk membantu program-program Rijal Dakwah dalam menyebarkan kebaikan",
+        "Skillset": "Video Capturing, Video Editting, Audio Composing",
+        "Device": "Laptop/Pc",
+        "Tools": "Adobe Premiere Pro, Capcut, Canva",
+        "Apakah anda setuju?": "Ya"
+      },
+      {
+        "id": 4,
+        "Timestamp": "04/09/2026 18:16:54",
+        "Nama lengkap:": "Ahmad Farohat Al Murshofi ",
+        "NIM:": "2024.03.3500",
+        "Prodi:": "Hukum Keluarga Islam",
+        "Username telegram:": "@AhmadFarohat",
+        "Bergabung Sebagai": "pengurus",
+        "Divisi Utama": "Media",
+        "Divisi Cadangan": "Media",
+        "Apa itu Rijal Dakwah?": "Salah satu UKM di kampus kita tercinta STDI Imam Syafi'i",
+        "Kenapa Rijal Dakwah harus menerima antum?": "Karena saya ingin berpartisipasi dalam sosialisasi dakwah islamiyyah lebih dalam",
+        "Skillset": "Video Capturing",
+        "Device": "Laptop/Pc, Powerfull Smartphone",
+        "Tools": "Adobe Photoshop, Capcut, Canva",
+        "Apakah anda setuju?": "Ya"
+      },
+      {
+        "id": 5,
+        "Timestamp": "04/09/2026 18:17:12",
+        "Nama lengkap:": "Muhammad Daffa Ramadhan",
+        "NIM:": "2025.38.4010",
+        "Prodi:": "Ilmu Hadits",
+        "Username telegram:": "@Muhammad Daffa Ramadhan 2025.38.4010",
+        "Bergabung Sebagai": "pengurus",
+        "Divisi Utama": "Media",
+        "Divisi Cadangan": "TPQ",
+        "Apa itu Rijal Dakwah?": "Rijal Dakwah (RD) adalah Unit Kegiatan Mahasiswa (UKM) yang berdiri di Sekolah Tinggi Dirasat Islamiyah (STDI) Imam Syafi’i Jember pada tahun 2015. Sejak awal berdirinya, RD hadir sebagai wadah kaderisasi mahasiswa dalam bidang dakwah, sosial, dan pengembangan teknologi berbasis Islam",
+        "Kenapa Rijal Dakwah harus menerima antum?": "Ana memiliki ketertarikan besar dalam bidang dakwah dan pengembangan teknologi berbasis Islam. Ana ingin menyalurkan minat serta keterampilan yang ana miliki untuk mendukung dakwah digital dan kegiatan sosial Rijal Dakwah agar manfaatnya bisa dirasakan lebih luas",
+        "Skillset": "Video Editting",
+        "Device": "Powerfull Smartphone",
+        "Tools": "Capcut, Canva",
+        "Apakah anda setuju?": "Ya"
+      },
+      {
+        "id": 6,
+        "Timestamp": "05/09/2026 00:10:10",
+        "Nama lengkap:": "Muhammad Faris Zuhair",
+        "NIM:": "2024.03.3433",
+        "Prodi:": "Hukum Keluarga Islam",
+        "Username telegram:": "@Panggilaeais",
+        "Bergabung Sebagai": "pengurus",
+        "Divisi Utama": "Media",
+        "Divisi Cadangan": "Humas",
+        "Apa itu Rijal Dakwah?": "wadah untuk berkembang dalam berdakwah dari berbagai cara",
+        "Kenapa Rijal Dakwah harus menerima antum?": "karena saya percaya atas potensi diri saya sendiri dan saya yakin bisa berkembang dengan bergabung di sini",
+        "Skillset": "Video Capturing",
+        "Device": "Powerfull Smartphone",
+        "Tools": "Capcut",
+        "Apakah anda setuju?": "Ya"
+      },
+      {
+        "id": 7,
+        "Timestamp": "05/09/2026 07:17:04",
+        "Nama lengkap:": "Habib Arrasyid ",
+        "NIM:": "2024.03.3269",
+        "Prodi:": "Hukum Keluarga Islam",
+        "Username telegram:": "@arrasyid01122004",
+        "Bergabung Sebagai": "pengurus",
+        "Divisi Utama": "Media",
+        "Divisi Cadangan": "Inventaris",
+        "Apa itu Rijal Dakwah?": "Unit Kegiatan Mahasiswa (UKM) yang berfokus pada penyiaran nilai-nilai Islam, pengembangan karakter keagamaan, dan pembinaan kader pendakwah (da'i) di lingkungan kampus.",
+        "Kenapa Rijal Dakwah harus menerima antum?": "1. Saya memiliki visi hidup yang sejalan dengan Rijal Dakwah dalam menyebarkan syiar Islam di masyarakat. 2. Saya siap dibina dan dibimbing agar kapasitas keilmuan terus meningkat seiring dengan dinamika dakwah. 3. Saya mampu bekerja sama dengan berbagai karakter individu dan tidak mudah menyerah dalam menghadapi tantangan dakwah/ kendala di lapangan. 4. Pengalaman saya di organisasi sebelumnya telah membentuk pola pikir saya menjadi lebih matang dalam mengelola konflik dan tanggung jawab.",
+        "Skillset": "Video Capturing",
+        "Device": "Powerfull Smartphone",
+        "Tools": "Capcut, Canva",
+        "Apakah anda setuju?": "Ya"
+      },
+      {
+        "id": 8,
+        "Timestamp": "05/09/2026 13:18:38",
+        "Nama lengkap:": "PUTRA BINTANG FADHILAH",
+        "NIM:": "2026.38.4564",
+        "Prodi:": "Ilmu Hadits",
+        "Username telegram:": "@bintang_fadhilah",
+        "Bergabung Sebagai": "pengurus",
+        "Divisi Utama": "Media",
+        "Divisi Cadangan": "Dakwah Digital",
+        "Apa itu Rijal Dakwah?": "Suatu organisasi mahasiswa yang bergerak di bidang dakwah",
+        "Kenapa Rijal Dakwah harus menerima antum?": "agar ana bisa lebih berkembang dan berguna bagi orang banyak",
+        "Skillset": "Video Capturing",
+        "Device": "Laptop/Pc",
+        "Tools": "Capcut, Canva",
+        "Apakah anda setuju?": "Ya"
+      },
+      {
+        "id": 9,
+        "Timestamp": "05/09/2026 13:33:20",
+        "Nama lengkap:": "Ahmad",
+        "NIM:": "2025.03.3714",
+        "Prodi:": "Hukum Keluarga Islam",
+        "Username telegram:": "@syaukah",
+        "Bergabung Sebagai": "pengurus",
+        "Divisi Utama": "Acara",
+        "Divisi Cadangan": "Inventaris",
+        "Apa itu Rijal Dakwah?": "Rijal Dakwah adalah UKM di STDI Imam Syafi’i Jember yang menjadi wadah bagi mahasiswa untuk belajar, berkembang, dan berkontribusi dalam bidang dakwah, sosial, serta pemanfaatan teknologi untuk menyebarkan nilai-nilai Islam. Bagi saya, Rijal Dakwah bukan hanya sebuah organisasi, tetapi juga tempat untuk membentuk diri agar memiliki ilmu, akhlak, kemampuan berdakwah, dan semangat berkhidmah kepada masyarakat.",
+        "Kenapa Rijal Dakwah harus menerima antum?": "Saya tidak menganggap bahwa Rijal Dakwah harus menerima saya karena saya paling baik atau paling mampu. Namun, jika diberi kesempatan, saya siap belajar, berproses, dan memberikan kontribusi terbaik yang saya mampu. Saya ingin menjadikan Rijal Dakwah sebagai tempat untuk mengembangkan kemampuan sekaligus belajar berkhidmah, bekerja sama, dan mengambil bagian dalam dakwah. Saya siap menerima arahan, bertanggung jawab terhadap amanah, dan berusaha memberikan manfaat bagi Rijal Dakwah dan lingkungan sekitar.",
+        "Apakah anda setuju?": "Ya"
+      },
+      {
+        "id": 10,
+        "Timestamp": "05/09/2026 13:35:53",
+        "Nama lengkap:": "deriko Maulana steven",
+        "NIM:": "2025.38.4291",
+        "Prodi:": "Ilmu Hadits",
+        "Username telegram:": "deriko maulana steven",
+        "Bergabung Sebagai": "anggota",
+        "Divisi Utama": "",
+        "Divisi Cadangan": "",
+        "Apa itu Rijal Dakwah?": "individu-individu yang mendedikasikan diri, pikiran, dan tenaganya untuk menyebarkan, mempertahankan, serta memperjuangkan nilai-nilai Islam di tengah masyarakat.",
+        "Kenapa Rijal Dakwah harus menerima antum?": "1.komitmen dan niat yang lurus 2.kemauan untuk belajar 3.potensi dan keterampilan spesifik",
+        "Apakah anda setuju?": "Ya"
+      },
+      {
+        "id": 11,
+        "Timestamp": "05/09/2026 13:36:18",
+        "Nama lengkap:": "Hikam A’thoillah Al Hakim ",
+        "NIM:": "2025.38.4038",
+        "Prodi:": "Ilmu Hadits",
+        "Username telegram:": "@athoillah_16",
+        "Bergabung Sebagai": "anggota",
+        "Divisi Utama": "",
+        "Divisi Cadangan": "",
+        "Apa itu Rijal Dakwah?": "ukm dakwah",
+        "Kenapa Rijal Dakwah harus menerima antum?": "bismillah",
+        "Apakah anda setuju?": "Ya"
+      }
+    ];
+
+    // Global State
+    let rawApplicants = [...EMBEDDED_FALLBACK_DATA];
+    let filteredApplicants = [];
+    let selectedApplicantId = null;
+    let interviewScores = {}; // Key: applicant unique key (NIM or ID)
+    let currentInterviewerName = "";
+
+    // =========================================================================
+    // INITIALIZATION
+    // =========================================================================
+    document.addEventListener("DOMContentLoaded", () => {
+      loadStoredScores();
+      loadInterviewerName();
+      
+      // Initial render with fallback data
+      filteredApplicants = [...rawApplicants];
+      updateStats();
+      renderApplicantList();
+      
+      // Select first applicant by default if available
+      if (filteredApplicants.length > 0) {
+        selectApplicant(filteredApplicants[0].id);
+      }
+
+      // Live fetch in background from Google Sheets
+      syncDataFromSheets(false);
+
+      // Keyboard navigation shortcuts (Up/Down arrows to change candidate)
+      window.addEventListener("keydown", (e) => {
+        // If focus is inside input or textarea, ignore
+        if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+
+        if (e.key === 'ArrowDown' || e.key === 'j') {
+          navigateApplicant(1);
+        } else if (e.key === 'ArrowUp' || e.key === 'k') {
+          navigateApplicant(-1);
+        }
+      });
+    });
+
+    // =========================================================================
+    // DATA SYNC ENGINE (GOOGLE SHEETS)
+    // =========================================================================
+    function syncDataFromSheets(isManual = false) {
+      const syncIcon = document.getElementById("syncIcon");
+      const liveStatusText = document.getElementById("liveStatusText");
+      const liveStatusDot = document.getElementById("liveStatusDot");
+      const syncTimestamp = document.getElementById("syncTimestamp");
+
+      if (syncIcon) syncIcon.classList.add("fa-spin");
+      if (liveStatusText) liveStatusText.textContent = "Menyinkronkan...";
+
+      return new Promise((resolve) => {
+        const callbackName = "rdGvizHandler_" + Date.now();
+        let isSettled = false;
+
+        // 12 second timeout for slow/no internet
+        const timer = setTimeout(() => {
+          if (isSettled) return;
+          isSettled = true;
+          cleanup();
+          handleSyncFailure("Waktu koneksi habis. Memeriksa koneksi internet...", isManual);
+          resolve();
+        }, 12000);
+
+        function cleanup() {
+          clearTimeout(timer);
+          try {
+            delete window[callbackName];
+          } catch (e) {
+            window[callbackName] = undefined;
+          }
+          const scriptEl = document.getElementById("rdGvizScriptTag");
+          if (scriptEl) scriptEl.remove();
+          if (syncIcon) syncIcon.classList.remove("fa-spin");
+        }
+
+        // JSONP Callback
+        window[callbackName] = function(gvizData) {
+          if (isSettled) return;
+          isSettled = true;
+          cleanup();
+
+          try {
+            if (!gvizData || !gvizData.table || !gvizData.table.rows) {
+              throw new Error("Format respon Google Sheets tidak valid.");
+            }
+
+            const cols = gvizData.table.cols.map(c => c.label || c.id);
+            const parsedRows = gvizData.table.rows.map((row, index) => {
+              const obj = { id: index + 1 };
+              row.c.forEach((cell, colIdx) => {
+                const colName = cols[colIdx] || `Col_${colIdx}`;
+                obj[colName] = cell ? (cell.f || cell.v || "") : "";
+              });
+              return obj;
+            });
+
+            if (parsedRows.length > 0) {
+              rawApplicants = parsedRows;
+              if (liveStatusDot) liveStatusDot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
+              if (liveStatusText) liveStatusText.textContent = `Live Sheets (${rawApplicants.length} data)`;
+              const now = new Date();
+              if (syncTimestamp) syncTimestamp.textContent = `Sinkron: ${now.toLocaleTimeString('id-ID')}`;
+              
+              applyFiltersAndRender();
+
+              if (isManual) {
+                showToast("Sinkron Berhasil", `Berhasil memuat ${rawApplicants.length} pendaftar terbaru dari Google Sheets.`);
+              }
+            }
+          } catch (err) {
+            console.error("Gviz JSONP parsing error:", err);
+            handleSyncFailure("Format data tidak sesuai.", isManual);
+          }
+          resolve();
+        };
+
+        // Inject dynamic script tag (JSONP completely bypasses browser CORS restrictions)
+        const script = document.createElement("script");
+        script.id = "rdGvizScriptTag";
+        script.src = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=responseHandler:${callbackName}&_nocache=${Date.now()}`;
+        script.onerror = function() {
+          if (isSettled) return;
+          isSettled = true;
+          cleanup();
+          // Try CSV fallback
+          tryFallbackCsv(isManual).then(resolve);
+        };
+
+        document.head.appendChild(script);
+      });
+    }
+
+    // Fallback if script tag blocked
+    async function tryFallbackCsv(isManual) {
+      try {
+        const csvResp = await fetch(CSV_URL, { cache: "no-store" });
+        if (csvResp.ok) {
+          const csvText = await csvResp.text();
+          const parsedCsv = parseCSV(csvText);
+          if (parsedCsv.length > 0) {
+            rawApplicants = parsedCsv;
+            const liveStatusDot = document.getElementById("liveStatusDot");
+            const liveStatusText = document.getElementById("liveStatusText");
+            if (liveStatusDot) liveStatusDot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
+            if (liveStatusText) liveStatusText.textContent = `Live CSV (${rawApplicants.length} data)`;
+            applyFiltersAndRender();
+            if (isManual) showToast("Sinkron Berhasil", `Memuat ${rawApplicants.length} data dari CSV.`);
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn("CSV fallback also failed:", e);
+      }
+      handleSyncFailure("Koneksi ke Google Sheets terhambat.", isManual);
+    }
+
+    function handleSyncFailure(message, isManual) {
+      const liveStatusDot = document.getElementById("liveStatusDot");
+      const liveStatusText = document.getElementById("liveStatusText");
+      if (liveStatusDot) liveStatusDot.className = "w-2 h-2 rounded-full bg-amber-400";
+      if (liveStatusText) liveStatusText.textContent = `Mode Offline (${rawApplicants.length} data)`;
+
+      applyFiltersAndRender();
+
+      if (isManual) {
+        showToast("Perhatian", `${message} Menggunakan data lokal (${rawApplicants.length} pendaftar).`, "amber");
+      }
+    }
+
+    // Simple robust CSV parser
+    function parseCSV(text) {
+      const lines = text.split(/\r?\n/).filter(line => line.trim().length > 0);
+      if (lines.length < 2) return [];
+
+      // Parse header
+      const header = parseCSVRow(lines[0]);
+      const rows = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        const values = parseCSVRow(lines[i]);
+        if (values.length === 0) continue;
+        const obj = { id: i };
+        header.forEach((h, idx) => {
+          obj[h] = values[idx] || "";
+        });
+        rows.push(obj);
+      }
+      return rows;
+    }
+
+    function parseCSVRow(rowText) {
+      const result = [];
+      let current = '';
+      let inQuotes = false;
+      for (let i = 0; i < rowText.length; i++) {
+        const char = rowText[i];
+        if (char === '"') {
+          if (inQuotes && rowText[i + 1] === '"') {
+            current += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === ',' && !inQuotes) {
+          result.push(current.trim());
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      result.push(current.trim());
+      return result;
+    }
+
+    // =========================================================================
+    // FILTERING, SORTING & STATS
+    // =========================================================================
+    function handleFilterChange() {
+      applyFiltersAndRender();
+    }
+
+    function clearSearch() {
+      const searchInput = document.getElementById("searchInput");
+      if (searchInput) searchInput.value = "";
+      applyFiltersAndRender();
+    }
+
+    function setQuickFilter(type) {
+      if (type === 'unscored') {
+        document.getElementById("filterStatus").value = "unscored";
+      } else {
+        document.getElementById("filterDivisi").value = type;
+      }
+      applyFiltersAndRender();
+    }
+
+    function resetAllFilters() {
+      document.getElementById("searchInput").value = "";
+      document.getElementById("filterRole").value = "";
+      document.getElementById("filterDivisi").value = "";
+      const prodiEl = document.getElementById("filterProdi");
+      if (prodiEl) prodiEl.value = "";
+      document.getElementById("filterStatus").value = "";
+      document.getElementById("sortBy").value = "time_desc";
+      const hideDup = document.getElementById("hideDuplicatesCheckbox");
+      if (hideDup) hideDup.checked = true;
+      applyFiltersAndRender();
+    }
+
+    // Populate dynamic divisions and prodis into dropdowns
+    function populateDynamicFilterDropdowns() {
+      const divisiSelect = document.getElementById("filterDivisi");
+      const prodiSelect = document.getElementById("filterProdi");
+
+      if (divisiSelect && divisiSelect.options.length <= 1) {
+        const currentVal = divisiSelect.value;
+        const uniqueDivisi = new Set();
+        rawApplicants.forEach(a => {
+          const div1 = (a["Divisi Utama"] || "").trim();
+          if (div1) uniqueDivisi.add(div1);
+        });
+
+        let divHtml = '<option value="">Semua Divisi</option>';
+        Array.from(uniqueDivisi).sort().forEach(div => {
+          divHtml += `<option value="${escapeHtml(div)}" ${currentVal === div ? 'selected' : ''}>${escapeHtml(div)}</option>`;
+        });
+        divisiSelect.innerHTML = divHtml;
+      }
+
+      if (prodiSelect && prodiSelect.options.length <= 1) {
+        const currentVal = prodiSelect.value;
+        const uniqueProdi = new Set();
+        rawApplicants.forEach(a => {
+          const p = (a["Prodi:"] || "").trim();
+          if (p) uniqueProdi.add(p);
+        });
+
+        let prodiHtml = '<option value="">Semua Prodi</option>';
+        Array.from(uniqueProdi).sort().forEach(p => {
+          prodiHtml += `<option value="${escapeHtml(p)}" ${currentVal === p ? 'selected' : ''}>${escapeHtml(p)}</option>`;
+        });
+        prodiSelect.innerHTML = prodiHtml;
+      }
+    }
+
+    // Build deduplication mapping
+    function computeDuplicateMetadata() {
+      const groupMap = new Map();
+      rawApplicants.forEach(a => {
+        const cleanName = (a["Nama lengkap:"] || "").trim().toLowerCase().replace(/\s+/g, ' ');
+        const cleanNim = (a["NIM:"] || "").trim();
+        const key = cleanNim ? `nim_${cleanNim}` : `name_${cleanName}`;
+        if (!groupMap.has(key)) groupMap.set(key, []);
+        groupMap.get(key).push(a);
+      });
+
+      rawApplicants.forEach(a => {
+        const cleanName = (a["Nama lengkap:"] || "").trim().toLowerCase().replace(/\s+/g, ' ');
+        const cleanNim = (a["NIM:"] || "").trim();
+        const key = cleanNim ? `nim_${cleanNim}` : `name_${cleanName}`;
+        const group = groupMap.get(key) || [];
+        a._totalSubmissions = group.length;
+        a._submissionIndex = group.findIndex(item => item.id === a.id) + 1;
+        a._isLatest = (group.length > 0 && group[group.length - 1].id === a.id);
+        a._allSubmissions = group;
+      });
+    }
+
+    function applyFiltersAndRender() {
+      populateDynamicFilterDropdowns();
+      computeDuplicateMetadata();
+
+      const query = (document.getElementById("searchInput")?.value || "").toLowerCase().trim();
+      const roleFilter = document.getElementById("filterRole")?.value || "";
+      const divisiFilter = document.getElementById("filterDivisi")?.value || "";
+      const prodiFilter = document.getElementById("filterProdi")?.value || "";
+      const statusFilter = document.getElementById("filterStatus")?.value || "";
+      const sortBy = document.getElementById("sortBy")?.value || "time_desc";
+      const hideDuplicates = document.getElementById("hideDuplicatesCheckbox")?.checked ?? true;
+
+      const clearBtn = document.getElementById("clearSearchBtn");
+      if (clearBtn) {
+        clearBtn.style.display = query ? "block" : "none";
+      }
+
+      filteredApplicants = rawApplicants.filter(applicant => {
+        // If hiding duplicates, only keep latest submission
+        if (hideDuplicates && !applicant._isLatest) {
+          return false;
+        }
+
+        const name = (applicant["Nama lengkap:"] || "").toLowerCase();
+        const nim = (applicant["NIM:"] || "").toLowerCase();
+        const prodi = (applicant["Prodi:"] || "").toLowerCase();
+        const telegram = (applicant["Username telegram:"] || "").toLowerCase();
+        const skills = (applicant["Skillset"] || "").toLowerCase();
+        const tools = (applicant["Tools"] || "").toLowerCase();
+        const role = (applicant["Bergabung Sebagai"] || "").toLowerCase();
+        const div1 = (applicant["Divisi Utama"] || "").toLowerCase();
+        const div2 = (applicant["Divisi Cadangan"] || "").toLowerCase();
+
+        // Text query
+        if (query) {
+          const match = name.includes(query) || 
+                        nim.includes(query) || 
+                        prodi.includes(query) || 
+                        telegram.includes(query) || 
+                        skills.includes(query) || 
+                        tools.includes(query);
+          if (!match) return false;
+        }
+
+        // Role filter
+        if (roleFilter && role !== roleFilter.toLowerCase()) {
+          return false;
+        }
+
+        // Division filter
+        if (divisiFilter) {
+          const divTarget = divisiFilter.toLowerCase();
+          const matchDiv = div1.includes(divTarget) || div2.includes(divTarget);
+          if (!matchDiv) return false;
+        }
+
+        // Prodi filter
+        if (prodiFilter && prodi !== prodiFilter.toLowerCase()) {
+          return false;
+        }
+
+        // Scoring status filter
+        if (statusFilter) {
+          const scoreData = getApplicantScore(applicant);
+          if (statusFilter === 'unscored') {
+            if (scoreData && scoreData.status === 'scored') return false;
+          } else if (statusFilter === 'in_progress') {
+            if (!scoreData || scoreData.status !== 'in_progress') return false;
+          } else if (statusFilter === 'scored') {
+            if (!scoreData || scoreData.status !== 'scored') return false;
+          } else if (statusFilter.startsWith('recom_')) {
+            const recomTarget = statusFilter.replace('recom_', '');
+            if (!scoreData || scoreData.recommendation !== recomTarget) return false;
+          }
+        }
+
+        return true;
+      });
+
+      // Sorting
+      filteredApplicants.sort((a, b) => {
+        if (sortBy === 'name_asc') {
+          return (a["Nama lengkap:"] || "").localeCompare(b["Nama lengkap:"] || "");
+        } else if (sortBy === 'time_asc') {
+          return (a.id || 0) - (b.id || 0);
+        } else if (sortBy === 'time_desc') {
+          return (b.id || 0) - (a.id || 0);
+        } else if (sortBy === 'nim_asc') {
+          return (a["NIM:"] || "").localeCompare(b["NIM:"] || "");
+        } else if (sortBy === 'score_desc') {
+          const scoreA = getApplicantScore(a)?.finalScore || 0;
+          const scoreB = getApplicantScore(b)?.finalScore || 0;
+          return scoreB - scoreA;
+        }
+        return 0;
+      });
+
+      updateStats();
+      renderApplicantList();
+
+      // Keep active applicant selected or fallback to first
+      if (filteredApplicants.length > 0) {
+        const stillInList = filteredApplicants.some(a => a.id === selectedApplicantId);
+        if (!stillInList) {
+          selectApplicant(filteredApplicants[0].id);
+        } else {
+          renderDetailPane(selectedApplicantId);
+        }
+      } else {
+        selectedApplicantId = null;
+        renderDetailPane(null);
+      }
+    }
+
+    function updateStats() {
+      const total = rawApplicants.length;
+      let pengurusCount = 0;
+      let anggotaCount = 0;
+      let scoredCount = 0;
+
+      rawApplicants.forEach(a => {
+        const role = (a["Bergabung Sebagai"] || "").toLowerCase();
+        if (role === 'pengurus') pengurusCount++;
+        else if (role === 'anggota') anggotaCount++;
+
+        const scoreData = getApplicantScore(a);
+        if (scoreData && scoreData.status === 'scored') {
+          scoredCount++;
+        }
+      });
+
+      const unscoredCount = total - scoredCount;
+      const scoredPercent = total > 0 ? Math.round((scoredCount / total) * 100) : 0;
+
+      document.getElementById("statTotalApplicants").textContent = total;
+      document.getElementById("statPengurus").textContent = pengurusCount;
+      document.getElementById("statAnggota").textContent = anggotaCount;
+      document.getElementById("statScored").textContent = scoredCount;
+      document.getElementById("statScoredPercent").textContent = `${scoredPercent}% selesai`;
+      document.getElementById("statUnscored").textContent = unscoredCount;
+      
+      const badge = document.getElementById("filteredCountBadge");
+      if (badge) badge.textContent = `${filteredApplicants.length} dari ${total}`;
+    }
+
+    // =========================================================================
+    // APPLICANT LIST RENDERING (LEFT COLUMN)
+    // =========================================================================
+    function renderApplicantList() {
+      const container = document.getElementById("applicantListContainer");
+      if (!container) return;
+
+      if (filteredApplicants.length === 0) {
+        container.innerHTML = `
+          <div class="p-8 text-center bg-white rounded-2xl border border-cream-300 space-y-2">
+            <div class="w-12 h-12 rounded-xl bg-cream-100 text-slate-400 flex items-center justify-center mx-auto text-xl">
+              <i class="fa-solid fa-user-slash"></i>
+            </div>
+            <div class="font-bold text-deepGreen text-sm">Tidak Ada Pendaftar yang Cocok</div>
+            <p class="text-xs text-slate-500">Coba ubah kata kunci pencarian atau bersihkan filter.</p>
+            <button onclick="resetAllFilters()" class="text-xs text-forestGreen font-bold hover:underline mt-2 inline-block">
+              Bersihkan Semua Filter
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filteredApplicants.map(applicant => {
+        const isSelected = applicant.id === selectedApplicantId;
+        const name = applicant["Nama lengkap:"] || "Tanpa Nama";
+        const nim = applicant["NIM:"] || "-";
+        const prodi = applicant["Prodi:"] || "-";
+        const role = applicant["Bergabung Sebagai"] || "anggota";
+        const div1 = applicant["Divisi Utama"] || "";
+        const telegram = applicant["Username telegram:"] || "";
+        const scoreData = getApplicantScore(applicant);
+
+        // Status Badge Logic
+        let statusBadgeHtml = '';
+        if (scoreData && scoreData.status === 'scored') {
+          const finalScore = scoreData.finalScore || 0;
+          let recomBadge = '';
+          if (scoreData.recommendation === 'priority') {
+            recomBadge = '<span class="bg-emerald-100 text-emerald-800 border border-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full">★ Sangat Prioritas</span>';
+          } else if (scoreData.recommendation === 'yes') {
+            recomBadge = '<span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold px-2 py-0.5 rounded-full">Direkomendasikan</span>';
+          } else if (scoreData.recommendation === 'backup') {
+            recomBadge = '<span class="bg-amber-100 text-amber-800 border border-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full">Cadangan</span>';
+          } else if (scoreData.recommendation === 'reject') {
+            recomBadge = '<span class="bg-rose-100 text-rose-800 border border-rose-300 text-[10px] font-bold px-2 py-0.5 rounded-full">Tidak Lolos</span>';
+          } else {
+            recomBadge = '<span class="bg-blue-100 text-blue-800 border border-blue-300 text-[10px] font-bold px-2 py-0.5 rounded-full">Dialihkan</span>';
+          }
+          statusBadgeHtml = `
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="bg-deepGreen text-gold text-[10px] font-extrabold px-2 py-0.5 rounded-full flex items-center gap-1">
+                <i class="fa-solid fa-star text-[9px]"></i> ${finalScore}/100
+              </span>
+              ${recomBadge}
+            </div>
+          `;
+        } else if (scoreData && scoreData.status === 'in_progress') {
+          statusBadgeHtml = `
+            <span class="bg-amber-100 text-amber-800 border border-amber-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full animate-pulse flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Sedang Wawancara
+            </span>
+          `;
+        } else {
+          statusBadgeHtml = `
+            <span class="bg-cream-200 text-slate-600 border border-cream-300 text-[10px] font-medium px-2 py-0.5 rounded-full">
+              Belum Dinilai
+            </span>
+          `;
+        }
+
+        // Role tag
+        const isPengurus = role.toLowerCase() === 'pengurus';
+        const roleBadge = isPengurus
+          ? `<span class="bg-forestGreen/10 text-forestGreen border border-forestGreen/30 text-[10px] font-bold px-2 py-0.5 rounded-md">Pengurus: ${div1 || 'Umum'}</span>`
+          : `<span class="bg-slate-100 text-slate-600 border border-slate-300 text-[10px] font-medium px-2 py-0.5 rounded-md">Anggota</span>`;
+
+        // Duplicate Badge
+        let duplicateBadge = '';
+        if (applicant._totalSubmissions > 1) {
+          duplicateBadge = `
+            <span class="bg-amber-100 text-amber-900 border border-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1" title="Pendaftar mengisi form ${applicant._totalSubmissions} kali">
+              <i class="fa-solid fa-copy text-[9px] text-amber-600"></i>
+              Submisi #${applicant._submissionIndex}/${applicant._totalSubmissions}
+            </span>
+          `;
+        }
+
+        return `
+          <div 
+            onclick="selectApplicant(${applicant.id}, true)"
+            class="p-3.5 sm:p-4 rounded-2xl border transition-all cursor-pointer card-hover-lift ${
+              isSelected 
+                ? 'bg-cream-100 border-gold shadow-md ring-2 ring-gold/40' 
+                : 'bg-white border-cream-300 hover:border-gold/50 shadow-sm'
+            }"
+          >
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl ${isSelected ? 'bg-gold text-deepGreen font-bold' : 'bg-cream-200 text-forestGreen font-semibold'} flex items-center justify-center text-sm shadow-sm flex-shrink-0">
+                  ${name.charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <div class="font-bold text-sm text-deepGreen flex items-center gap-1.5 flex-wrap">
+                    <span>${escapeHtml(name)}</span>
+                    ${isSelected ? '<span class="w-2 h-2 rounded-full bg-gold inline-block"></span>' : ''}
+                  </div>
+                  <div class="text-[11px] text-slate-500 flex items-center gap-2 mt-0.5">
+                    <span class="font-mono">${escapeHtml(nim)}</span>
+                    <span>•</span>
+                    <span>${escapeHtml(prodi)}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between gap-2 mt-3 pt-2.5 border-t border-cream-200 flex-wrap">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                ${roleBadge}
+                ${duplicateBadge}
+              </div>
+              <div>
+                ${statusBadgeHtml}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectApplicant(id, autoScroll = false) {
+      selectedApplicantId = id;
+      renderApplicantList();
+      renderDetailPane(id);
+
+      const applicant = rawApplicants.find(a => a.id === id);
+      if (applicant) {
+        const mobileBar = document.getElementById("mobileBottomBar");
+        const mobileName = document.getElementById("mobileCandidateName");
+        if (mobileBar && mobileName) {
+          mobileName.textContent = applicant["Nama lengkap:"] || "Calon Terpilih";
+          mobileBar.classList.remove("translate-y-full");
+        }
+      }
+
+      if (autoScroll && window.innerWidth < 1024) {
+        scrollToDetailPane();
+      }
+    }
+
+    function scrollToDetailPane() {
+      const el = document.getElementById("detailPaneContainer");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    function scrollToApplicantList() {
+      const el = document.getElementById("applicantListContainer");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    function navigateApplicant(direction) {
+      if (filteredApplicants.length === 0) return;
+      const currentIndex = filteredApplicants.findIndex(a => a.id === selectedApplicantId);
+      let newIndex = currentIndex + direction;
+      if (newIndex < 0) newIndex = filteredApplicants.length - 1;
+      if (newIndex >= filteredApplicants.length) newIndex = 0;
+      selectApplicant(filteredApplicants[newIndex].id, true);
+    }
+
+    // =========================================================================
+    // CANDIDATE DOSSIER & SCORING PANE (RIGHT COLUMN)
+    // =========================================================================
+    function renderDetailPane(id) {
+      const container = document.getElementById("detailPaneContainer");
+      if (!container) return;
+
+      if (!id) {
+        container.innerHTML = `
+          <div class="bg-white rounded-3xl p-10 text-center border border-cream-300 space-y-3">
+            <i class="fa-solid fa-user-check text-4xl text-slate-300"></i>
+            <h4 class="font-serif font-bold text-base text-deepGreen">Tidak Ada Pendaftar Terpilih</h4>
+            <p class="text-xs text-slate-500">Pilih salah satu calon anggota dari antrean di sebelah kiri.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const applicant = rawApplicants.find(a => a.id === id);
+      if (!applicant) return;
+
+      const name = applicant["Nama lengkap:"] || "Tanpa Nama";
+      const nim = applicant["NIM:"] || "-";
+      const prodi = applicant["Prodi:"] || "-";
+      const telegram = applicant["Username telegram:"] || "";
+      const role = applicant["Bergabung Sebagai"] || "anggota";
+      const div1 = applicant["Divisi Utama"] || "";
+      const div2 = applicant["Divisi Cadangan"] || "";
+      const timestamp = applicant["Timestamp"] || "-";
+      const agreement = applicant["Apakah anda setuju?"] || "Ya";
+
+      // Essay answers
+      const essayApaItu = applicant["Apa itu Rijal Dakwah?"] || "";
+      const essayKenapaTerima = applicant["Kenapa Rijal Dakwah harus menerima antum?"] || "";
+
+      // Technical & Media
+      const skillset = applicant["Skillset"] || "";
+      const device = applicant["Device"] || "";
+      const tools = applicant["Tools"] || "";
+
+      // Field & Characteristic
+      const kendaraan = applicant["Punya kendaraan"] || "";
+      const hafalanQuran = applicant["hafalan quran"] || "";
+      const depanKamera = applicant["Berani depan kamera?"] || "";
+      const ideKreatif = applicant["punya gudang ide kreatif"] || "";
+      // Keilmuan
+      const konsekuensiDakwah = applicant["Apa konsekensi seserang yang ingin mulai berdakwah?"] || "";
+      const pentingMateri = applicant["apa hal paling penting ketika menyusun sebuah materi?"] || "";
+      const materiLepasRD = applicant["apa yang antum lakukan dengan materi yang sudah antum susun selepas antum dari Rijal Dakwah"] || "";
+
+      // Humas & Organization
+      const alasanHumas = applicant["apa alasan antum memilih humas"] || "";
+      const pernahOrg = applicant["apakah pernah mengikuti organisasi/kepanitiaan sebelumnya?"] || "";
+      const peranOrg = applicant["jika pernah ceritakan secara singkat tentang peran atau tugas yang antum jalankan"] || "";
+      const kerjaKelompok = applicant["Jika belum pernah berorganisasi, ceritakan pengalaman antum bekerja sama dalam kelompok (kelas, masjid, teman, atau kegiatan lainnya)."] || "";
+      const tugasHumas = applicant["Menurut antum, apa tugas utama Divisi Humas dalam sebuah organisasi dakwah?"] || "";
+      const sebarMedsos = applicant["Pernahkah antum membuat atau membantu menyebarkan informasi, poster, broadcast, atau konten media sosial? Jika pernah, ceritakan secara singkat. Jika belum, jelaskan bagaimana antum ingin belajar melakukannya."] || "";
+      const kelebihanHumas = applicant["Apa kelebihan yang antum miliki yang dapat mendukung amanah di Divisi Humas?"] || "";
+      const harapanHumas = applicant["Apa harapan dan komitmen antum jika diterima menjadi anggota Divisi Humas Rijal Dakwah?"] || "";
+
+      // Existing Score & Notes
+      const scoreData = getApplicantScore(applicant) || {
+        status: 'unscored',
+        scoreAdab: 80,
+        scoreVisi: 80,
+        scoreKeahlian: 80,
+        scoreKomitmen: 80,
+        finalScore: 80,
+        recommendation: 'yes',
+        notes: '',
+        interviewer: currentInterviewerName
+      };
+
+      // Clean Telegram Link
+      let tgUrl = "";
+      let tgHandle = telegram.trim();
+      if (tgHandle) {
+        if (tgHandle.startsWith("@")) {
+          tgUrl = `https://t.me/${tgHandle.substring(1)}`;
+        } else if (tgHandle.includes("t.me/")) {
+          tgUrl = tgHandle;
+        } else {
+          tgUrl = `https://t.me/${encodeURIComponent(tgHandle.replace(/\s+/g, ''))}`;
+        }
+      }
+      // Duplicate Alert banner if candidate submitted multiple times
+      let duplicateAlert = '';
+      if (applicant._totalSubmissions > 1) {
+        duplicateAlert = `
+          <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 space-y-2.5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-xl bg-amber-200 text-amber-900 flex items-center justify-center font-bold text-sm shadow-sm flex-shrink-0">
+                  <i class="fa-solid fa-clock-rotate-left"></i>
+                </div>
+                <div>
+                  <div class="font-bold text-xs text-amber-950">Pendaftar Mengisi Form ${applicant._totalSubmissions} Kali</div>
+                  <div class="text-[11px] text-amber-800">Menampilkan Submisi #${applicant._submissionIndex} (${escapeHtml(timestamp)})</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-1.5 flex-wrap">
+                ${applicant._allSubmissions.map((sub, idx) => `
+                  <button 
+                    type="button" 
+                    onclick="selectApplicant(${sub.id})" 
+                    class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all shadow-sm ${
+                      sub.id === applicant.id 
+                        ? 'bg-amber-700 text-white ring-2 ring-amber-400' 
+                        : 'bg-white hover:bg-amber-100 text-amber-900 border border-amber-300'
+                    }"
+                  >
+                    Submisi #${idx + 1} ${idx + 1 === applicant._totalSubmissions ? '(Terbaru)' : '(Awal)'}
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+            <p class="text-[11px] text-amber-800 leading-relaxed">
+              Pendaftar ini tercatat mengirimkan formulir lebih dari sekali. Klik tombol submisi di atas untuk membandingkan riwayat jawaban antara submisi awal dan terbaru.
+            </p>
+          </div>
+        `;
+      }
+
+      container.innerHTML = `
+        <!-- ========================================================================= -->
+        <!-- CARD 1: IDENTITAS & AKSI CEPAT -->
+        <!-- ========================================================================= -->
+        <div class="bg-white rounded-3xl p-6 border border-cream-300 shadow-sm space-y-5">
+          
+          <!-- Header Bar with Navigation -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-cream-200">
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full ${
+                  role.toLowerCase() === 'pengurus' 
+                    ? 'bg-forestGreen text-white' 
+                    : 'bg-slate-200 text-slate-800'
+                }">
+                  Jalur: ${role.toUpperCase()}
+                </span>
+                <span class="text-xs text-slate-400 font-mono flex items-center gap-1">
+                  <i class="fa-regular fa-clock text-[11px]"></i>
+                  <span>Daftar: ${escapeHtml(timestamp)}</span>
+                </span>
+              </div>
+              <h2 class="font-serif font-bold text-xl sm:text-2xl text-deepGreen mt-1.5">
+                ${escapeHtml(name)}
+              </h2>
+              <div class="text-xs text-slate-600 flex items-center gap-2 mt-0.5 flex-wrap">
+                <span class="font-mono bg-cream-100 px-2 py-0.5 rounded border border-cream-300 font-bold text-deepGreen">${escapeHtml(nim)}</span>
+                <span>•</span>
+                <span class="font-medium text-forestGreen">${escapeHtml(prodi)}</span>
+                <span>•</span>
+                <span class="text-emerald-700 flex items-center gap-1 font-semibold">
+                  <i class="fa-solid fa-circle-check text-emerald-500"></i> Persetujuan Komitmen: ${escapeHtml(agreement)}
+                </span>
+              </div>
+            </div>
+
+            <!-- Quick Step Prev / Next Buttons & Mobile Jump -->
+            <div class="flex items-center space-x-1.5 self-start sm:self-center">
+              <button 
+                type="button" 
+                onclick="scrollToApplicantList()" 
+                class="lg:hidden p-2 rounded-xl bg-cream-100 hover:bg-cream-200 text-forestGreen border border-cream-300 text-xs font-bold transition-colors"
+                title="Kembali ke antrean pendaftar"
+              >
+                <i class="fa-solid fa-arrow-up mr-1"></i>Antrean
+              </button>
+              <button 
+                type="button" 
+                onclick="navigateApplicant(-1)" 
+                class="p-2 rounded-xl bg-cream-100 hover:bg-cream-200 text-forestGreen border border-cream-300 transition-colors"
+                title="Pendaftar Sebelumnya (Keyboard ↑)"
+              >
+                <i class="fa-solid fa-chevron-left text-xs"></i>
+              </button>
+              <button 
+                type="button" 
+                onclick="navigateApplicant(1)" 
+                class="p-2 rounded-xl bg-cream-100 hover:bg-cream-200 text-forestGreen border border-cream-300 transition-colors"
+                title="Pendaftar Berikutnya (Keyboard ↓)"
+              >
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+              </button>
+            </div>
+          </div>
+
+          ${duplicateAlert}
+
+          <!-- Division Choice & Quick Contacts -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            
+            <div class="bg-cream-50 p-3.5 rounded-2xl border border-cream-200">
+              <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Pilihan Divisi</div>
+              <div class="mt-1 space-y-1 text-xs">
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-500">Divisi Utama:</span>
+                  <span class="font-bold text-deepGreen">${escapeHtml(div1 || '-')}</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-500">Divisi Cadangan:</span>
+                  <span class="font-medium text-forestGreen">${escapeHtml(div2 || '-')}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-cream-50 p-3.5 rounded-2xl border border-cream-200">
+              <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Kontak & Verifikasi</div>
+              <div class="mt-1 space-y-1 text-xs">
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-500">Telegram:</span>
+                  <span class="font-mono font-bold text-sky-700 truncate max-w-[150px]">${escapeHtml(telegram || '-')}</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-500">Status Wawancara:</span>
+                  <span class="font-bold text-gold-dark">
+                    ${scoreData.status === 'scored' ? 'Selesai Dinilai' : (scoreData.status === 'in_progress' ? 'Sedang Wawancara' : 'Belum Dinilai')}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Action Buttons Bar -->
+          <div class="flex flex-wrap items-center gap-2 pt-1">
+            ${tgUrl ? `
+              <a 
+                href="${tgUrl}" 
+                target="_blank" 
+                class="px-3.5 py-2 rounded-xl text-xs font-bold bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-300 flex items-center gap-1.5 transition-colors shadow-sm"
+              >
+                <i class="fa-brands fa-telegram text-base text-sky-500"></i>
+                <span>Buka Chat Telegram</span>
+              </a>
+            ` : ''}
+
+            <button 
+              type="button" 
+              onclick="copyCandidateSummary(${applicant.id})" 
+              class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-cream-100 hover:bg-cream-200 text-deepGreen border border-cream-300 flex items-center gap-1.5 transition-colors shadow-sm"
+              title="Salin ringkasan profil untuk dibagikan di grup WhatsApp/Telegram panitia"
+            >
+              <i class="fa-regular fa-copy text-gold"></i>
+              <span>Salin Ringkasan Profil</span>
+            </button>
+
+            <button 
+              type="button" 
+              onclick="printCandidateSheet(${applicant.id})" 
+              class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-cream-100 hover:bg-cream-200 text-forestGreen border border-cream-300 flex items-center gap-1.5 transition-colors shadow-sm"
+              title="Cetak format penilaian fisik / simpan ke PDF"
+            >
+              <i class="fa-solid fa-print text-forestGreen"></i>
+              <span>Cetak Berkas / PDF</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- CARD 2: JAWABAN ESAI UMUM & MOTIVASI -->
+        <!-- ========================================================================= -->
+        <div class="bg-white rounded-3xl p-6 border border-cream-300 shadow-sm space-y-5">
+          
+          <div class="flex items-center space-x-2.5 pb-2 border-b border-cream-200">
+            <div class="w-8 h-8 rounded-lg bg-gold/20 flex items-center justify-center text-gold text-sm font-bold">
+              <i class="fa-solid fa-quote-left"></i>
+            </div>
+            <div>
+              <h3 class="font-serif font-bold text-base text-deepGreen">Esai Inti & Wawasan Organisasi</h3>
+              <p class="text-[11px] text-slate-500">Pemahaman pendaftar tentang dakwah dan motivasi bergabung</p>
+            </div>
+          </div>
+
+          <!-- Pertanyaan 1: Apa itu Rijal Dakwah? -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-forestGreen flex items-center gap-1.5">
+                <i class="fa-solid fa-circle-question text-gold"></i>
+                <span>Apa itu Rijal Dakwah menurut antum?</span>
+              </span>
+              <button 
+                type="button" 
+                onclick="copyText('${escapeQuotes(essayApaItu)}')" 
+                class="text-[11px] text-slate-400 hover:text-gold" 
+                title="Salin jawaban"
+              >
+                <i class="fa-regular fa-copy"></i>
+              </button>
+            </div>
+            <div class="p-4 rounded-2xl bg-cream-50 border border-cream-300 text-xs sm:text-sm text-charcoal leading-relaxed whitespace-pre-wrap font-sans">
+              ${essayApaItu ? escapeHtml(essayApaItu) : '<span class="text-slate-400 italic">Tidak ada jawaban.</span>'}
+            </div>
+          </div>
+
+          <!-- Pertanyaan 2: Kenapa Rijal Dakwah harus menerima antum? -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-forestGreen flex items-center gap-1.5">
+                <i class="fa-solid fa-circle-question text-gold"></i>
+                <span>Kenapa Rijal Dakwah harus menerima antum?</span>
+              </span>
+              <button 
+                type="button" 
+                onclick="copyText('${escapeQuotes(essayKenapaTerima)}')" 
+                class="text-[11px] text-slate-400 hover:text-gold" 
+                title="Salin jawaban"
+              >
+                <i class="fa-regular fa-copy"></i>
+              </button>
+            </div>
+            <div class="p-4 rounded-2xl bg-cream-50 border border-cream-300 text-xs sm:text-sm text-charcoal leading-relaxed whitespace-pre-wrap font-sans">
+              ${essayKenapaTerima ? escapeHtml(essayKenapaTerima) : '<span class="text-slate-400 italic">Tidak ada jawaban.</span>'}
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- CARD 3: KETERAMPILAN & JAWABAN SPESIFIK DIVISI -->
+        <!-- ========================================================================= -->
+        ${renderSpecificDivisionSection(applicant)}
+
+        <!-- ========================================================================= -->
+        <!-- CARD 4: LEMBAR PENILAIAN & CATATAN WAWANCARA (EVALUATION FORM) -->
+        <!-- ========================================================================= -->
+        <div class="bg-white rounded-3xl p-6 sm:p-7 border-2 border-gold shadow-lg space-y-6">
+          
+          <div class="flex items-center justify-between pb-3 border-b border-gold/30">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-forestGreen text-gold flex items-center justify-center text-lg font-bold shadow-sm">
+                <i class="fa-solid fa-pen-nib"></i>
+              </div>
+              <div>
+                <h3 class="font-serif font-bold text-lg text-deepGreen">Lembar Penilaian Wawancara</h3>
+                <p class="text-xs text-slate-500">Diisi oleh panitia evaluator saat sesi wawancara berlangsung</p>
+              </div>
+            </div>
+
+            <!-- Status Toggle -->
+            <div>
+              <select 
+                id="interviewStatusSelect" 
+                class="text-xs font-bold px-3 py-1.5 rounded-xl border border-cream-300 bg-cream-50 text-deepGreen outline-none"
+              >
+                <option value="unscored" ${scoreData.status === 'unscored' ? 'selected' : ''}>Status: Belum Diwawancarai</option>
+                <option value="in_progress" ${scoreData.status === 'in_progress' ? 'selected' : ''}>Status: Sedang Wawancara</option>
+                <option value="scored" ${scoreData.status === 'scored' ? 'selected' : ''}>Status: Selesai Dinilai</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Preset Nilai Cepat -->
+          <div class="flex items-center justify-between gap-2 pb-2.5 border-b border-cream-200 flex-wrap">
+            <span class="text-[11px] font-bold text-slate-500 flex items-center gap-1.5">
+              <i class="fa-solid fa-wand-magic-sparkles text-gold"></i>
+              <span>Preset Nilai Cepat:</span>
+            </span>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <button type="button" onclick="applyScorePreset(95)" class="px-2.5 py-1 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-800 text-[11px] font-bold transition-colors">A (95)</button>
+              <button type="button" onclick="applyScorePreset(88)" class="px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-[11px] font-bold transition-colors">B+ (88)</button>
+              <button type="button" onclick="applyScorePreset(80)" class="px-2.5 py-1 rounded-lg bg-cream-200 hover:bg-cream-300 text-deepGreen text-[11px] font-bold transition-colors">B (80)</button>
+              <button type="button" onclick="applyScorePreset(70)" class="px-2.5 py-1 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-800 text-[11px] font-bold transition-colors">C (70)</button>
+              <button type="button" onclick="applyScorePreset(55)" class="px-2.5 py-1 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-800 text-[11px] font-bold transition-colors">D (55)</button>
+            </div>
+          </div>
+
+          <!-- Scoring Sliders Grid (4 Rubrik Penilaian) -->
+          <div class="space-y-4 bg-cream-50 p-4 sm:p-5 rounded-2xl border border-cream-300">
+            <div class="text-xs font-bold text-deepGreen uppercase tracking-wider flex items-center justify-between">
+              <span>Rubrik Penilaian Objektif (Bobot 100%)</span>
+              <span class="text-gold-dark font-extrabold text-sm" id="scorePreviewBadge">
+                Nilai Akhir: ${scoreData.finalScore || 80}/100
+              </span>
+            </div>
+
+            <!-- Rubrik 1: Adab, Akhlak & Etika Komunikasi (25%) -->
+            <div class="space-y-1">
+              <div class="flex justify-between text-xs font-semibold text-charcoal">
+                <span>1. Adab, Akhlak & Kesantunan Komunikasi (25%)</span>
+                <span id="labelScoreAdab" class="font-bold text-forestGreen">${scoreData.scoreAdab || 80}</span>
+              </div>
+              <input 
+                type="range" 
+                id="scoreAdab" 
+                min="40" 
+                max="100" 
+                value="${scoreData.scoreAdab || 80}" 
+                oninput="calculateLiveScore()" 
+                class="w-full h-2 bg-cream-300 rounded-lg appearance-none cursor-pointer"
+              />
+              <div class="flex justify-between text-[10px] text-slate-400">
+                <span>Kurang (40)</span>
+                <span>Cukup (70)</span>
+                <span>Baik (85)</span>
+                <span>Istimewa (100)</span>
+              </div>
+            </div>
+
+            <!-- Rubrik 2: Pemahaman Visi & Motivasi Dakwah (25%) -->
+            <div class="space-y-1 pt-1">
+              <div class="flex justify-between text-xs font-semibold text-charcoal">
+                <span>2. Pemahaman Visi Dakwah & Niat/Motivasi (25%)</span>
+                <span id="labelScoreVisi" class="font-bold text-forestGreen">${scoreData.scoreVisi || 80}</span>
+              </div>
+              <input 
+                type="range" 
+                id="scoreVisi" 
+                min="40" 
+                max="100" 
+                value="${scoreData.scoreVisi || 80}" 
+                oninput="calculateLiveScore()" 
+                class="w-full h-2 bg-cream-300 rounded-lg appearance-none cursor-pointer"
+              />
+              <div class="flex justify-between text-[10px] text-slate-400">
+                <span>Kurang (40)</span>
+                <span>Cukup (70)</span>
+                <span>Baik (85)</span>
+                <span>Istimewa (100)</span>
+              </div>
+            </div>
+
+            <!-- Rubrik 3: Kompetensi Teknis / Kesiapan Divisi (30%) -->
+            <div class="space-y-1 pt-1">
+              <div class="flex justify-between text-xs font-semibold text-charcoal">
+                <span>3. Kompetensi Teknis / Kesesuaian Bidang (30%)</span>
+                <span id="labelScoreKeahlian" class="font-bold text-forestGreen">${scoreData.scoreKeahlian || 80}</span>
+              </div>
+              <input 
+                type="range" 
+                id="scoreKeahlian" 
+                min="40" 
+                max="100" 
+                value="${scoreData.scoreKeahlian || 80}" 
+                oninput="calculateLiveScore()" 
+                class="w-full h-2 bg-cream-300 rounded-lg appearance-none cursor-pointer"
+              />
+              <div class="flex justify-between text-[10px] text-slate-400">
+                <span>Kurang (40)</span>
+                <span>Cukup (70)</span>
+                <span>Baik (85)</span>
+                <span>Istimewa (100)</span>
+              </div>
+            </div>
+
+            <!-- Rubrik 4: Komitmen Waktu & Amanah (20%) -->
+            <div class="space-y-1 pt-1">
+              <div class="flex justify-between text-xs font-semibold text-charcoal">
+                <span>4. Komitmen Waktu, Loyalitas & Kesiapan Amanah (20%)</span>
+                <span id="labelScoreKomitmen" class="font-bold text-forestGreen">${scoreData.scoreKomitmen || 80}</span>
+              </div>
+              <input 
+                type="range" 
+                id="scoreKomitmen" 
+                min="40" 
+                max="100" 
+                value="${scoreData.scoreKomitmen || 80}" 
+                oninput="calculateLiveScore()" 
+                class="w-full h-2 bg-cream-300 rounded-lg appearance-none cursor-pointer"
+              />
+              <div class="flex justify-between text-[10px] text-slate-400">
+                <span>Kurang (40)</span>
+                <span>Cukup (70)</span>
+                <span>Baik (85)</span>
+                <span>Istimewa (100)</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Rekomendasi Keputusan Akhir -->
+          <div class="space-y-2">
+            <label class="text-xs font-bold text-deepGreen block">
+              Rekomendasi Keputusan Pewawancara:
+            </label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              
+              <label class="p-2.5 rounded-xl border border-cream-300 bg-cream-50 hover:bg-emerald-50 cursor-pointer flex items-center space-x-2 transition-colors">
+                <input type="radio" name="recommendation" value="priority" ${scoreData.recommendation === 'priority' ? 'checked' : ''} class="text-emerald-600 focus:ring-emerald-500">
+                <span class="font-bold text-emerald-800">★ Sangat Direkomendasikan (Prioritas)</span>
+              </label>
+
+              <label class="p-2.5 rounded-xl border border-cream-300 bg-cream-50 hover:bg-emerald-50 cursor-pointer flex items-center space-x-2 transition-colors">
+                <input type="radio" name="recommendation" value="yes" ${scoreData.recommendation === 'yes' ? 'checked' : ''} class="text-emerald-600 focus:ring-emerald-500">
+                <span class="font-semibold text-emerald-700">Direkomendasikan (Lolos)</span>
+              </label>
+
+              <label class="p-2.5 rounded-xl border border-cream-300 bg-cream-50 hover:bg-amber-50 cursor-pointer flex items-center space-x-2 transition-colors">
+                <input type="radio" name="recommendation" value="backup" ${scoreData.recommendation === 'backup' ? 'checked' : ''} class="text-amber-600 focus:ring-amber-500">
+                <span class="font-semibold text-amber-800">Pertimbangkan / Masuk Cadangan</span>
+              </label>
+
+              <label class="p-2.5 rounded-xl border border-cream-300 bg-cream-50 hover:bg-blue-50 cursor-pointer flex items-center space-x-2 transition-colors">
+                <input type="radio" name="recommendation" value="redirect_div" ${scoreData.recommendation === 'redirect_div' ? 'checked' : ''} class="text-blue-600 focus:ring-blue-500">
+                <span class="font-semibold text-blue-800">Dialihkan ke Divisi Lain</span>
+              </label>
+
+              <label class="p-2.5 rounded-xl border border-cream-300 bg-cream-50 hover:bg-blue-50 cursor-pointer flex items-center space-x-2 transition-colors">
+                <input type="radio" name="recommendation" value="redirect_member" ${scoreData.recommendation === 'redirect_member' ? 'checked' : ''} class="text-blue-600 focus:ring-blue-500">
+                <span class="font-semibold text-blue-800">Dialihkan ke Anggota Biasa</span>
+              </label>
+
+              <label class="p-2.5 rounded-xl border border-cream-300 bg-cream-50 hover:bg-rose-50 cursor-pointer flex items-center space-x-2 transition-colors">
+                <input type="radio" name="recommendation" value="reject" ${scoreData.recommendation === 'reject' ? 'checked' : ''} class="text-rose-600 focus:ring-rose-500">
+                <span class="font-semibold text-rose-700">Tidak Direkomendasikan</span>
+              </label>
+
+            </div>
+          </div>
+
+          <!-- Catatan Bebas Pewawancara -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center">
+              <label class="text-xs font-bold text-deepGreen">
+                Catatan Bebas Pewawancara / Ulasan Sesi:
+              </label>
+              <span id="autoSaveIndicator" class="text-[11px] text-slate-400">Penyimpanan otomatis aktif</span>
+            </div>
+            <textarea 
+              id="interviewNotesInput" 
+              rows="4" 
+              oninput="handleNotesTyping(${applicant.id})"
+              placeholder="Tuliskan catatan jalannya wawancara, respon calon saat diuji, pemahaman akidah/manhaj, kesiapan waktu, atau hal krusial lainnya..."
+              class="w-full p-3.5 text-xs sm:text-sm rounded-2xl border border-cream-300 bg-cream-50 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none text-deepGreen font-sans leading-relaxed"
+            >${escapeHtml(scoreData.notes || '')}</textarea>
+          </div>
+
+          <!-- Nama Pewawancara & Tombol Simpan -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-cream-200">
+            <div class="w-full sm:w-auto flex items-center space-x-2 text-xs">
+              <span class="text-slate-500">Pewawancara:</span>
+              <input 
+                type="text" 
+                id="interviewerNameInput" 
+                value="${escapeHtml(scoreData.interviewer || currentInterviewerName || '')}" 
+                placeholder="Nama antum..." 
+                class="px-3 py-1.5 rounded-xl border border-cream-300 bg-cream-50 focus:border-gold outline-none text-xs font-semibold text-deepGreen w-40"
+              />
+            </div>
+
+            <div class="flex items-center space-x-2 w-full sm:w-auto">
+              <button 
+                type="button" 
+                onclick="resetCurrentScore(${applicant.id})" 
+                class="px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-500 hover:text-rose-600 bg-cream-100 hover:bg-rose-50 border border-cream-300 transition-colors"
+                title="Hapus penilaian untuk calon ini"
+              >
+                Reset Nilai
+              </button>
+
+              <button 
+                type="button" 
+                onclick="saveCurrentScore(${applicant.id})" 
+                class="flex-1 sm:flex-initial btn-gold px-6 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-md hover:scale-[1.02] transition-transform"
+              >
+                <i class="fa-solid fa-floppy-disk"></i>
+                <span>Simpan Nilai & Catatan</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      `;
+    }
+
+    // Helper to render specific technical & division answers
+    function renderSpecificDivisionSection(applicant) {
+      const role = (applicant["Bergabung Sebagai"] || "").toLowerCase();
+      const div1 = applicant["Divisi Utama"] || "";
+      const div2 = applicant["Divisi Cadangan"] || "";
+
+      // Technical skills (Media)
+      const skillset = applicant["Skillset"] || "";
+      const device = applicant["Device"] || "";
+      const tools = applicant["Tools"] || "";
+
+      // TPQ
+      const kendaraan = applicant["Punya kendaraan"] || "";
+      const hafalanQuran = applicant["hafalan quran"] || "";
+
+      // Dakwah Digital
+      const depanKamera = applicant["Berani depan kamera?"] || "";
+      const ideKreatif = applicant["punya gudang ide kreatif"] || "";
+
+      // Keilmuan
+      const konsekuensiDakwah = applicant["Apa konsekensi seserang yang ingin mulai berdakwah?"] || "";
+      const pentingMateri = applicant["apa hal paling penting ketika menyusun sebuah materi?"] || "";
+      const materiLepasRD = applicant["apa yang antum lakukan dengan materi yang sudah antum susun selepas antum dari Rijal Dakwah"] || "";
+
+      // Humas
+      const alasanHumas = applicant["apa alasan antum memilih humas"] || "";
+      const pernahOrg = applicant["apakah pernah mengikuti organisasi/kepanitiaan sebelumnya?"] || "";
+      const peranOrg = applicant["jika pernah ceritakan secara singkat tentang peran atau tugas yang antum jalankan"] || "";
+      const kerjaKelompok = applicant["Jika belum pernah berorganisasi, ceritakan pengalaman antum bekerja sama dalam kelompok (kelas, masjid, teman, atau kegiatan lainnya)."] || "";
+      const tugasHumas = applicant["Menurut antum, apa tugas utama Divisi Humas dalam sebuah organisasi dakwah?"] || "";
+      const sebarMedsos = applicant["Pernahkah antum membuat atau membantu menyebarkan informasi, poster, broadcast, atau konten media sosial? Jika pernah, ceritakan secara singkat. Jika belum, jelaskan bagaimana antum ingin belajar melakukannya."] || "";
+      const kelebihanHumas = applicant["Apa kelebihan yang antum miliki yang dapat mendukung amanah di Divisi Humas?"] || "";
+      const harapanHumas = applicant["Apa harapan dan komitmen antum jika diterima menjadi anggota Divisi Humas Rijal Dakwah?"] || "";
+
+      const hasTechnical = skillset || device || tools;
+      const hasTPQ = kendaraan || hafalanQuran;
+      const hasDakwahDigital = depanKamera || ideKreatif;
+      const hasKeilmuan = konsekuensiDakwah || pentingMateri || materiLepasRD;
+      const hasHumas = alasanHumas || pernahOrg || peranOrg || kerjaKelompok || tugasHumas || sebarMedsos || kelebihanHumas || harapanHumas;
+
+      let contentHtml = '';
+
+      // 1. Media Section
+      if (hasTechnical) {
+        const skillPills = skillset ? skillset.split(',').map(s => `<span class="bg-forestGreen text-white text-xs font-semibold px-3 py-1 rounded-full shadow-sm">${escapeHtml(s.trim())}</span>`).join(' ') : '<span class="text-slate-400 text-xs italic">-</span>';
+        const devicePills = device ? device.split(',').map(d => `<span class="bg-cream-200 text-deepGreen text-xs font-medium px-3 py-1 rounded-full border border-cream-300">${escapeHtml(d.trim())}</span>`).join(' ') : '<span class="text-slate-400 text-xs italic">-</span>';
+        const toolPills = tools ? tools.split(',').map(t => `<span class="bg-gold/20 text-gold-dark text-xs font-bold px-3 py-1 rounded-full border border-gold/40">${escapeHtml(t.trim())}</span>`).join(' ') : '<span class="text-slate-400 text-xs italic">-</span>';
+
+        contentHtml += `
+          <div class="space-y-3 bg-cream-50 p-4 rounded-2xl border border-cream-200">
+            <div class="text-xs font-bold text-forestGreen uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-camera-retro text-gold"></i>
+              <span>Divisi Media: Kemampuan Teknis, Perangkat & Software</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="bg-white p-3 rounded-xl border border-cream-300">
+                <div class="text-[11px] font-bold text-slate-500 mb-1.5">Skillset:</div>
+                <div class="flex flex-wrap gap-1">${skillPills}</div>
+              </div>
+              <div class="bg-white p-3 rounded-xl border border-cream-300">
+                <div class="text-[11px] font-bold text-slate-500 mb-1.5">Device Dimiliki:</div>
+                <div class="flex flex-wrap gap-1">${devicePills}</div>
+              </div>
+              <div class="bg-white p-3 rounded-xl border border-cream-300">
+                <div class="text-[11px] font-bold text-slate-500 mb-1.5">Software / Tools:</div>
+                <div class="flex flex-wrap gap-1">${toolPills}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // 2. TPQ Section
+      if (hasTPQ) {
+        contentHtml += `
+          <div class="space-y-3 bg-cream-50 p-4 rounded-2xl border border-cream-200 mt-3">
+            <div class="text-xs font-bold text-forestGreen uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-book-quran text-gold"></i>
+              <span>Divisi TPQ: Kesiapan Mengajar & Hafalan Qur'an</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div class="bg-white p-3.5 rounded-xl border border-cream-300 flex items-center justify-between">
+                <span class="text-slate-600 font-medium">Memiliki Kendaraan:</span>
+                <span class="font-bold text-deepGreen px-3 py-1 bg-cream-100 rounded-lg border border-cream-300">${escapeHtml(kendaraan || '-')}</span>
+              </div>
+              <div class="bg-white p-3.5 rounded-xl border border-cream-300 flex items-center justify-between">
+                <span class="text-slate-600 font-medium">Hafalan Qur'an:</span>
+                <span class="font-bold text-forestGreen px-3 py-1 bg-emerald-50 rounded-lg border border-emerald-200">${escapeHtml(hafalanQuran || '-')}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // 3. Dakwah Digital Section
+      if (hasDakwahDigital) {
+        contentHtml += `
+          <div class="space-y-3 bg-cream-50 p-4 rounded-2xl border border-cream-200 mt-3">
+            <div class="text-xs font-bold text-forestGreen uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-video text-gold"></i>
+              <span>Divisi Dakwah Digital: Keberanian Tampil & Kreativitas</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div class="bg-white p-3.5 rounded-xl border border-cream-300 flex items-center justify-between">
+                <span class="text-slate-600 font-medium">Berani di Depan Kamera:</span>
+                <span class="font-bold text-deepGreen px-3 py-1 bg-cream-100 rounded-lg border border-cream-300">${escapeHtml(depanKamera || '-')}</span>
+              </div>
+              <div class="bg-white p-3.5 rounded-xl border border-cream-300 flex items-center justify-between">
+                <span class="text-slate-600 font-medium">Gudang Ide Kreatif:</span>
+                <span class="font-bold text-deepGreen px-3 py-1 bg-cream-100 rounded-lg border border-cream-300">${escapeHtml(ideKreatif || '-')}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // 4. Keilmuan Section
+      if (hasKeilmuan) {
+        contentHtml += `
+          <div class="space-y-3 bg-cream-50 p-4 rounded-2xl border border-cream-200 mt-3">
+            <div class="text-xs font-bold text-forestGreen uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-graduation-cap text-gold"></i>
+              <span>Divisi Keilmuan: Wawasan Dakwah & Penyusunan Materi</span>
+            </div>
+
+            ${konsekuensiDakwah ? `
+              <div class="bg-white p-3 rounded-xl border border-cream-300 text-xs">
+                <span class="font-bold text-forestGreen block mb-1">Apa konsekuensi seseorang yang ingin mulai berdakwah?</span>
+                <p class="text-slate-700 leading-relaxed">${escapeHtml(konsekuensiDakwah)}</p>
+              </div>
+            ` : ''}
+
+            ${pentingMateri ? `
+              <div class="bg-white p-3 rounded-xl border border-cream-300 text-xs">
+                <span class="font-bold text-forestGreen block mb-1">Apa hal paling penting ketika menyusun sebuah materi?</span>
+                <p class="text-slate-700 leading-relaxed">${escapeHtml(pentingMateri)}</p>
+              </div>
+            ` : ''}
+
+            ${materiLepasRD ? `
+              <div class="bg-white p-3 rounded-xl border border-cream-300 text-xs">
+                <span class="font-bold text-forestGreen block mb-1">Apa yang antum lakukan dengan materi yang disusun selepas dari Rijal Dakwah?</span>
+                <p class="text-slate-700 leading-relaxed">${escapeHtml(materiLepasRD)}</p>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }
+
+      // 5. Humas Section
+      if (hasHumas) {
+        contentHtml += `
+          <div class="space-y-3 bg-cream-50 p-4 rounded-2xl border border-cream-200 mt-3">
+            <div class="text-xs font-bold text-forestGreen uppercase tracking-wider flex items-center gap-1.5">
+              <i class="fa-solid fa-handshake-angle text-gold"></i>
+              <span>Divisi Humas: Pengalaman Organisasi & Relasi Publik</span>
+            </div>
+
+            ${alasanHumas ? `
+              <div class="bg-white p-3 rounded-xl border border-cream-300 text-xs">
+                <span class="font-bold text-forestGreen block mb-1">Alasan memilih Divisi Humas:</span>
+                <p class="text-slate-700">${escapeHtml(alasanHumas)}</p>
+              </div>
+            ` : ''}
+
+            ${pernahOrg ? `
+              <div class="bg-white p-3 rounded-xl border border-cream-300 text-xs">
+                <span class="font-bold text-forestGreen block mb-1">Pengalaman Organisasi / Kepanitiaan:</span>
+                <p class="text-slate-700 font-semibold mb-1">${escapeHtml(pernahOrg)}</p>
+                ${peranOrg ? `<p class="text-slate-600 italic">Peran/tugas: ${escapeHtml(peranOrg)}</p>` : ''}
+              </div>
+            ` : ''}
+
+            ${kerjaKelompok ? `
+              <div class="bg-white p-3 rounded-xl border border-cream-300 text-xs">
+                <span class="font-bold text-forestGreen block mb-1">Pengalaman Kerjasama Kelompok:</span>
+                <p class="text-slate-700">${escapeHtml(kerjaKelompok)}</p>
+              </div>
+            ` : ''}
+
+            ${tugasHumas ? `
+              <div class="bg-white p-3 rounded-xl border border-cream-300 text-xs">
+                <span class="font-bold text-forestGreen block mb-1">Tugas Utama Humas menurut antum:</span>
+                <p class="text-slate-700">${escapeHtml(tugasHumas)}</p>
+              </div>
+            ` : ''}
+
+            ${sebarMedsos ? `
+              <div class="bg-white p-3 rounded-xl border border-cream-300 text-xs">
+                <span class="font-bold text-forestGreen block mb-1">Pengalaman Publikasi / Sebar Informasi:</span>
+                <p class="text-slate-700">${escapeHtml(sebarMedsos)}</p>
+              </div>
+            ` : ''}
+
+            ${kelebihanHumas ? `
+              <div class="bg-white p-3 rounded-xl border border-cream-300 text-xs">
+                <span class="font-bold text-forestGreen block mb-1">Kelebihan yang mendukung amanah Humas:</span>
+                <p class="text-slate-700">${escapeHtml(kelebihanHumas)}</p>
+              </div>
+            ` : ''}
+
+            ${harapanHumas ? `
+              <div class="bg-white p-3 rounded-xl border border-cream-300 text-xs">
+                <span class="font-bold text-forestGreen block mb-1">Harapan & Komitmen di Humas:</span>
+                <p class="text-slate-700">${escapeHtml(harapanHumas)}</p>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }
+
+      // 6. Overview for other divisions (Acara, Inventaris, Dana Usaha, Anggota)
+      if (!contentHtml) {
+        const divName = div1 || (role === 'anggota' ? 'Keanggotaan Umum' : 'Struktur Organisasi');
+        contentHtml = `
+          <div class="p-4 bg-cream-50 rounded-2xl border border-cream-200 text-xs space-y-2">
+            <div class="font-bold text-forestGreen flex items-center gap-1.5">
+              <i class="fa-solid fa-circle-info text-gold"></i>
+              <span>Fokus Wawancara untuk ${escapeHtml(divName)}</span>
+            </div>
+            <p class="text-slate-600 leading-relaxed">
+              Calon ini mendaftar pada <strong>${escapeHtml(divName)}</strong>. Pada formulir pendaftaran, bidang ini tidak memerlukan pertanyaan teknis tambahan khusus.
+            </p>
+            <div class="pt-1.5 border-t border-cream-200 text-[11px] text-slate-500">
+              <strong>Poin Evaluasi yang Disarankan:</strong> Kedisiplinan waktu, inisiatif kerja tim, kepatuhan arahan pengurus, kesiapan hadir di kegiatan offline, serta kekuatan adab dan akidah.
+            </div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="bg-white rounded-3xl p-6 border border-cream-300 shadow-sm space-y-4">
+          <div class="flex items-center space-x-2.5 pb-2 border-b border-cream-200">
+            <div class="w-8 h-8 rounded-lg bg-emeraldGreen/20 text-emeraldGreen flex items-center justify-center text-sm font-bold">
+              <i class="fa-solid fa-sliders"></i>
+            </div>
+            <div>
+              <h3 class="font-serif font-bold text-base text-deepGreen">Keahlian & Jawaban Spesifik Bidang</h3>
+              <p class="text-[11px] text-slate-500">Pertanyaan cabang yang diisi pendaftar sesuai pilihan minatnya</p>
+            </div>
+          </div>
+          ${contentHtml}
+        </div>
+      `;
+    }
+
+    // Live calculate final score from rubric sliders
+    function calculateLiveScore() {
+      const adab = parseInt(document.getElementById("scoreAdab")?.value || 80);
+      const visi = parseInt(document.getElementById("scoreVisi")?.value || 80);
+      const keahlian = parseInt(document.getElementById("scoreKeahlian")?.value || 80);
+      const komitmen = parseInt(document.getElementById("scoreKomitmen")?.value || 80);
+
+      document.getElementById("labelScoreAdab").textContent = adab;
+      document.getElementById("labelScoreVisi").textContent = visi;
+      document.getElementById("labelScoreKeahlian").textContent = keahlian;
+      document.getElementById("labelScoreKomitmen").textContent = komitmen;
+
+      // Weighted average: Adab 25%, Visi 25%, Keahlian 30%, Komitmen 20%
+      const finalScore = Math.round((adab * 0.25) + (visi * 0.25) + (keahlian * 0.30) + (komitmen * 0.20));
+
+      const previewBadge = document.getElementById("scorePreviewBadge");
+      if (previewBadge) {
+        previewBadge.textContent = `Nilai Akhir: ${finalScore}/100`;
+      }
+      return finalScore;
+    }
+
+    // Preset scoring buttons handler
+    function applyScorePreset(val) {
+      const adabEl = document.getElementById("scoreAdab");
+      const visiEl = document.getElementById("scoreVisi");
+      const keahlianEl = document.getElementById("scoreKeahlian");
+      const komitmenEl = document.getElementById("scoreKomitmen");
+
+      if (adabEl) adabEl.value = val;
+      if (visiEl) visiEl.value = val;
+      if (keahlianEl) keahlianEl.value = val;
+      if (komitmenEl) komitmenEl.value = val;
+
+      calculateLiveScore();
+      if (selectedApplicantId) {
+        saveCurrentScore(selectedApplicantId, true);
+      }
+    }
+
+    // Debounced notes auto-saver
+    let notesDebounceTimer = null;
+    function handleNotesTyping(id) {
+      const indicator = document.getElementById("autoSaveIndicator");
+      if (indicator) {
+        indicator.textContent = "Menyimpan catatan...";
+        indicator.className = "text-[11px] text-amber-600 font-medium";
+      }
+
+      clearTimeout(notesDebounceTimer);
+      notesDebounceTimer = setTimeout(() => {
+        saveCurrentScore(id, true);
+        if (indicator) {
+          indicator.textContent = "Tersimpan otomatis ✓";
+          indicator.className = "text-[11px] text-emerald-600 font-medium";
+        }
+      }, 800);
+    }
+
+    // =========================================================================
+    // LOCALSTORAGE & SCORING STORAGE
+    // =========================================================================
+    function getApplicantKey(applicant) {
+      const nim = (applicant["NIM:"] || "").trim();
+      if (nim) return `nim_${nim}`;
+      return `id_${applicant.id}`;
+    }
+
+    function getApplicantScore(applicant) {
+      const key = getApplicantKey(applicant);
+      return interviewScores[key] || null;
+    }
+
+    function saveCurrentScore(id, isSilent = false) {
+      const applicant = rawApplicants.find(a => a.id === id);
+      if (!applicant) return;
+
+      const key = getApplicantKey(applicant);
+      let status = document.getElementById("interviewStatusSelect")?.value || "scored";
+      if (status === "unscored") {
+        status = "scored";
+        const selectEl = document.getElementById("interviewStatusSelect");
+        if (selectEl) selectEl.value = "scored";
+      }
+      const adab = parseInt(document.getElementById("scoreAdab")?.value || 80);
+      const visi = parseInt(document.getElementById("scoreVisi")?.value || 80);
+      const keahlian = parseInt(document.getElementById("scoreKeahlian")?.value || 80);
+      const komitmen = parseInt(document.getElementById("scoreKomitmen")?.value || 80);
+      const finalScore = Math.round((adab * 0.25) + (visi * 0.25) + (keahlian * 0.30) + (komitmen * 0.20));
+      
+      const recomRadios = document.getElementsByName("recommendation");
+      let recommendation = "yes";
+      for (const r of recomRadios) {
+        if (r.checked) {
+          recommendation = r.value;
+          break;
+        }
+      }
+
+      const notes = document.getElementById("interviewNotesInput")?.value || "";
+      const interviewer = document.getElementById("interviewerNameInput")?.value || currentInterviewerName;
+
+      // Save interviewer name globally
+      if (interviewer) {
+        saveInterviewerName(interviewer);
+      }
+
+      interviewScores[key] = {
+        applicantId: applicant.id,
+        applicantNim: applicant["NIM:"] || "",
+        applicantName: applicant["Nama lengkap:"] || "",
+        status: status,
+        scoreAdab: adab,
+        scoreVisi: visi,
+        scoreKeahlian: keahlian,
+        scoreKomitmen: komitmen,
+        finalScore: finalScore,
+        recommendation: recommendation,
+        notes: notes,
+        interviewer: interviewer,
+        updatedAt: new Date().toISOString()
+      };
+
+      persistScores();
+      updateStats();
+      renderApplicantList();
+      if (!isSilent) {
+        showToast("Tersimpan", `Nilai untuk ${applicant["Nama lengkap:"] || "calon"} berhasil disimpan.`);
+      }
+    }
+
+    function resetCurrentScore(id) {
+      const applicant = rawApplicants.find(a => a.id === id);
+      if (!applicant) return;
+
+      if (!confirm(`Hapus seluruh penilaian untuk ${applicant["Nama lengkap:"]}?`)) return;
+
+      const key = getApplicantKey(applicant);
+      delete interviewScores[key];
+      persistScores();
+      updateStats();
+      renderApplicantList();
+      renderDetailPane(id);
+      showToast("Reset Berhasil", "Data nilai calon telah direset ke awal.", "amber");
+    }
+
+    function persistScores() {
+      try {
+        localStorage.setItem(STORAGE_KEY_SCORES, JSON.stringify(interviewScores));
+      } catch (e) {
+        console.error("Failed to save to localStorage:", e);
+      }
+    }
+
+    function loadStoredScores() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY_SCORES);
+        if (stored) {
+          interviewScores = JSON.parse(stored);
+        }
+      } catch (e) {
+        console.error("Failed to load scores from localStorage:", e);
+        interviewScores = {};
+      }
+    }
+
+    function loadInterviewerName() {
+      try {
+        currentInterviewerName = localStorage.getItem(STORAGE_KEY_INTERVIEWER) || "";
+        const input = document.getElementById("interviewerNameGlobal");
+        if (input) input.value = currentInterviewerName;
+      } catch (e) {}
+    }
+
+    function saveInterviewerName(name) {
+      currentInterviewerName = name.trim();
+      try {
+        localStorage.setItem(STORAGE_KEY_INTERVIEWER, currentInterviewerName);
+      } catch (e) {}
+    }
+
+    // =========================================================================
+    // EXPORT REKAP & BACKUP SYSTEM
+    // =========================================================================
+    function exportInterviewRecap() {
+      if (rawApplicants.length === 0) {
+        alert("Tidak ada data pendaftar untuk diekspor.");
+        return;
+      }
+
+      const rows = rawApplicants.map((applicant, index) => {
+        const scoreData = getApplicantScore(applicant) || {};
+        
+        let recomLabel = "Belum Ada";
+        if (scoreData.recommendation === 'priority') recomLabel = "Sangat Direkomendasikan (Prioritas)";
+        else if (scoreData.recommendation === 'yes') recomLabel = "Direkomendasikan (Lolos)";
+        else if (scoreData.recommendation === 'backup') recomLabel = "Cadangan / Pertimbangkan";
+        else if (scoreData.recommendation === 'redirect_div') recomLabel = "Dialihkan ke Divisi Lain";
+        else if (scoreData.recommendation === 'redirect_member') recomLabel = "Dialihkan ke Anggota";
+        else if (scoreData.recommendation === 'reject') recomLabel = "Tidak Direkomendasikan";
+
+        return {
+          "No": index + 1,
+          "Timestamp Pendaftaran": applicant["Timestamp"] || "",
+          "Nama Lengkap": applicant["Nama lengkap:"] || "",
+          "NIM": applicant["NIM:"] || "",
+          "Program Studi": applicant["Prodi:"] || "",
+          "Username Telegram": applicant["Username telegram:"] || "",
+          "Jalur Bergabung": applicant["Bergabung Sebagai"] || "",
+          "Divisi Utama": applicant["Divisi Utama"] || "",
+          "Divisi Cadangan": applicant["Divisi Cadangan"] || "",
+          "Status Wawancara": scoreData.status === 'scored' ? 'Selesai' : (scoreData.status === 'in_progress' ? 'Sedang Wawancara' : 'Belum Wawancara'),
+          "Skor Adab (25%)": scoreData.scoreAdab || "",
+          "Skor Visi (25%)": scoreData.scoreVisi || "",
+          "Skor Teknis (30%)": scoreData.scoreKeahlian || "",
+          "Skor Komitmen (20%)": scoreData.scoreKomitmen || "",
+          "Nilai Akhir (100)": scoreData.finalScore || "",
+          "Rekomendasi": recomLabel,
+          "Catatan Pewawancara": scoreData.notes || "",
+          "Nama Pewawancara": scoreData.interviewer || "",
+          "Waktu Penilaian": scoreData.updatedAt ? new Date(scoreData.updatedAt).toLocaleString('id-ID') : "",
+          "Skillset": applicant["Skillset"] || "",
+          "Device": applicant["Device"] || "",
+          "Tools": applicant["Tools"] || "",
+          "Apa itu Rijal Dakwah": applicant["Apa itu Rijal Dakwah?"] || "",
+          "Alasan Diterima": applicant["Kenapa Rijal Dakwah harus menerima antum?"] || ""
+        };
+      });
+
+      if (typeof XLSX !== 'undefined') {
+        const worksheet = XLSX.utils.json_to_sheet(rows);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Hasil Wawancara");
+        const filename = `Rekap_Wawancara_RijalDakwah_${new Date().toISOString().slice(0, 10)}.xlsx`;
+        XLSX.writeFile(workbook, filename);
+        showToast("Ekspor Berhasil", `File Excel ${filename} berhasil diunduh.`);
+      } else {
+        // CSV fallback
+        const csvContent = "data:text/csv;charset=utf-8," + encodeURIComponent(convertToCSV(rows));
+        const link = document.createElement("a");
+        link.setAttribute("href", csvContent);
+        link.setAttribute("download", `Rekap_Wawancara_RijalDakwah_${new Date().toISOString().slice(0, 10)}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showToast("Ekspor Berhasil", "Data rekap berhasil diunduh dalam format CSV.");
+      }
+    }
+
+    function convertToCSV(objArray) {
+      const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
+      if (array.length === 0) return '';
+      const headers = Object.keys(array[0]);
+      let str = headers.map(h => `"${h.replace(/"/g, '""')}"`).join(',') + '\r\n';
+
+      for (let i = 0; i < array.length; i++) {
+        let line = '';
+        for (let index = 0; index < headers.length; index++) {
+          if (index > 0) line += ',';
+          let val = array[i][headers[index]];
+          if (val === null || val === undefined) val = '';
+          line += `"${String(val).replace(/"/g, '""')}"`;
+        }
+        str += line + '\r\n';
+      }
+      return str;
+    }
+
+    // Print individual candidate sheet
+    function printCandidateSheet(id) {
+      const applicant = rawApplicants.find(a => a.id === id);
+      if (!applicant) return;
+
+      const scoreData = getApplicantScore(applicant) || {};
+      const printContainer = document.getElementById("printSheetContainer");
+      if (!printContainer) return;
+
+      let recomText = "Belum Ditentukan";
+      if (scoreData.recommendation === 'priority') recomText = "SANGAT DIREKOMENDASIKAN (Lolos Prioritas)";
+      else if (scoreData.recommendation === 'yes') recomText = "DIREKOMENDASIKAN (Lolos Seleksi)";
+      else if (scoreData.recommendation === 'backup') recomText = "CADANGAN / PERTIMBANGKAN";
+      else if (scoreData.recommendation === 'redirect_div') recomText = "DIALIHKAN KE DIVISI LAIN";
+      else if (scoreData.recommendation === 'redirect_member') recomText = "DIALIHKAN KE ANGGOTA BIASA";
+      else if (scoreData.recommendation === 'reject') recomText = "TIDAK DIREKOMENDASIKAN";
+
+      printContainer.innerHTML = `
+        <div class="border-b-2 border-black pb-4 mb-6 flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <img src="logo-rijal-dakwah.png" alt="Logo" class="w-16 h-16 object-contain" />
+            <div>
+              <div class="font-serif font-bold text-xl uppercase tracking-tight">UKM RIJAL DAKWAH</div>
+              <div class="text-sm font-semibold">STDI IMAM SYAFI'I JEMBER</div>
+              <div class="text-xs text-slate-600">Lembar Penilaian & Berkas Evaluasi Wawancara Rekrutmen 2026/2027</div>
+            </div>
+          </div>
+          <div class="text-right text-xs">
+            <div><strong>Tanggal Cetak:</strong> ${new Date().toLocaleDateString('id-ID')}</div>
+            <div><strong>Pewawancara:</strong> ${escapeHtml(scoreData.interviewer || currentInterviewerName || 'Panitia')}</div>
+          </div>
+        </div>
+
+        <div class="space-y-6 text-sm">
+          <!-- Tabel Identitas -->
+          <div>
+            <h4 class="font-bold text-base mb-2 uppercase border-b border-black pb-1">I. Data Identitas Calon</h4>
+            <table class="w-full text-xs border border-collapse border-black">
+              <tr>
+                <td class="p-2 border border-black font-semibold w-40 bg-slate-100">Nama Lengkap</td>
+                <td class="p-2 border border-black font-bold">${escapeHtml(applicant["Nama lengkap:"] || "-")}</td>
+                <td class="p-2 border border-black font-semibold w-40 bg-slate-100">Jalur Pendaftaran</td>
+                <td class="p-2 border border-black uppercase font-bold">${escapeHtml(applicant["Bergabung Sebagai"] || "-")}</td>
+              </tr>
+              <tr>
+                <td class="p-2 border border-black font-semibold bg-slate-100">NIM</td>
+                <td class="p-2 border border-black font-mono">${escapeHtml(applicant["NIM:"] || "-")}</td>
+                <td class="p-2 border border-black font-semibold bg-slate-100">Divisi Pilihan 1</td>
+                <td class="p-2 border border-black font-bold">${escapeHtml(applicant["Divisi Utama"] || "-")}</td>
+              </tr>
+              <tr>
+                <td class="p-2 border border-black font-semibold bg-slate-100">Program Studi</td>
+                <td class="p-2 border border-black">${escapeHtml(applicant["Prodi:"] || "-")}</td>
+                <td class="p-2 border border-black font-semibold bg-slate-100">Divisi Pilihan 2</td>
+                <td class="p-2 border border-black">${escapeHtml(applicant["Divisi Cadangan"] || "-")}</td>
+              </tr>
+              <tr>
+                <td class="p-2 border border-black font-semibold bg-slate-100">Akun Telegram</td>
+                <td class="p-2 border border-black font-mono">${escapeHtml(applicant["Username telegram:"] || "-")}</td>
+                <td class="p-2 border border-black font-semibold bg-slate-100">Waktu Daftar</td>
+                <td class="p-2 border border-black">${escapeHtml(applicant["Timestamp"] || "-")}</td>
+              </tr>
+            </table>
+          </div>
+
+          <!-- Jawaban Esai Inti -->
+          <div>
+            <h4 class="font-bold text-base mb-2 uppercase border-b border-black pb-1">II. Esai Pemahaman & Motivasi</h4>
+            <div class="space-y-3 text-xs">
+              <div class="border border-black p-3 rounded">
+                <div class="font-bold mb-1">A. Apa itu Rijal Dakwah menurut antum:</div>
+                <div class="italic">${escapeHtml(applicant["Apa itu Rijal Dakwah?"] || "-")}</div>
+              </div>
+              <div class="border border-black p-3 rounded">
+                <div class="font-bold mb-1">B. Kenapa Rijal Dakwah harus menerima antum:</div>
+                <div class="italic">${escapeHtml(applicant["Kenapa Rijal Dakwah harus menerima antum?"] || "-")}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tabel Penilaian Wawancara -->
+          <div>
+            <h4 class="font-bold text-base mb-2 uppercase border-b border-black pb-1">III. Hasil Evaluasi & Nilai Wawancara</h4>
+            <table class="w-full text-xs border border-collapse border-black">
+              <thead>
+                <tr class="bg-slate-100">
+                  <th class="p-2 border border-black text-left">No</th>
+                  <th class="p-2 border border-black text-left">Kriteria Evaluasi</th>
+                  <th class="p-2 border border-black text-center w-24">Bobot</th>
+                  <th class="p-2 border border-black text-center w-24">Nilai (0-100)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="p-2 border border-black text-center">1</td>
+                  <td class="p-2 border border-black">Adab, Akhlak, & Etika Komunikasi</td>
+                  <td class="p-2 border border-black text-center">25%</td>
+                  <td class="p-2 border border-black text-center font-bold">${scoreData.scoreAdab || "-"}</td>
+                </tr>
+                <tr>
+                  <td class="p-2 border border-black text-center">2</td>
+                  <td class="p-2 border border-black">Pemahaman Visi Dakwah & Niat/Motivasi</td>
+                  <td class="p-2 border border-black text-center">25%</td>
+                  <td class="p-2 border border-black text-center font-bold">${scoreData.scoreVisi || "-"}</td>
+                </tr>
+                <tr>
+                  <td class="p-2 border border-black text-center">3</td>
+                  <td class="p-2 border border-black">Kompetensi Teknis / Kesesuaian Bidang</td>
+                  <td class="p-2 border border-black text-center">30%</td>
+                  <td class="p-2 border border-black text-center font-bold">${scoreData.scoreKeahlian || "-"}</td>
+                </tr>
+                <tr>
+                  <td class="p-2 border border-black text-center">4</td>
+                  <td class="p-2 border border-black">Komitmen Waktu, Loyalitas & Kesiapan Amanah</td>
+                  <td class="p-2 border border-black text-center">20%</td>
+                  <td class="p-2 border border-black text-center font-bold">${scoreData.scoreKomitmen || "-"}</td>
+                </tr>
+                <tr class="bg-slate-100 font-bold">
+                  <td colspan="3" class="p-2 border border-black text-right">NILAI AKHIR (RATA-RATA TERBOBOT):</td>
+                  <td class="p-2 border border-black text-center text-sm">${scoreData.finalScore || "-"} / 100</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Rekomendasi & Catatan -->
+          <div class="border border-black p-3 space-y-2 text-xs">
+            <div><strong>KEPUTUSAN / REKOMENDASI:</strong> <span class="font-bold underline">${recomText}</span></div>
+            <div><strong>CATATAN KHUSUS PEWAWANCARA:</strong></div>
+            <div class="p-2 bg-slate-50 min-h-[80px] whitespace-pre-wrap border border-slate-300">
+              ${escapeHtml(scoreData.notes || "Tidak ada catatan tambahan.")}
+            </div>
+          </div>
+
+          <!-- Kolom Tanda Tangan -->
+          <div class="pt-8 flex justify-between text-center text-xs">
+            <div class="w-48">
+              <div>Calon Anggota,</div>
+              <div class="h-16"></div>
+              <div class="font-bold underline">(${escapeHtml(applicant["Nama lengkap:"] || "Pendaftar")})</div>
+              <div>NIM: ${escapeHtml(applicant["NIM:"] || "-")}</div>
+            </div>
+
+            <div class="w-48">
+              <div>Jember, ${new Date().toLocaleDateString('id-ID')}<br>Pewawancara,</div>
+              <div class="h-16"></div>
+              <div class="font-bold underline">(${escapeHtml(scoreData.interviewer || currentInterviewerName || "Panitia Seleksi")})</div>
+              <div>UKM Rijal Dakwah STDIIS</div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      window.print();
+    }
+
+    // Salin ringkasan profil ke clipboard (untuk laporan panitia ke WA/TG)
+    function copyCandidateSummary(id) {
+      const applicant = rawApplicants.find(a => a.id === id);
+      if (!applicant) return;
+
+      const scoreData = getApplicantScore(applicant) || {};
+      const name = applicant["Nama lengkap:"] || "-";
+      const nim = applicant["NIM:"] || "-";
+      const prodi = applicant["Prodi:"] || "-";
+      const telegram = applicant["Username telegram:"] || "-";
+      const role = applicant["Bergabung Sebagai"] || "-";
+      const div1 = applicant["Divisi Utama"] || "-";
+      const div2 = applicant["Divisi Cadangan"] || "-";
+      const score = scoreData.finalScore || "Belum Dinilai";
+      const recom = scoreData.recommendation || "Belum Ditentukan";
+      const notes = scoreData.notes || "-";
+
+      const text = `📋 *DATA WAWANCARA CALON ANGGOTA RIJAL DAKWAH*
+Nama: *${name}*
+NIM: ${nim}
+Prodi: ${prodi}
+Telegram: ${telegram}
+Jalur: ${role.toUpperCase()}
+Divisi Pilihan: ${div1} (Cadangan: ${div2})
+
+📊 *Hasil Penilaian:*
+Skor Akhir: *${score}/100*
+Rekomendasi: *${recom.toUpperCase()}*
+Catatan Evaluator: ${notes}
+Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
+
+      copyText(text, "Ringkasan profil berhasil disalin ke clipboard!");
+    }
+
+    function copyText(text, successMsg = "Teks berhasil disalin!") {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("Tersalin", successMsg);
+      }).catch(err => {
+        console.error("Copy failed", err);
+      });
+    }
+
+    // Backup & Restore
+    function openBackupModal() {
+      const modal = document.getElementById("backupModal");
+      if (modal) modal.classList.remove("hidden");
+    }
+
+    function closeBackupModal() {
+      const modal = document.getElementById("backupModal");
+      if (modal) modal.classList.add("hidden");
+    }
+
+    function downloadNotesBackup() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(interviewScores, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `Backup_Penilaian_RijalDakwah_${new Date().toISOString().slice(0, 10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showToast("Cadangan Diunduh", "File JSON cadangan nilai berhasil disimpan.");
+    }
+
+    function restoreNotesBackup(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (typeof parsed === 'object') {
+            interviewScores = { ...interviewScores, ...parsed };
+            persistScores();
+            updateStats();
+            renderApplicantList();
+            if (selectedApplicantId) renderDetailPane(selectedApplicantId);
+            showToast("Pemulihan Berhasil", "Data penilaian berhasil dipulihkan dari file JSON.");
+            closeBackupModal();
+          }
+        } catch (err) {
+          alert("File JSON tidak valid!");
+        }
+      };
+      reader.readAsText(file);
+    }
+    function handleManualSpreadsheetUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
+          const jsonRows = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+
+          if (jsonRows && jsonRows.length > 0) {
+            rawApplicants = jsonRows.map((r, i) => ({ id: i + 1, ...r }));
+            applyFiltersAndRender();
+            const liveStatusDot = document.getElementById("liveStatusDot");
+            const liveStatusText = document.getElementById("liveStatusText");
+            if (liveStatusDot) liveStatusDot.className = "w-2 h-2 rounded-full bg-emerald-400";
+            if (liveStatusText) liveStatusText.textContent = `File Lokal (${rawApplicants.length} data)`;
+            showToast("File Berhasil Dimuat", `Berhasil memuat ${rawApplicants.length} pendaftar dari berkas ${file.name}.`);
+            closeBackupModal();
+          } else {
+            alert("File spreadsheet kosong atau tidak terbaca.");
+          }
+        } catch (err) {
+          console.error("Error reading spreadsheet file:", err);
+          alert("Gagal membaca file spreadsheet: " + err.message);
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function clearAllScoringData() {
+      if (!confirm("PERINGATAN: Apakah antum yakin ingin menghapus seluruh data penilaian di peramban ini? Tindakan ini tidak dapat dibatalkan!")) return;
+      interviewScores = {};
+      persistScores();
+      updateStats();
+      renderApplicantList();
+      if (selectedApplicantId) renderDetailPane(selectedApplicantId);
+      closeBackupModal();
+      showToast("Dihapus", "Seluruh data penilaian telah dibersihkan.", "amber");
+    }
+
+    // UI Toast Notification
+    function showToast(title, message, type = "green") {
+      const toast = document.getElementById("toastNotification");
+      const toastTitle = document.getElementById("toastTitle");
+      const toastMessage = document.getElementById("toastMessage");
+      const toastIcon = document.getElementById("toastIcon");
+
+      if (!toast) return;
+
+      toastTitle.textContent = title;
+      toastMessage.textContent = message;
+
+      if (type === "amber") {
+        toastIcon.className = "w-8 h-8 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400";
+        toastIcon.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+      } else {
+        toastIcon.className = "w-8 h-8 rounded-xl bg-gold/20 flex items-center justify-center text-gold";
+        toastIcon.innerHTML = '<i class="fa-solid fa-check"></i>';
+      }
+
+      toast.classList.remove("translate-y-20", "opacity-0");
+      toast.classList.add("translate-y-0", "opacity-100");
+
+      setTimeout(() => {
+        toast.classList.remove("translate-y-0", "opacity-100");
+        toast.classList.add("translate-y-20", "opacity-0");
+      }, 3500);
+    }
+
+    // Utility escape html
+    function escapeHtml(string) {
+      if (!string) return '';
+      return String(string)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function escapeQuotes(str) {
+      if (!str) return '';
+      return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/\n/g, ' ');
+    }
+  </script>
+  <!-- Floating Action Bar for Mobile -->
+  <div id="mobileBottomBar" class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-deepGreen text-white px-4 py-3 border-t-2 border-gold flex items-center justify-between shadow-2xl transition-all duration-300 no-print transform translate-y-full">
+    <div class="truncate max-w-[200px] sm:max-w-xs">
+      <div class="text-[10px] text-gold-light uppercase font-bold tracking-wider">Calon Terpilih:</div>
+      <div id="mobileCandidateName" class="font-bold text-xs text-white truncate">Pilih Calon</div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="scrollToDetailPane()" class="btn-gold px-3.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-md">
+        <span>Buka Berkas</span>
+        <i class="fa-solid fa-arrow-down"></i>
+      </button>
+    </div>
+  </div>
+</body>
+</html>
