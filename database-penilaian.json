@@ -1,0 +1,18 @@
+{
+  "_info": "File Basis Data Hasil Penilaian Wawancara UKM Rijal Dakwah STDIIS Periode 2026/2027",
+  "metadata": {
+    "organization": "UKM Rijal Dakwah STDI Imam Syafi'i Jember",
+    "portalUrl": "https://rijaldakwahmedialab-dev.github.io/RijalDakwah/wawancara.html",
+    "githubRepo": "https://github.com/rijaldakwahmedialab-dev/RijalDakwah",
+    "databaseVersion": "1.0.0",
+    "lastUpdated": "2026-09-05T12:00:00.000Z",
+    "totalEvaluated": 0,
+    "scoringWeight": {
+      "adab": "25%",
+      "visi": "25%",
+      "keahlian": "30%",
+      "komitmen": "20%"
+    }
+  },
+  "scores": {}
+}
