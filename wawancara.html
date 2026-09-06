@@ -2679,16 +2679,26 @@
       if (!confirm(`Hapus seluruh penilaian untuk ${applicant["Nama lengkap:"]}?`)) return;
 
       const key = getApplicantKey(applicant);
+      const nim = (applicant["NIM:"] || "").trim();
+
+      // 1. Bersihkan semua variasi key dari memori lokal
       delete interviewScores[key];
+      if (nim) {
+        delete interviewScores[`nim_${nim}`];
+        delete interviewScores[`nim_${nim.replace(/[\.\#\$\/\[\]\s]/g, '_')}`];
+      }
+      delete interviewScores[`id_${id}`];
+
       persistScores();
       updateStats();
       renderApplicantList();
       renderDetailPane(id);
 
+      // 2. Hapus dari Cloud Database
       if (window.RD_Database) {
         RD_Database.deleteScore(key);
       }
-      showToast("Reset Berhasil", "Data nilai calon telah direset ke awal.", "amber");
+      showToast("Reset Berhasil", `Data nilai untuk ${applicant["Nama lengkap:"]} telah direset ke awal.`, "amber");
     }
 
     function persistScores() {
@@ -3118,6 +3128,23 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
         if (!item || typeof item !== 'object') return;
         
         const safeKey = key.replace(/[\.\#\$\/\[\]\s]/g, '_');
+        const rawNim = item.applicantNim ? item.applicantNim.trim() : null;
+
+        // Jika statusnya unscored/deleted atau skornya kosong total, hapus dari memori
+        if (item.status === 'unscored' || item.status === 'deleted' || (item.finalScore === 0 && !item.notes && !item.recommendation)) {
+          delete interviewScores[key];
+          delete interviewScores[safeKey];
+          if (rawNim) {
+            delete interviewScores[`nim_${rawNim}`];
+            delete interviewScores[`nim_${rawNim.replace(/[\.\#\$\/\[\]\s]/g, '_')}`];
+          }
+          if (item.applicantId) {
+            delete interviewScores[`id_${item.applicantId}`];
+          }
+          changedCount++;
+          return;
+        }
+
         const scoreObj = {
           ...item,
           status: item.status || 'scored'
@@ -3126,8 +3153,7 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
         interviewScores[safeKey] = scoreObj;
 
         // Simpan juga alias dengan format raw jika ada NIM
-        if (item.applicantNim) {
-          const rawNim = item.applicantNim.trim();
+        if (rawNim) {
           interviewScores[`nim_${rawNim}`] = scoreObj;
           interviewScores[`nim_${rawNim.replace(/[\.\#\$\/\[\]\s]/g, '_')}`] = scoreObj;
         }
@@ -3373,13 +3399,17 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
     }
 
     function clearAllScoringData() {
-      if (!confirm("PERINGATAN: Apakah antum yakin ingin menghapus seluruh data penilaian di peramban ini? Tindakan ini tidak dapat dibatalkan!")) return;
+      if (!confirm("PERINGATAN: Apakah antum yakin ingin menghapus seluruh data penilaian? Tindakan ini akan membersihkan nilai baik di perangkat ini maupun di Cloud.")) return;
       interviewScores = {};
       persistScores();
       updateStats();
       renderApplicantList();
       if (selectedApplicantId) renderDetailPane(selectedApplicantId);
       closeBackupModal();
+
+      if (window.RD_Database && typeof RD_Database.clearAllScores === 'function') {
+        RD_Database.clearAllScores();
+      }
       showToast("Dihapus", "Seluruh data penilaian telah dibersihkan.", "amber");
     }
 

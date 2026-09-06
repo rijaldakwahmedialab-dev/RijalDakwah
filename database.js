@@ -57,6 +57,8 @@
       this.isCloudActive = false;
       this.activeProvider = 'none'; // 'firebase' | 'apps_script' | 'none'
       this.pollTimer = null;
+      this.deletedKeys = new Set();
+      this.clearedAll = false;
       this.listeners = {
         status: [],
         scores: []
@@ -119,8 +121,18 @@
     }
 
     notifyScoresUpdated(data, source = 'cloud') {
+      if (this.clearedAll) return;
+      const filteredData = {};
+      for (const k in data) {
+        const safeK = this.sanitizeKey(k);
+        if (this.deletedKeys.has(k) || this.deletedKeys.has(safeK)) {
+          continue;
+        }
+        filteredData[k] = data[k];
+      }
+
       this.listeners.scores.forEach(cb => {
-        try { cb(data, source); } catch (e) { console.error(e); }
+        try { cb(filteredData, source); } catch (e) { console.error(e); }
       });
     }
 
@@ -300,6 +312,11 @@
         _originalKey: applicantKey,
         updatedAt: scoreData.updatedAt || new Date().toISOString()
       };
+      // Hapus dari daftar deletedKeys jika calon dinilai kembali
+      this.clearedAll = false;
+      this.deletedKeys.delete(applicantKey);
+      this.deletedKeys.delete(safeKey);
+
 
       // 1. Simpan ke Firebase bila aktif
       if (this.isCloudActive && this.activeProvider === 'firebase' && this.scoresRef) {
@@ -334,7 +351,10 @@
 
     async deleteScore(applicantKey) {
       const safeKey = this.sanitizeKey(applicantKey);
+      this.deletedKeys.add(applicantKey);
+      this.deletedKeys.add(safeKey);
 
+      // 1. Hapus di Firebase bila aktif
       if (this.isCloudActive && this.activeProvider === 'firebase' && this.scoresRef) {
         try {
           await this.scoresRef.child(safeKey).remove();
@@ -344,18 +364,61 @@
         }
       }
 
+      // 2. Hapus di Google Apps Script (kirim action delete + fallback status unscored)
       if (this.isCloudActive && this.activeProvider === 'apps_script' && this.currentConfig.appsScriptUrl) {
         try {
           fetch(this.currentConfig.appsScriptUrl, {
             method: 'POST',
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'delete', key: safeKey })
+            body: JSON.stringify({
+              action: 'delete',
+              key: safeKey,
+              data: {
+                status: 'unscored',
+                scoreAdab: 0,
+                scoreVisi: 0,
+                scoreKeahlian: 0,
+                scoreKomitmen: 0,
+                finalScore: 0,
+                recommendation: '',
+                notes: '',
+                interviewer: ''
+              }
+            })
           }).catch(e => console.warn(e));
           return { success: true, cloud: true };
         } catch (e) {
           return { success: false, error: e.message };
         }
+      }
+
+      return { success: true, cloud: false };
+    }
+
+    async clearAllScores() {
+      this.clearedAll = true;
+      this.deletedKeys.clear();
+
+      // 1. Hapus semua di Firebase bila aktif
+      if (this.isCloudActive && this.activeProvider === 'firebase' && this.scoresRef) {
+        try {
+          await this.scoresRef.remove();
+          return { success: true, cloud: true };
+        } catch (e) {}
+      }
+
+      // 2. Hapus semua di Google Apps Script
+      if (this.isCloudActive && this.activeProvider === 'apps_script' && this.currentConfig.appsScriptUrl) {
+        try {
+          fetch(this.currentConfig.appsScriptUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'clear_all' })
+          }).catch(e => console.warn(e));
+          return { success: true, cloud: true };
+        } catch (e) {}
       }
 
       return { success: true, cloud: false };
