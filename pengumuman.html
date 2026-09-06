@@ -977,6 +977,23 @@
       }).filter(item => item.nim && item.nama);
     }
 
+        // Fungsi untuk membuka kedua link Telegram pengurus dan anggota secara bersamaan
+    function openBothTelegramGroups(event) {
+      if (event) event.preventDefault();
+      const urlPengurus = "https://t.me/+XPVlI0nS9Es2MzA9";
+      const urlAnggota = "https://t.me/+Al-heU3H_bo3MDll";
+
+      // Buka tab pertama (Grup Pengurus)
+      window.open(urlPengurus, "_blank");
+
+      // Buka tab kedua (Grup Anggota) dengan jeda 200ms
+      setTimeout(() => {
+        window.open(urlAnggota, "_blank");
+      }, 200);
+
+      showToast("Membuka tautan Grup Pengurus & Grup Anggota...");
+    }
+
     // 5. Pencarian Status Kelulusan
     function handleSearch(event) {
       event.preventDefault();
@@ -1096,13 +1113,130 @@
                                (data.divisi && data.divisi.toLowerCase().includes('anggota biasa')) ||
                                (data.catatan && (data.catatan.toLowerCase().includes('anggota biasa') || data.catatan.toLowerCase().includes('dialihkan ke anggota')));
 
-        const telegramGroupUrl = isAnggotaBiasa 
-          ? "https://t.me/+Al-heU3H_bo3MDll" 
-          : "https://t.me/+XPVlI0nS9Es2MzA9";
+        const urlPengurus = "https://t.me/+XPVlI0nS9Es2MzA9";
+        const urlAnggota = "https://t.me/+Al-heU3H_bo3MDll";
 
-        const telegramBtnText = isAnggotaBiasa 
-          ? "Gabung Grup Telegram Anggota" 
-          : "Gabung Grup Telegram Pengurus";
+        let actionButtonsHtml = '';
+        let instructionTextHtml = '';
+
+        if (isAnggotaBiasa) {
+          // KHUSUS JALUR ANGGOTA BIASA (1 link ke grup anggota)
+          instructionTextHtml = `
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              ${escapeHtml(data.catatan || "Barakallahu fiikum. Antum dinyatakan diterima sebagai Anggota Biasa UKM Rijal Dakwah STDIIS Periode 2026/2027. Silakan klik tombol di bawah untuk bergabung ke grup koordinasi resmi anggota dan nantikan informasi agenda ta'aruf mendatang.")}
+            </p>
+          `;
+
+          actionButtonsHtml = `
+            <div class="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
+              <a 
+                href="${urlAnggota}" 
+                target="_blank" 
+                class="flex-1 sm:flex-none btn-gold px-5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-md hover:scale-[1.02] transition-transform"
+                title="Gabung Grup Telegram Anggota Biasa"
+              >
+                <i class="fa-brands fa-telegram text-base text-deepGreen"></i>
+                <span>Gabung Grup Telegram Anggota</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+              </a>
+
+              <a 
+                href="https://t.me/aburobiah" 
+                target="_blank" 
+                class="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-cream-100 hover:bg-cream-200 text-forestGreen border border-cream-300 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
+                title="Hubungi Helpdesk Panitia Seleksi"
+              >
+                <i class="fa-solid fa-headset text-gold"></i>
+                <span>Helpdesk Panitia</span>
+              </a>
+
+              <button 
+                onclick="window.print()" 
+                class="px-3 py-2.5 rounded-xl bg-white hover:bg-cream-100 text-slate-500 hover:text-deepGreen border border-cream-300 text-xs font-bold flex items-center justify-center gap-1 transition-colors"
+                title="Cetak Bukti Penerimaan (PDF)"
+              >
+                <i class="fa-solid fa-print"></i>
+                <span class="hidden lg:inline">Cetak PDF</span>
+              </button>
+            </div>
+          `;
+        } else {
+          // KHUSUS JALUR PENGURUS (2 link: Buka Sekaligus + Akses Mandiri ke Grup Pengurus & Grup Anggota)
+          instructionTextHtml = `
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              ${escapeHtml(data.catatan || "Barakallahu fiikum. Antum dinyatakan diterima sebagai Pengurus Divisi UKM Rijal Dakwah STDIIS Periode 2026/2027. Sebagai pengurus divisi, antum berhak dan wajib bergabung ke dalam 2 grup koordinasi resmi:")}
+            </p>
+            <div class="p-3.5 bg-white/80 rounded-2xl border border-cream-300 text-xs text-deepGreen space-y-2">
+              <div class="font-bold flex items-center gap-1.5 text-forestGreen">
+                <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                <span>2 Grup Resmi yang Wajib Antum Masuki:</span>
+              </div>
+              <ul class="list-disc list-inside space-y-1 text-slate-700 pl-1">
+                <li><strong>Grup 1:</strong> Khusus Pengurus Divisi Rijal Dakwah 2026/2027</li>
+                <li><strong>Grup 2:</strong> Anggota Umum UKM Rijal Dakwah STDIIS</li>
+              </ul>
+              <p class="text-[11px] text-slate-500 italic pt-0.5">
+                Klik tombol emas di bawah untuk membuka kedua grup sekaligus, atau klik masing-masing tombol tautan grup.
+              </p>
+            </div>
+          `;
+
+          actionButtonsHtml = `
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto">
+              <!-- Tombol Utama: Buka Kedua Grup Sekaligus -->
+              <button 
+                type="button" 
+                onclick="openBothTelegramGroups(event)" 
+                class="btn-gold px-5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-md hover:scale-[1.02] transition-transform"
+                title="Buka Grup Pengurus dan Grup Anggota secara bersamaan di tab baru"
+              >
+                <i class="fa-solid fa-layer-group text-deepGreen text-sm"></i>
+                <span>Gabung 2 Grup Sekaligus (Pengurus & Anggota)</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+              </button>
+
+              <!-- Tombol Khusus Grup Pengurus -->
+              <a 
+                href="${urlPengurus}" 
+                target="_blank" 
+                class="px-3.5 py-2.5 rounded-xl bg-deepGreen hover:bg-forestGreen text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow transition-colors"
+                title="Buka Grup Telegram Khusus Pengurus Divisi"
+              >
+                <i class="fa-brands fa-telegram text-gold text-sm"></i>
+                <span>Grup Pengurus</span>
+              </a>
+
+              <!-- Tombol Khusus Grup Anggota -->
+              <a 
+                href="${urlAnggota}" 
+                target="_blank" 
+                class="px-3.5 py-2.5 rounded-xl bg-forestGreen hover:bg-emeraldGreen text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow transition-colors"
+                title="Buka Grup Telegram Anggota Umum UKM"
+              >
+                <i class="fa-brands fa-telegram text-emerald-300 text-sm"></i>
+                <span>Grup Anggota</span>
+              </a>
+
+              <a 
+                href="https://t.me/aburobiah" 
+                target="_blank" 
+                class="px-3 py-2.5 rounded-xl bg-cream-100 hover:bg-cream-200 text-forestGreen border border-cream-300 text-xs font-bold flex items-center justify-center gap-1 transition-colors"
+                title="Hubungi Helpdesk Panitia Seleksi"
+              >
+                <i class="fa-solid fa-headset text-gold text-xs"></i>
+                <span class="hidden md:inline">Helpdesk</span>
+              </a>
+
+              <button 
+                onclick="window.print()" 
+                class="px-2.5 py-2.5 rounded-xl bg-white hover:bg-cream-100 text-slate-500 hover:text-deepGreen border border-cream-300 text-xs font-bold flex items-center justify-center gap-1 transition-colors"
+                title="Cetak Bukti Penerimaan (PDF)"
+              >
+                <i class="fa-solid fa-print"></i>
+              </button>
+            </div>
+          `;
+        }
 
         container.innerHTML = `
           <div id="printableCard" class="bg-white rounded-3xl border-4 border-gold shadow-2xl overflow-hidden animate-in">
@@ -1170,12 +1304,7 @@
                   <i class="fa-solid fa-list-check text-gold"></i>
                   <span>Langkah Selanjutnya & Arahan Panitia:</span>
                 </h4>
-                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  ${escapeHtml(data.catatan || (isAnggotaBiasa 
-                    ? "Silakan klik tombol di bawah untuk bergabung ke grup resmi Telegram Anggota Biasa UKM Rijal Dakwah dan nantikan informasi agenda mendatang." 
-                    : "Silakan klik tombol di bawah untuk bergabung ke grup resmi Telegram Pengurus UKM Rijal Dakwah dan ikuti temu ta'aruf perdana yang akan diumumkan."))
-                  }
-                </p>
+                ${instructionTextHtml}
                 <div class="pt-2 flex flex-wrap items-center gap-3 text-xs">
                   <span class="inline-flex items-center gap-1.5 text-forestGreen font-semibold">
                     <i class="fa-solid fa-calendar-day text-gold"></i>
@@ -1196,37 +1325,7 @@
                   <span>Dokumen Hasil Seleksi Sah & Terverifikasi Panitia</span>
                 </div>
 
-                <div class="flex items-center gap-2.5 w-full sm:w-auto">
-                  <a 
-                    href="${telegramGroupUrl}" 
-                    target="_blank" 
-                    class="flex-1 sm:flex-none btn-gold px-5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-md hover:scale-[1.02] transition-transform"
-                    title="Buka tautan grup resmi Telegram"
-                  >
-                    <i class="fa-brands fa-telegram text-base text-deepGreen"></i>
-                    <span>${telegramBtnText}</span>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                  </a>
-
-                  <a 
-                    href="https://t.me/aburobiah" 
-                    target="_blank" 
-                    class="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-cream-100 hover:bg-cream-200 text-forestGreen border border-cream-300 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
-                    title="Hubungi Helpdesk Panitia Seleksi"
-                  >
-                    <i class="fa-solid fa-headset text-gold"></i>
-                    <span>Helpdesk Panitia</span>
-                  </a>
-
-                  <button 
-                    onclick="window.print()" 
-                    class="px-3 py-2.5 rounded-xl bg-white hover:bg-cream-100 text-slate-500 hover:text-deepGreen border border-cream-300 text-xs font-bold flex items-center justify-center gap-1 transition-colors"
-                    title="Cetak Bukti Penerimaan (PDF)"
-                  >
-                    <i class="fa-solid fa-print"></i>
-                    <span class="hidden lg:inline">Cetak PDF</span>
-                  </button>
-                </div>
+                ${actionButtonsHtml}
               </div>
 
             </div>
