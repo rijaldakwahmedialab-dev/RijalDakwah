@@ -168,6 +168,32 @@
         page-break-after: always;
       }
     }
+    /* Floating Mini Timer Responsive Positioning */
+    #miniInterviewTimer {
+      position: fixed;
+      z-index: 45;
+      bottom: 1rem;
+      left: 0;
+      right: 0;
+      margin-left: auto;
+      margin-right: auto;
+      width: fit-content;
+      width: -moz-fit-content;
+      transition: bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #miniInterviewTimer.lifted {
+      bottom: 4.85rem !important;
+    }
+    @media (min-width: 640px) {
+      #miniInterviewTimer,
+      #miniInterviewTimer.lifted {
+        left: 1rem;
+        right: auto;
+        margin-left: 0;
+        margin-right: 0;
+        bottom: 1rem !important;
+      }
+    }
   </style>
 </head>
 
@@ -877,7 +903,7 @@
   <!-- ========================================================================= -->
   <!-- FLOATING MINI-TIMER PEWAWANCARA (STICKY UI) -->
   <!-- ========================================================================= -->
-  <aside id="miniInterviewTimer" class="fixed bottom-4 left-4 z-40 no-print" aria-label="Timer Wawancara">
+  <aside id="miniInterviewTimer" class="no-print" aria-label="Timer Wawancara">
     <div id="miniInterviewTimerWidget" class="bg-deepGreen/95 backdrop-blur-md border-2 border-gold/60 text-white rounded-2xl px-2.5 py-1.5 sm:px-3 sm:py-2 shadow-2xl flex items-center gap-2 transition-all">
       <button 
         type="button" 
@@ -1737,9 +1763,13 @@
       if (applicant) {
         const mobileBar = document.getElementById("mobileBottomBar");
         const mobileName = document.getElementById("mobileCandidateName");
+        const timerAside = document.getElementById("miniInterviewTimer");
         if (mobileBar && mobileName) {
           mobileName.textContent = applicant["Nama lengkap:"] || "Calon Terpilih";
           mobileBar.classList.remove("translate-y-full");
+        }
+        if (timerAside) {
+          timerAside.classList.add("lifted");
         }
       }
 
