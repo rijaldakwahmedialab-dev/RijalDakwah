@@ -296,7 +296,22 @@
         if (res.ok) {
           const json = await res.json();
           if (json && json.scores && typeof json.scores === 'object') {
-            this.notifyScoresUpdated(json.scores, 'cloud');
+            const validScores = {};
+            for (const k in json.scores) {
+              const item = json.scores[k];
+              if (!item) continue;
+              if (k === 'test_check_connection') continue;
+              if (this.deletedKeys.has(k) || this.deletedKeys.has(this.sanitizeKey(k))) continue;
+              
+              // Filter anti-ampas: abaikan data unscored/deleted atau data kosong tanpa nilai/catatan
+              if (item.status === 'unscored' || item.status === 'deleted') continue;
+              if (!item.applicantNim && !item.applicantName && Number(item.finalScore) === 0 && !item.notes && !item.recommendation) {
+                continue;
+              }
+
+              validScores[k] = item;
+            }
+            this.notifyScoresUpdated(validScores, 'cloud');
           }
         }
       } catch (err) {
@@ -408,7 +423,7 @@
         } catch (e) {}
       }
 
-      // 2. Hapus semua di Google Apps Script
+      // 2. Hapus semua di Google Apps Script (kirim clear_all dan cleanup)
       if (this.isCloudActive && this.activeProvider === 'apps_script' && this.currentConfig.appsScriptUrl) {
         try {
           fetch(this.currentConfig.appsScriptUrl, {
@@ -417,11 +432,27 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action: 'clear_all' })
           }).catch(e => console.warn(e));
+
+          fetch(`${this.currentConfig.appsScriptUrl}?action=cleanup&_t=${Date.now()}`).catch(e => console.warn(e));
           return { success: true, cloud: true };
         } catch (e) {}
       }
 
       return { success: true, cloud: false };
+    }
+
+    async purgeCloudGarbage() {
+      if (this.currentConfig.appsScriptUrl) {
+        try {
+          await fetch(`${this.currentConfig.appsScriptUrl}?action=cleanup&_t=${Date.now()}`);
+          this.deletedKeys.clear();
+          this.clearedAll = false;
+          return true;
+        } catch (e) {
+          console.error("Gagal membersihkan data sampah cloud:", e);
+        }
+      }
+      return false;
     }
 
     async tryLoadFromGitHubJson() {

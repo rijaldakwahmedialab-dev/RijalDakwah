@@ -1,19 +1,31 @@
 /**
  * =============================================================================
- * GOOGLE APPS SCRIPT: DATABASE PENILAIAN WAWANCARA UKM RIJAL DAKWAH
+ * GOOGLE APPS SCRIPT (VERSI 2.0 - DENGAN FITUR DELETE & ANTI-AMPAS)
+ * Database Penilaian Wawancara UKM Rijal Dakwah STDIIS 2026/2027
  * =============================================================================
  * 
- * FITUR:
- * 1. Simpan & Update nilai calon (real-time ke Tab 2).
- * 2. Reset / Hapus nilai calon per individu (action: "delete").
- * 3. Hapus seluruh nilai penilaian (action: "clear_all").
- * 4. Tab 1 (Data Formulir Pendaftaran Asli): 100% STERIL & TIDAK DISENTUH.
+ * FITUR UTAMA:
+ * 1. Simpan & Update nilai pendaftar (Tab 2: Hasil_Penilaian).
+ * 2. Delete / Reset per calon (action: "delete") -> Menghapus fisik baris di sheet.
+ * 3. Hapus seluruh data nilai (action: "clear_all") -> Mengosongkan Tab 2.
+ * 4. Pembersih Data Sampah (action: "cleanup") -> Membersihkan baris kosong/uji coba.
+ * 5. Filter Anti-Ampas pada doGet: Baris kosong/test tidak akan terbaca di web.
+ * 6. Tab 1 (Data Formulir Pendaftar Asli): 100% STERIL & TIDAK DISENTUH.
  * 
- * CARA UPDATE DI GOOGLE SPREADSHEET (1 Menit):
- * 1. Buka Google Sheet: https://docs.google.com/spreadsheets/d/1bcFa1yY4dOuFxsw2Y5aNy3osYjGtBK34bmcIiUEm0YY/edit
- * 2. Ekstensi -> Apps Script.
- * 3. Hapus kode lama, ganti dengan kode di bawah ini, lalu klik Simpan (Ctrl+S).
- * 4. Klik: Terapkan (Deploy) -> Kelola penerapan (Manage deployments) -> Klik ikon Pensil (Edit) -> Versi Baru (New version) -> Terapkan (Deploy).
+ * =============================================================================
+ * CARA MEMASANG KODE BARU INI DI GOOGLE SPREADSHEET (Hanya 1 Menit):
+ * =============================================================================
+ * 1. Buka Google Sheet Formulir Rijal Dakwah:
+ *    https://docs.google.com/spreadsheets/d/1bcFa1yY4dOuFxsw2Y5aNy3osYjGtBK34bmcIiUEm0YY/edit
+ * 2. Di menu atas, klik: Ekstensi (Extensions) -> Apps Script.
+ * 3. Hapus seluruh kode lama yang ada di editor, lalu COPY & PASTE seluruh kode ini.
+ * 4. Klik ikon "Simpan" (💾 Ctrl+S).
+ * 5. PENTING (Deploy Versi Baru):
+ *    - Klik tombol biru di kanan atas: "Terapkan" (Deploy) -> "Kelola penerapan" (Manage deployments).
+ *    - Klik ikon Pensil (Edit) di samping nama deployment.
+ *    - Pada dropdown 'Versi', pilih "Versi baru" (New version).
+ *    - Pastikan 'Akses' tetap: "Siapa saja" (Anyone).
+ *    - Klik tombol biru "Terapkan" (Deploy). Selesai!
  */
 
 const SHEET_NAME_SCORES = "Hasil_Penilaian";
@@ -26,6 +38,22 @@ function doGet(e) {
     if (!sheet) {
       sheet = initScoresSheet(ss);
     }
+
+    // =========================================================================
+    // FITUR URL CLEANUP: Panggil ?action=cleanup untuk sapu bersih data ampas
+    // =========================================================================
+    if (e && e.parameter && e.parameter.action === 'cleanup') {
+      const lastRow = sheet.getLastRow();
+      if (lastRow > 1) {
+        sheet.deleteRows(2, lastRow - 1);
+      }
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "success",
+        message: "Seluruh data penilaian dan ampas berhasil dibersihkan dari Tab Hasil_Penilaian!",
+        totalScores: 0,
+        scores: {}
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
     
     const data = sheet.getDataRange().getValues();
     const scores = {};
@@ -34,29 +62,50 @@ function doGet(e) {
       for (let i = 1; i < data.length; i++) {
         const row = data[i];
         const key = String(row[0] || "").trim();
-        if (!key) continue;
         
-        // Cek status, jika unscored atau deleted maka lewati
+        // Lewati jika key kosong atau key test uji coba
+        if (!key || key === "test_check_connection") continue;
+        
+        const nim = String(row[1] || "").trim();
+        const nama = String(row[2] || "").trim();
+        const prodi = String(row[3] || "").trim();
+        const divisi = String(row[4] || "").trim();
         const statusVal = String(row[5] || row[3] || "scored").trim().toLowerCase();
+        
+        // FILTER ANTI-AMPAS: Lewati jika statusnya unscored/deleted atau data kosong
         if (statusVal === "unscored" || statusVal === "deleted") {
+          continue;
+        }
+
+        const scoreAdab = Number(row[6]) || 0;
+        const scoreVisi = Number(row[7]) || 0;
+        const scoreKeahlian = Number(row[8]) || 0;
+        const scoreKomitmen = Number(row[9]) || 0;
+        const finalScore = Number(row[10]) || 0;
+        const recommendation = String(row[11] || "").trim();
+        const notes = String(row[12] || "").trim();
+        const interviewer = String(row[13] || "").trim();
+        
+        // FILTER DATA RUSAK: Jika tidak punya nama & NIM serta nilai 0, lewati
+        if (!nim && !nama && finalScore === 0 && !notes && !recommendation) {
           continue;
         }
         
         scores[key] = {
           applicantKey: key,
-          applicantNim: String(row[1] || "").trim(),
-          applicantName: String(row[2] || "").trim(),
-          applicantProdi: String(row[3] || "").trim(),
-          applicantDivisi: String(row[4] || "").trim(),
+          applicantNim: nim,
+          applicantName: nama,
+          applicantProdi: prodi,
+          applicantDivisi: divisi,
           status: statusVal || "scored",
-          scoreAdab: Number(row[6]) || 0,
-          scoreVisi: Number(row[7]) || 0,
-          scoreKeahlian: Number(row[8]) || 0,
-          scoreKomitmen: Number(row[9]) || 0,
-          finalScore: Number(row[10]) || 0,
-          recommendation: String(row[11] || "").trim(),
-          notes: String(row[12] || "").trim(),
-          interviewer: String(row[13] || "").trim(),
+          scoreAdab: scoreAdab,
+          scoreVisi: scoreVisi,
+          scoreKeahlian: scoreKeahlian,
+          scoreKomitmen: scoreKomitmen,
+          finalScore: finalScore,
+          recommendation: recommendation,
+          notes: notes,
+          interviewer: interviewer,
           updatedAt: row[14] ? new Date(row[14]).toISOString() : new Date().toISOString()
         };
       }
@@ -113,7 +162,7 @@ function doPost(e) {
       throw new Error("Key required.");
     }
 
-    // Cari baris calon berdasarkan key / NIM
+    // Cari baris calon berdasarkan Key atau NIM
     const data = sheet.getDataRange().getValues();
     let rowIndex = -1;
     const cleanKey = key.replace(/[^a-zA-Z0-9]/g, '');
@@ -121,14 +170,18 @@ function doPost(e) {
     for (let i = 1; i < data.length; i++) {
       const rowKey = String(data[i][0] || "").trim();
       const rowNim = String(data[i][1] || "").trim();
-      if (rowKey === key || rowKey.replace(/[^a-zA-Z0-9]/g, '') === cleanKey || (rowNim && rowNim.replace(/[^a-zA-Z0-9]/g, '') === cleanKey)) {
+      if (
+        rowKey === key || 
+        rowKey.replace(/[^a-zA-Z0-9]/g, '') === cleanKey || 
+        (rowNim && rowNim.replace(/[^a-zA-Z0-9]/g, '') === cleanKey)
+      ) {
         rowIndex = i + 1; // 1-indexed
         break;
       }
     }
 
     // =========================================================================
-    // AKSI 2: HAPUS / RESET NILAI CALON INI (DELETE ROW)
+    // AKSI 2: HAPUS / RESET NILAI CALON INI (DELETE ROW FISIK)
     // =========================================================================
     if (payload.action === 'delete') {
       if (rowIndex > 0) {
@@ -136,7 +189,8 @@ function doPost(e) {
         return ContentService.createTextOutput(JSON.stringify({
           status: "success",
           action: "deleted",
-          key: key
+          key: key,
+          deletedRow: rowIndex
         })).setMimeType(ContentService.MimeType.JSON);
       }
       return ContentService.createTextOutput(JSON.stringify({
@@ -147,13 +201,13 @@ function doPost(e) {
     }
 
     // =========================================================================
-    // AKSI 3: SIMPAN / UPDATE NILAI CALON
+    // AKSI 3: SIMPAN ATAU UPDATE NILAI CALON
     // =========================================================================
     const scoreData = payload.data || {};
     const statusVal = scoreData.status || "scored";
 
-    // Jika statusnya unscored, hapus barisnya agar bersih
-    if (statusVal === "unscored" && rowIndex > 0) {
+    // Jika status calon disetel unscored/deleted, hapus barisnya agar bersih
+    if ((statusVal === "unscored" || statusVal === "deleted") && rowIndex > 0) {
       sheet.deleteRow(rowIndex);
       return ContentService.createTextOutput(JSON.stringify({
         status: "success",
@@ -200,6 +254,9 @@ function doPost(e) {
   }
 }
 
+/**
+ * Inisialisasi Sheet Baru khusus Penilaian di Posisi Tab Ke-2 (Page 2)
+ */
 function initScoresSheet(ss) {
   const sheet = ss.insertSheet(SHEET_NAME_SCORES, 1);
   const headers = [
@@ -230,4 +287,19 @@ function initScoresSheet(ss) {
   sheet.setFrozenRows(1);
   sheet.getRange("O2:O").setNumberFormat("yyyy-mm-dd hh:mm:ss");
   return sheet;
+}
+
+/**
+ * FUNGSI MANUAL: Jalankan fungsi ini sekali di editor Apps Script
+ * untuk langsung menyapu bersih semua data ampas/uji coba dari Tab Hasil_Penilaian.
+ */
+function bersihkanDataAmpasSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = ss.getSheetByName(SHEET_NAME_SCORES);
+  if (!sheet) return;
+  const lastRow = sheet.getLastRow();
+  if (lastRow > 1) {
+    sheet.deleteRows(2, lastRow - 1);
+    Logger.log("Berhasil membersihkan " + (lastRow - 1) + " baris data ampas!");
+  }
 }

@@ -755,19 +755,31 @@
         </div>
 
         <!-- Footer Modal -->
-        <div class="pt-3 border-t border-cream-200 flex justify-between items-center shrink-0">
-          <button 
-            type="button" 
-            onclick="clearAllScoringData()" 
-            class="text-rose-600 hover:text-rose-800 font-semibold text-[11px] flex items-center gap-1"
-          >
-            <i class="fa-solid fa-trash-can"></i>
-            <span>Hapus Nilai di Browser Ini</span>
-          </button>
+        <div class="pt-3 border-t border-cream-200 flex flex-col sm:flex-row justify-between items-center gap-2.5 shrink-0">
+          <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
+            <button 
+              type="button" 
+              onclick="purgeAllGarbageData()" 
+              class="px-3 py-1.5 rounded-xl bg-amber-500/10 text-amber-800 border border-amber-400 hover:bg-amber-500/20 font-bold transition-all flex items-center gap-1.5 text-[11px]"
+              title="Bersihkan baris sampah/uji coba di Sheet & reset penilaian"
+            >
+              <i class="fa-solid fa-broom text-amber-600"></i>
+              <span>Sapu Bersih Data Ampas</span>
+            </button>
+            <button 
+              type="button" 
+              onclick="clearAllScoringData()" 
+              class="text-rose-600 hover:text-rose-800 font-semibold text-[11px] flex items-center gap-1 shrink-0"
+              title="Hapus seluruh penilaian"
+            >
+              <i class="fa-solid fa-trash-can"></i>
+              <span>Hapus Semua</span>
+            </button>
+          </div>
           <button 
             type="button" 
             onclick="closeBackupModal()" 
-            class="px-5 py-2 bg-deepGreen text-white font-bold rounded-xl hover:bg-forestGreen"
+            class="w-full sm:w-auto px-5 py-2 bg-deepGreen text-white font-bold rounded-xl hover:bg-forestGreen text-xs text-center"
           >
             Tutup
           </button>
@@ -1477,8 +1489,14 @@
         else if (role === 'anggota') anggotaCount++;
 
         const scoreData = getApplicantScore(a);
-        if (scoreData && (scoreData.status === 'scored' || scoreData.finalScore > 0 || scoreData.recommendation || (scoreData.scoreAdab > 0 && scoreData.scoreVisi > 0))) {
-          scoredCount++;
+        if (scoreData && (scoreData.status === 'scored' || scoreData.finalScore > 0 || (scoreData.scoreAdab > 0 && scoreData.scoreVisi > 0))) {
+          // Validasi anti-ampas: hanya hitung pendaftar yang memiliki evaluasi nyata
+          const hasRealEvaluation = Number(scoreData.finalScore) > 0 || 
+                                    (scoreData.notes && scoreData.notes.trim().length > 0) || 
+                                    (scoreData.recommendation && scoreData.recommendation.trim().length > 0);
+          if (hasRealEvaluation) {
+            scoredCount++;
+          }
         }
       });
 
@@ -3126,12 +3144,16 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
       let changedCount = 0;
       Object.entries(cloudScores).forEach(([key, item]) => {
         if (!item || typeof item !== 'object') return;
-        
+        if (key === 'test_check_connection') return;
+
         const safeKey = key.replace(/[\.\#\$\/\[\]\s]/g, '_');
         const rawNim = item.applicantNim ? item.applicantNim.trim() : null;
+        const hasRealEvaluation = Number(item.finalScore) > 0 || 
+                                  (item.notes && item.notes.trim().length > 0) || 
+                                  (item.recommendation && item.recommendation.trim().length > 0);
 
-        // Jika statusnya unscored/deleted atau skornya kosong total, hapus dari memori
-        if (item.status === 'unscored' || item.status === 'deleted' || (item.finalScore === 0 && !item.notes && !item.recommendation)) {
+        // Filter anti-ampas: jika status unscored/deleted atau data kosong tanpa evaluasi, hapus dari memori
+        if (item.status === 'unscored' || item.status === 'deleted' || (!rawNim && !item.applicantName && !hasRealEvaluation)) {
           delete interviewScores[key];
           delete interviewScores[safeKey];
           if (rawNim) {
@@ -3141,7 +3163,6 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
           if (item.applicantId) {
             delete interviewScores[`id_${item.applicantId}`];
           }
-          changedCount++;
           return;
         }
 
@@ -3152,7 +3173,6 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
 
         interviewScores[safeKey] = scoreObj;
 
-        // Simpan juga alias dengan format raw jika ada NIM
         if (rawNim) {
           interviewScores[`nim_${rawNim}`] = scoreObj;
           interviewScores[`nim_${rawNim.replace(/[\.\#\$\/\[\]\s]/g, '_')}`] = scoreObj;
@@ -3161,22 +3181,19 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
         changedCount++;
       });
 
-      if (changedCount > 0) {
-        persistScores();
-        updateStats();
-        renderApplicantList();
+      persistScores();
+      updateStats();
+      renderApplicantList();
 
-        // Periksa apakah pendaftar yang sedang terbuka di layar terpengaruh
-        if (selectedApplicantId) {
-          const activeInputs = ['interviewNotesInput', 'scoreAdab', 'scoreVisi', 'scoreKeahlian', 'scoreKomitmen'];
-          const isUserTyping = activeInputs.includes(document.activeElement?.id);
-          
-          if (!isUserTyping) {
-            renderDetailPane(selectedApplicantId);
-          }
+      if (selectedApplicantId) {
+        const activeInputs = ['interviewNotesInput', 'scoreAdab', 'scoreVisi', 'scoreKeahlian', 'scoreKomitmen'];
+        const isUserTyping = activeInputs.includes(document.activeElement?.id);
+        if (!isUserTyping) {
+          renderDetailPane(selectedApplicantId);
         }
+      }
 
-        // Efek kedip-kedip hijau halus pada status cloud (tidak memunculkan popup yang mengganggu)
+      if (changedCount > 0) {
         flashCloudSyncIndicator();
       }
     }
@@ -3411,6 +3428,25 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
         RD_Database.clearAllScores();
       }
       showToast("Dihapus", "Seluruh data penilaian telah dibersihkan.", "amber");
+    }
+    async function purgeAllGarbageData() {
+      if (!confirm("PERINGATAN: Apakah antum yakin ingin menyapu bersih seluruh data ampas/uji coba dari Google Sheet Tab 2 dan mereset nilai?")) return;
+      
+      // 1. Bersihkan lokal
+      interviewScores = {};
+      persistScores();
+      updateStats();
+      renderApplicantList();
+      if (selectedApplicantId) renderDetailPane(selectedApplicantId);
+
+      // 2. Bersihkan cloud
+      if (window.RD_Database) {
+        await RD_Database.purgeCloudGarbage();
+        await RD_Database.clearAllScores();
+      }
+
+      showToast("Data Ampas Dibersihkan", "Seluruh data sampah di Sheet & lokal telah disapu bersih.");
+      closeBackupModal();
     }
 
     // UI Toast Notification
