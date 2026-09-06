@@ -769,9 +769,10 @@
             <button 
               type="button" 
               onclick="clearAllScoringData()" 
-              class="text-rose-600 hover:text-rose-800 font-semibold text-[11px] flex items-center gap-1 shrink-0"
-              title="Hapus seluruh penilaian"
+              class="text-rose-600 hover:text-rose-800 font-semibold text-[11px] flex items-center gap-1.5 shrink-0 px-2 py-1 rounded-lg hover:bg-rose-50 transition-colors"
+              title="Hapus seluruh penilaian (Terkunci Password Developer)"
             >
+              <i class="fa-solid fa-lock text-[10px] text-rose-500"></i>
               <i class="fa-solid fa-trash-can"></i>
               <span>Hapus Semua</span>
             </button>
@@ -789,6 +790,89 @@
 
     </div>
   </div>
+  <!-- ========================================================================= -->
+  <!-- MODAL KONFIRMASI PASSWORD DEVELOPER -->
+  <!-- ========================================================================= -->
+  <div id="devAuthModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-deepGreen/85 backdrop-blur-sm no-print">
+    <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl border-2 border-rose-500/80 overflow-hidden flex flex-col">
+      <div class="bg-gradient-to-r from-rose-950 via-rose-900 to-deepGreen text-white p-4 sm:p-5 flex items-center justify-between border-b border-rose-500/30">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-9 h-9 rounded-xl bg-rose-500/20 border border-rose-400/40 flex items-center justify-center text-rose-300 shadow-inner">
+            <i class="fa-solid fa-shield-halved text-base"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm sm:text-base text-white flex items-center gap-1.5">
+              <span>Konfirmasi Developer</span>
+              <span class="text-[9px] uppercase px-1.5 py-0.5 rounded bg-rose-500/30 text-rose-200 border border-rose-400/40 font-mono font-bold tracking-wider">Terkunci</span>
+            </h3>
+            <p id="devAuthModalSubtitle" class="text-[11px] text-rose-100/80">Masukkan password developer untuk melanjutkan.</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeDevAuthModal()" class="text-rose-200 hover:text-white p-1 rounded-lg transition-colors">
+          <i class="fa-solid fa-xmark text-base"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4">
+        <div class="p-3 bg-rose-50 border border-rose-200 rounded-2xl flex items-start gap-2.5 text-xs text-rose-950">
+          <i class="fa-solid fa-triangle-exclamation text-rose-600 text-sm mt-0.5 shrink-0"></i>
+          <div class="space-y-1">
+            <div id="devAuthWarningTitle" class="font-bold text-rose-900">Perhatian: Tindakan Berbahaya</div>
+            <p id="devAuthWarningDesc" class="text-[11px] text-rose-800 leading-relaxed">
+              Tindakan ini akan menghapus seluruh data penilaian di perangkat lokal dan Cloud.
+            </p>
+          </div>
+        </div>
+
+        <form onsubmit="event.preventDefault(); submitDevAuth();" class="space-y-2">
+          <label for="devPasswordInput" class="block text-xs font-bold text-deepGreen">
+            Password Developer:
+          </label>
+          <div class="relative">
+            <input 
+              type="password" 
+              id="devPasswordInput" 
+              placeholder="Masukkan password developer..."
+              class="w-full pl-3.5 pr-10 py-2.5 rounded-xl border border-cream-300 bg-cream-50 focus:border-rose-500 focus:ring-2 focus:ring-rose-200 outline-none text-deepGreen font-mono text-sm font-semibold transition-all"
+              autocomplete="current-password"
+            />
+            <button 
+              type="button" 
+              onclick="toggleDevPasswordVisibility()" 
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-deepGreen text-xs p-1"
+              title="Lihat / Sembunyikan Password"
+            >
+              <i id="devPasswordEyeIcon" class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+          <p id="devPasswordError" class="text-[11px] text-rose-600 font-semibold hidden flex items-center gap-1 mt-1">
+            <i class="fa-solid fa-circle-xmark text-xs"></i>
+            <span id="devPasswordErrorText">Password developer salah!</span>
+          </p>
+        </form>
+      </div>
+
+      <div class="p-4 bg-cream-100 border-t border-cream-200 flex justify-end items-center gap-2">
+        <button 
+          type="button" 
+          onclick="closeDevAuthModal()" 
+          class="px-4 py-2 rounded-xl bg-white border border-cream-300 text-slate-700 text-xs font-bold hover:bg-cream-200 transition-colors"
+        >
+          Batal
+        </button>
+        <button 
+          type="button" 
+          id="btnConfirmDevAuth"
+          onclick="submitDevAuth()" 
+          class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold transition-all shadow-md active:scale-95 flex items-center gap-1.5"
+        >
+          <i class="fa-solid fa-key text-xs"></i>
+          <span>Verifikasi & Eksekusi</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
 
   <!-- ========================================================================= -->
   <!-- FLOATING MINI-TIMER PEWAWANCARA (STICKY UI) -->
@@ -3415,38 +3499,122 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
       reader.readAsArrayBuffer(file);
     }
 
-    function clearAllScoringData() {
-      if (!confirm("PERINGATAN: Apakah antum yakin ingin menghapus seluruh data penilaian? Tindakan ini akan membersihkan nilai baik di perangkat ini maupun di Cloud.")) return;
-      interviewScores = {};
-      persistScores();
-      updateStats();
-      renderApplicantList();
-      if (selectedApplicantId) renderDetailPane(selectedApplicantId);
-      closeBackupModal();
+    // =========================================================================
+    // DEVELOPER SECURITY & PROTECTED ACTIONS
+    // =========================================================================
+    const DEV_PASSWORD = "developer";
+    let pendingDevAuthCallback = null;
 
-      if (window.RD_Database && typeof RD_Database.clearAllScores === 'function') {
-        RD_Database.clearAllScores();
+    function requestDevAuth(callback, title = "Konfirmasi Developer", desc = "Masukkan password developer untuk mengeksekusi tindakan berbahaya ini.") {
+      pendingDevAuthCallback = callback;
+      const modal = document.getElementById("devAuthModal");
+      const titleEl = document.getElementById("devAuthWarningTitle");
+      const descEl = document.getElementById("devAuthWarningDesc");
+      const inputEl = document.getElementById("devPasswordInput");
+      const errEl = document.getElementById("devPasswordError");
+
+      if (titleEl) titleEl.textContent = title;
+      if (descEl) descEl.textContent = desc;
+      if (inputEl) {
+        inputEl.value = "";
+        inputEl.classList.remove("border-rose-500", "bg-rose-50");
       }
-      showToast("Dihapus", "Seluruh data penilaian telah dibersihkan.", "amber");
+      if (errEl) errEl.classList.add("hidden");
+
+      if (modal) {
+        modal.classList.remove("hidden");
+        setTimeout(() => {
+          if (inputEl) inputEl.focus();
+        }, 120);
+      } else {
+        // Fallback dialog browser jika modal HTML tidak terdeteksi
+        const entered = prompt(`${title}\n${desc}\n\nMasukkan password developer:`);
+        if (entered && entered.trim().toLowerCase() === DEV_PASSWORD.toLowerCase()) {
+          if (typeof callback === "function") callback();
+        } else if (entered !== null) {
+          alert("Password developer salah!");
+        }
+      }
     }
-    async function purgeAllGarbageData() {
-      if (!confirm("PERINGATAN: Apakah antum yakin ingin menyapu bersih seluruh data ampas/uji coba dari Google Sheet Tab 2 dan mereset nilai?")) return;
-      
-      // 1. Bersihkan lokal
-      interviewScores = {};
-      persistScores();
-      updateStats();
-      renderApplicantList();
-      if (selectedApplicantId) renderDetailPane(selectedApplicantId);
 
-      // 2. Bersihkan cloud
-      if (window.RD_Database) {
-        await RD_Database.purgeCloudGarbage();
-        await RD_Database.clearAllScores();
+    function closeDevAuthModal() {
+      const modal = document.getElementById("devAuthModal");
+      if (modal) modal.classList.add("hidden");
+      pendingDevAuthCallback = null;
+    }
+
+    function toggleDevPasswordVisibility() {
+      const input = document.getElementById("devPasswordInput");
+      const icon = document.getElementById("devPasswordEyeIcon");
+      if (!input || !icon) return;
+
+      if (input.type === "password") {
+        input.type = "text";
+        icon.className = "fa-solid fa-eye-slash";
+      } else {
+        input.type = "password";
+        icon.className = "fa-solid fa-eye";
       }
+    }
 
-      showToast("Data Ampas Dibersihkan", "Seluruh data sampah di Sheet & lokal telah disapu bersih.");
-      closeBackupModal();
+    function submitDevAuth() {
+      const input = document.getElementById("devPasswordInput");
+      const errEl = document.getElementById("devPasswordError");
+      const errText = document.getElementById("devPasswordErrorText");
+      if (!input) return;
+
+      const entered = input.value.trim();
+      if (entered.toLowerCase() === DEV_PASSWORD.toLowerCase()) {
+        const cb = pendingDevAuthCallback;
+        closeDevAuthModal();
+        if (typeof cb === "function") {
+          cb();
+        }
+      } else {
+        if (errEl) {
+          errEl.classList.remove("hidden");
+          if (errText) errText.textContent = entered ? "Password developer salah! Akses ditolak." : "Password tidak boleh kosong!";
+        }
+        input.classList.add("border-rose-500", "bg-rose-50");
+        input.focus();
+        input.select();
+      }
+    }
+
+    function clearAllScoringData() {
+      requestDevAuth(() => {
+        interviewScores = {};
+        persistScores();
+        updateStats();
+        renderApplicantList();
+        if (selectedApplicantId) renderDetailPane(selectedApplicantId);
+        closeBackupModal();
+
+        if (window.RD_Database && typeof RD_Database.clearAllScores === 'function') {
+          RD_Database.clearAllScores();
+        }
+        showToast("Dihapus", "Seluruh data penilaian telah dibersihkan.", "amber");
+      }, "Hapus Seluruh Data Penilaian", "PERINGATAN: Seluruh nilai dan catatan penilaian baik di perangkat ini maupun di Cloud/Google Sheet akan dihapus secara permanen.");
+    }
+
+    async function purgeAllGarbageData() {
+      requestDevAuth(async () => {
+        // 1. Bersihkan lokal
+        interviewScores = {};
+        persistScores();
+        updateStats();
+        renderApplicantList();
+        if (selectedApplicantId) renderDetailPane(selectedApplicantId);
+
+        // 2. Bersihkan cloud
+        if (window.RD_Database) {
+          await RD_Database.purgeCloudGarbage();
+          await RD_Database.clearAllScores();
+        }
+
+        showToast("Data Ampas Dibersihkan", "Seluruh data sampah di Sheet & lokal telah disapu bersih.");
+        closeBackupModal();
+      }, "Sapu Bersih Data Ampas & Reset Nilai", "PERINGATAN: Seluruh data sampah/uji coba dari Google Sheet Tab 2 akan disapu bersih dan seluruh nilai akan direset.");
     }
 
     // UI Toast Notification
