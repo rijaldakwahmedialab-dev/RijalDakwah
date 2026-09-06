@@ -1092,6 +1092,18 @@
 
       // ACCEPTED / DITERIMA
       if (data.status === 'DITERIMA') {
+        const isAnggotaBiasa = (data.rekomendasiRaw === 'redirect_member') || 
+                               (data.divisi && data.divisi.toLowerCase().includes('anggota biasa')) ||
+                               (data.catatan && (data.catatan.toLowerCase().includes('anggota biasa') || data.catatan.toLowerCase().includes('dialihkan ke anggota')));
+
+        const telegramGroupUrl = isAnggotaBiasa 
+          ? "https://t.me/+Al-heU3H_bo3MDll" 
+          : "https://t.me/+XPVlI0nS9Es2MzA9";
+
+        const telegramBtnText = isAnggotaBiasa 
+          ? "Gabung Grup Telegram Anggota" 
+          : "Gabung Grup Telegram Pengurus";
+
         container.innerHTML = `
           <div id="printableCard" class="bg-white rounded-3xl border-4 border-gold shadow-2xl overflow-hidden animate-in">
             <!-- Grand Header -->
@@ -1159,7 +1171,10 @@
                   <span>Langkah Selanjutnya & Arahan Panitia:</span>
                 </h4>
                 <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  ${escapeHtml(data.catatan || "Silakan bergabung ke grup koordinasi anggota baru dan ikuti temu ta'aruf perdana yang akan diumumkan oleh pengurus divisi.")}
+                  ${escapeHtml(data.catatan || (isAnggotaBiasa 
+                    ? "Silakan klik tombol di bawah untuk bergabung ke grup resmi Telegram Anggota Biasa UKM Rijal Dakwah dan nantikan informasi agenda mendatang." 
+                    : "Silakan klik tombol di bawah untuk bergabung ke grup resmi Telegram Pengurus UKM Rijal Dakwah dan ikuti temu ta'aruf perdana yang akan diumumkan."))
+                  }
                 </p>
                 <div class="pt-2 flex flex-wrap items-center gap-3 text-xs">
                   <span class="inline-flex items-center gap-1.5 text-forestGreen font-semibold">
@@ -1181,30 +1196,43 @@
                   <span>Dokumen Hasil Seleksi Sah & Terverifikasi Panitia</span>
                 </div>
 
-                <div class="flex items-center gap-3 w-full sm:w-auto">
-                  <button 
-                    onclick="window.print()" 
-                    class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-deepGreen hover:bg-forestGreen text-white text-xs font-bold flex items-center justify-center gap-2 shadow transition-colors"
+                <div class="flex items-center gap-2.5 w-full sm:w-auto">
+                  <a 
+                    href="${telegramGroupUrl}" 
+                    target="_blank" 
+                    class="flex-1 sm:flex-none btn-gold px-5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-md hover:scale-[1.02] transition-transform"
+                    title="Buka tautan grup resmi Telegram"
                   >
-                    <i class="fa-solid fa-print text-gold"></i>
-                    <span>Cetak Bukti (PDF)</span>
-                  </button>
+                    <i class="fa-brands fa-telegram text-base text-deepGreen"></i>
+                    <span>${telegramBtnText}</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                  </a>
 
                   <a 
                     href="https://t.me/aburobiah" 
                     target="_blank" 
-                    class="flex-1 sm:flex-none btn-gold px-5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow"
+                    class="flex-1 sm:flex-none px-4 py-2.5 rounded-xl bg-cream-100 hover:bg-cream-200 text-forestGreen border border-cream-300 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
+                    title="Hubungi Helpdesk Panitia Seleksi"
                   >
-                    <i class="fa-brands fa-telegram"></i>
-                    <span>Konfirmasi via Telegram</span>
+                    <i class="fa-solid fa-headset text-gold"></i>
+                    <span>Helpdesk Panitia</span>
                   </a>
+
+                  <button 
+                    onclick="window.print()" 
+                    class="px-3 py-2.5 rounded-xl bg-white hover:bg-cream-100 text-slate-500 hover:text-deepGreen border border-cream-300 text-xs font-bold flex items-center justify-center gap-1 transition-colors"
+                    title="Cetak Bukti Penerimaan (PDF)"
+                  >
+                    <i class="fa-solid fa-print"></i>
+                    <span class="hidden lg:inline">Cetak PDF</span>
+                  </button>
                 </div>
               </div>
 
             </div>
           </div>
         `;
-      } 
+      }
       // CADANGAN
       else if (data.status === 'CADANGAN') {
         container.innerHTML = `
