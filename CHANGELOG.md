@@ -3,6 +3,29 @@
 Semua catatan pembaruan, perubahan teknis, dan riwayat pengerjaan proyek.
 
 ---
+## [2026-09-05 - Update 15] - Perapian UI Mobile (Navbar & Modal Overlap) & Filter Ketat Divisi Utama
+
+### 📱 Perapian UI Mobile & Header (Bebas Berdempetan)
+- **Navbar & Topbar Khusus Smartphone**:
+  - Menata ulang header atas dan navbar utama agar tidak berdempetan atau bertabrakan (*zero horizontal overflow* pada lebar 360px–400px).
+  - Tombol-tombol aksi (*Cloud Sync*, *Perbarui*, *Ekspor*, dan *Web Utama*) memiliki dimensi sentuh seragam (`h-9`) dengan padding proporsional dan responsif.
+  - Menghilangkan tumpang tindih teks badge *"PORTAL WAWANCARA"* pada tampilan mobile.
+
+### 🛡️ Perbaikan Tampilan Modal pada Layar HP (Anti-Overlap)
+- **Pencegahan Tumpang Tindih Bilah Bawah**:
+  - Bilah aksi melayang bawah (*mobile bottom bar: "Calon Terpilih..."*) otomatis disembunyikan saat modal pengaturan atau cloud sync dibuka, dan dipulihkan kembali saat modal ditutup.
+  - Menata ulang modal dengan sistem *fixed header*, *scrollable content*, dan *fixed footer*, serta merapikan grid tombol cadangan nilai agar teks tombol tidak terpotong atau tertekan sempit.
+
+### 🎯 Filter Ketat Divisi Utama (Target Wawancara)
+- **Pemisahan Divisi Utama vs Divisi Cadangan**:
+  - Menambahkan dropdown khusus **`🎯 Divisi Utama (Target Wawancara)`** yang menyaring calon secara presisi hanya pada pilihan divisi utamanya, mencegah tercampurnya calon yang hanya memilih divisi tersebut sebagai cadangan.
+  - Menyediakan dropdown pendamping **`Cadangan (Pilihan 2)`** jika panitia ingin mengecek pilihan alternatif calon.
+  - Memperbarui tombol chip filter cepat (*Media, Dakwah Digital, Keilmuan, TPQ, Acara, Humas, Inventaris*) agar langsung memfilter ke Divisi Utama calon.
+- **Lencana Visual Divisi pada Kartu Antrean**:
+  - Kartu pendaftar kini dengan jelas mencantumkan badge hijau emerald `🎯 Utama: [Nama Divisi]` dan badge abu-abu `Cad: [Nama Divisi]`.
+
+---
+
 ## [2026-09-05 - Update 14] - Integrasi Bawaan Google Apps Script Web App Resmi Tanpa Input Manual
 
 ### ⚡ Integrasi URL Bawaan Otomatis (*Zero-Config Cloud Sync*)
