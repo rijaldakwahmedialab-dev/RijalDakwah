@@ -1,0 +1,4 @@
+.env
+node_modules/
+*.tmp
+extracted_data.json
