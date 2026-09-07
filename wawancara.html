@@ -161,6 +161,32 @@
         page-break-after: always;
       }
     }
+    /* Floating Mini Timer Responsive Positioning */
+    #miniInterviewTimer {
+      position: fixed;
+      z-index: 45;
+      bottom: 1rem;
+      left: 0;
+      right: 0;
+      margin-left: auto;
+      margin-right: auto;
+      width: fit-content;
+      width: -moz-fit-content;
+      transition: bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+    }
+    #miniInterviewTimer.lifted {
+      bottom: 4.85rem !important;
+    }
+    @media (min-width: 640px) {
+      #miniInterviewTimer,
+      #miniInterviewTimer.lifted {
+        left: 1rem;
+        right: auto;
+        margin-left: 0;
+        margin-right: 0;
+        bottom: 1rem !important;
+      }
+    }
   </style>
 </head>
 
@@ -945,10 +971,13 @@
       // 4. Render Google Apps Script snippet in modal
       renderAppsScriptSnippet();
 
-      // 5. Fetch live applicant responses directly from Google Sheets
+      // 5. Initialize Timer Display
+      updateTimerDisplay();
+
+      // 6. Fetch live applicant responses directly from Google Sheets immediately
       syncDataFromSheets(false);
 
-      // 6. Automatic periodic polling every 20 seconds so all devices stay in sync
+      // 7. Automatic periodic polling every 20 seconds so all devices stay in sync
       setInterval(() => {
         syncDataFromSheets(false);
       }, 20000);
@@ -1050,6 +1079,8 @@
       if (modal) modal.classList.remove("hidden");
       const mobileBar = document.getElementById("mobileBottomBar");
       if (mobileBar) mobileBar.classList.add("hidden");
+      const timerAside = document.getElementById("miniInterviewTimer");
+      if (timerAside) timerAside.classList.add("hidden");
       updateCloudSyncUI();
     }
 
@@ -1058,6 +1089,8 @@
       if (modal) modal.classList.add("hidden");
       const mobileBar = document.getElementById("mobileBottomBar");
       if (mobileBar && selectedApplicantId) mobileBar.classList.remove("hidden");
+      const timerAside = document.getElementById("miniInterviewTimer");
+      if (timerAside) timerAside.classList.remove("hidden");
     }
 
     function toggleAppsScriptGuide() {
@@ -1934,12 +1967,15 @@ function doPost(e) {
       if (applicant) {
         const mobileBar = document.getElementById("mobileBottomBar");
         const mobileName = document.getElementById("mobileCandidateName");
+        const timerAside = document.getElementById("miniInterviewTimer");
         if (mobileBar && mobileName) {
           mobileName.textContent = applicant["Nama lengkap:"] || "Calon Terpilih";
           mobileBar.classList.remove("translate-y-full");
         }
+        if (timerAside) {
+          timerAside.classList.add("lifted");
+        }
       }
-
       if (autoScroll && window.innerWidth < 1024) {
         scrollToDetailPane();
       }
@@ -3261,6 +3297,8 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
       if (modal) modal.classList.remove("hidden");
       const mobileBar = document.getElementById("mobileBottomBar");
       if (mobileBar) mobileBar.classList.add("hidden");
+      const timerAside = document.getElementById("miniInterviewTimer");
+      if (timerAside) timerAside.classList.add("hidden");
     }
 
     function closeBackupModal() {
@@ -3268,8 +3306,9 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
       if (modal) modal.classList.add("hidden");
       const mobileBar = document.getElementById("mobileBottomBar");
       if (mobileBar && selectedApplicantId) mobileBar.classList.remove("hidden");
+      const timerAside = document.getElementById("miniInterviewTimer");
+      if (timerAside) timerAside.classList.remove("hidden");
     }
-
     function downloadNotesBackup() {
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(interviewScores, null, 2));
       const downloadAnchor = document.createElement('a');
@@ -3400,6 +3439,111 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
     }
 
     // Utility escape html
+    // =========================================================================
+    // MINI INTERVIEW TIMER (POJOK DESKTOP, TENGAH MOBILE)
+    // =========================================================================
+    let timerSeconds = 0;
+    let timerRunning = false;
+    let timerInterval = null;
+    let timerMode = 'countup'; // 'countup' | 'countdown10' | 'countdown15'
+    const TIMER_TARGETS = {
+      countup: 0,
+      countdown10: 10 * 60,
+      countdown15: 15 * 60
+    };
+
+    function formatTimer(secs) {
+      const m = Math.floor(secs / 60);
+      const s = secs % 60;
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function updateTimerDisplay() {
+      const display = document.getElementById("timerDisplay");
+      const badge = document.getElementById("timerModeBadge");
+      const widget = document.getElementById("miniInterviewTimerWidget");
+      if (!display) return;
+
+      display.textContent = formatTimer(timerSeconds);
+
+      if (widget) {
+        if (timerRunning) {
+          widget.classList.add("ring-2", "ring-emerald-400", "shadow-emerald-900/40");
+          widget.classList.remove("border-gold/60");
+        } else {
+          widget.classList.remove("ring-2", "ring-emerald-400", "shadow-emerald-900/40");
+          widget.classList.add("border-gold/60");
+        }
+
+        const isWarning = (timerMode === 'countup' && timerSeconds >= 10 * 60) || 
+                          (timerMode !== 'countup' && timerSeconds <= 60 && timerSeconds > 0);
+        if (isWarning) {
+          display.className = "font-mono font-extrabold text-xs sm:text-sm text-amber-400 tracking-wider animate-pulse";
+        } else {
+          display.className = "font-mono font-extrabold text-xs sm:text-sm text-gold-light tracking-wider";
+        }
+      }
+
+      if (badge) {
+        if (timerMode === 'countup') badge.textContent = "UP";
+        else if (timerMode === 'countdown10') badge.textContent = "10M";
+        else if (timerMode === 'countdown15') badge.textContent = "15M";
+      }
+    }
+
+    function toggleInterviewTimer() {
+      const btnIcon = document.getElementById("timerIcon");
+      if (timerRunning) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        if (btnIcon) btnIcon.className = "fa-solid fa-play text-xs text-gold";
+      } else {
+        timerRunning = true;
+        if (btnIcon) btnIcon.className = "fa-solid fa-pause text-xs text-emerald-400";
+        
+        if (timerMode !== 'countup' && timerSeconds <= 0) {
+          timerSeconds = TIMER_TARGETS[timerMode];
+        }
+
+        timerInterval = setInterval(() => {
+          if (timerMode === 'countup') {
+            timerSeconds++;
+          } else {
+            if (timerSeconds > 0) {
+              timerSeconds--;
+            } else {
+              clearInterval(timerInterval);
+              timerRunning = false;
+              if (btnIcon) btnIcon.className = "fa-solid fa-rotate-right text-xs text-amber-400";
+            }
+          }
+          updateTimerDisplay();
+        }, 1000);
+      }
+      updateTimerDisplay();
+    }
+
+    function resetInterviewTimer() {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      if (timerMode === 'countup') {
+        timerSeconds = 0;
+      } else {
+        timerSeconds = TIMER_TARGETS[timerMode];
+      }
+      const btnIcon = document.getElementById("timerIcon");
+      if (btnIcon) btnIcon.className = "fa-solid fa-play text-xs text-gold";
+      updateTimerDisplay();
+    }
+
+    function toggleTimerMode() {
+      if (timerMode === 'countup') timerMode = 'countdown10';
+      else if (timerMode === 'countdown10') timerMode = 'countdown15';
+      else timerMode = 'countup';
+
+      resetInterviewTimer();
+    }
+
     function escapeHtml(string) {
       if (!string) return '';
       return String(string)
@@ -3415,6 +3559,39 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
       return String(str).replace(/'/g, "\\'").replace(/"/g, '&quot;').replace(/\n/g, ' ');
     }
   </script>
+  <!-- ========================================================================= -->
+  <!-- FLOATING MINI INTERVIEW TIMER (Pojok Desktop, Tengah Mobile) -->
+  <!-- ========================================================================= -->
+  <aside id="miniInterviewTimer" class="no-print" aria-label="Timer Wawancara">
+    <div id="miniInterviewTimerWidget" class="bg-deepGreen/95 backdrop-blur-md border-2 border-gold/60 text-white rounded-2xl px-2.5 py-1.5 sm:px-3 sm:py-2 shadow-2xl flex items-center gap-2 transition-all">
+      <button 
+        type="button" 
+        id="btnTimerToggle" 
+        onclick="toggleInterviewTimer()" 
+        class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gold/20 hover:bg-gold/30 flex items-center justify-center transition-all active:scale-90 cursor-pointer"
+        title="Klik: Mulai / Jeda Timer"
+      >
+        <i id="timerIcon" class="fa-solid fa-play text-xs text-gold"></i>
+      </button>
+      
+      <div class="cursor-pointer select-none px-1" onclick="toggleTimerMode()" title="Klik untuk ganti mode: Stopwatch (UP) / 10 Menit (10M) / 15 Menit (15M)">
+        <div class="flex items-center gap-1.5">
+          <span id="timerDisplay" class="font-mono font-extrabold text-xs sm:text-sm text-gold-light tracking-wider">00:00</span>
+          <span id="timerModeBadge" class="text-[8px] sm:text-[9px] uppercase px-1 py-0.5 rounded bg-gold/20 text-gold font-bold">UP</span>
+        </div>
+      </div>
+
+      <button 
+        type="button" 
+        onclick="resetInterviewTimer()" 
+        class="w-6 h-6 rounded-lg text-cream-300 hover:text-white hover:bg-white/10 flex items-center justify-center transition-colors text-xs cursor-pointer"
+        title="Reset Timer (Kembali ke awal)"
+      >
+        <i class="fa-solid fa-rotate-right text-[11px]"></i>
+      </button>
+    </div>
+  </aside>
+
   <!-- Floating Action Bar for Mobile -->
   <div id="mobileBottomBar" class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-deepGreen text-white px-4 py-3 border-t-2 border-gold flex items-center justify-between shadow-2xl transition-all duration-300 no-print transform translate-y-full">
     <div class="truncate max-w-[200px] sm:max-w-xs">

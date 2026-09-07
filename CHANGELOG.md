@@ -3,6 +3,22 @@
 Semua catatan pembaruan, perubahan teknis, dan riwayat pengerjaan proyek.
 
 ---
+## [2026-09-05 - Update 16] - Pengembalian Floating Mini Timer Wawancara (Pojok Desktop & Tengah Mobile)
+
+### ⏱️ Pengembalian Widget Timer Wawancara (`#miniInterviewTimer`)
+- **Posisi Responsif Adaptif Sesuai Perangkat**:
+  - **Desktop (Layar Lebar)**: Terletak di **pojok kiri bawah** (`bottom: 1rem; left: 1rem`), memberi ruang visual leluasa saat menguji tanpa menghalangi berkas calon.
+  - **Smartphone / Mobile**: Terletak tepat di **tengah bawah layar** (`bottom: 1rem; left: 0; right: 0; margin: auto`) untuk kemudahan akses jempol penguji.
+- **Dukungan 3 Mode Pengukuran Durasi**:
+  - **Stopwatch (UP)**: Menghitung maju durasi wawancara dari `00:00`.
+  - **Countdown 10 Menit (10M)**: Hitung mundur dari `10:00` dengan peringatan kedip kuning saat sisa 60 detik.
+  - **Countdown 15 Menit (15M)**: Hitung mundur dari `15:00` untuk sesi wawancara standar UKM.
+- **Interaksi Pintar Anti-Tabrakan**:
+  - Otomatis terangkat (*lifted*) ke atas bilah aksi calon terpilih saat diakses dari ponsel.
+  - Otomatis disembunyikan (*hidden*) saat modal pengaturan dibuka dan dipulihkan kembali saat modal ditutup.
+
+---
+
 ## [2026-09-05 - Update 15] - Perapian UI Mobile (Navbar & Modal Overlap) & Filter Ketat Divisi Utama
 
 ### 📱 Perapian UI Mobile & Header (Bebas Berdempetan)
