@@ -3,6 +3,30 @@
 Semua catatan pembaruan, perubahan teknis, dan riwayat pengerjaan proyek.
 
 ---
+## [2026-09-05 - Update 13] - Perbaikan Reset Sheet Kosong, Sinkronisasi Menyeluruh Tombol Perbarui & Opsi Tunggal Wipe All
+
+### 🔄 Sinkronisasi Menyeluruh pada Tombol "Perbarui"
+- Memperbarui fungsi tombol **"Perbarui"** pada *navbar* agar menyelaraskan seluruh data secara komprehensif:
+  1. Mengambil data pendaftar terbaru langsung dari Google Sheets.
+  2. Mengambil data nilai terwawancara & catatan dari Google Apps Script Cloud.
+  3. Menghitung ulang seluruh statistik (Total, Pengurus, Anggota, Sudah Dinilai, Belum Dinilai).
+  4. Menampilkan notifikasi status sinkronisasi yang jelas.
+
+### 🛠️ Perbaikan Penanganan Data Kosong (Reset ke 0 saat Sheet Di-Wipe)
+- **Masalah Sebelumnya:** Saat data di Google Sheets dikosongkan/di-wipe dari HP, laptop tetap menampilkan jumlah lama dan tidak mereset ke 0 karena adanya batasan kondisional `parsedRows.length > 0`.
+- **Solusi:** Sistem kini memperlakukan sheet kosong secara tepat: jika sheet kosong (0 baris), seluruh statistik langsung mereset ke **0**, daftar antrean menampilkan status kosong, dan panel detail otomatis bersih di semua perangkat.
+
+### 🧹 Konsolidasi Opsi Tunggal: "Wipe All (Reset Semua Data & Cache)"
+- Mengganti tombol ganda yang membingungkan (*seperti "Sapu Bersih Data Ampas"* dan *"Hapus Semua"*) menjadi **1 opsi tunggal yang jelas**:
+  - **`Wipe All (Reset Semua Data & Cache)`**: Menghapus seluruh penilaian lokal, membersihkan cache pendaftar, dan memaksa sinkronisasi ulang langsung dari Google Sheets dengan 1 klik konfirmasi.
+
+### ⚡ Optimalisasi Performa & Pembersihan Kode Lawas
+- **Debounce Pencarian (180ms):** Mencegah lag saat mengetik kata kunci pencarian.
+- **Rendering Bertahap (Chunking 35 Kartu):** Merender 35 kartu awal secara instan (60 FPS) dengan tombol elegan *"Tampilkan Pendaftar Lainnya"* untuk mencegah pembekuan DOM pada data berjumlah ratusan.
+- **Pemisahan Komputasi Berat:** Mengeluarkan kalkulasi dropdown dinamis dan deduplikasi dari siklus render ketikan sehingga peramban berjalan ringan di HP maupun laptop.
+
+---
+
 ## [2026-09-05 - Update 12] - Portal Khusus Seleksi Wawancara (wawancara.html) & Cloud Sync Multi-Device
 
 ### 🎙️ Halaman Baru Khusus Panitia: Portal Wawancara (`wawancara.html`)

@@ -380,7 +380,7 @@
             <input 
               type="text" 
               id="searchInput" 
-              oninput="handleFilterChange()" 
+              oninput="handleFilterChange(false)" 
               placeholder="Cari nama, NIM, telegram, prodi, skillset..." 
               class="w-full pl-10 pr-9 py-2.5 text-xs sm:text-sm rounded-xl border border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none text-deepGreen bg-cream-50 font-medium transition-all"
             />
@@ -398,7 +398,7 @@
           <div class="md:col-span-2">
             <select 
               id="filterRole" 
-              onchange="handleFilterChange()" 
+              onchange="handleFilterChange(true)" 
               class="w-full py-2.5 px-3 text-xs sm:text-sm rounded-xl border border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-deepGreen font-medium"
             >
               <option value="">Semua Jalur</option>
@@ -411,7 +411,7 @@
           <div class="md:col-span-2">
             <select 
               id="filterDivisi" 
-              onchange="handleFilterChange()" 
+              onchange="handleFilterChange(true)" 
               class="w-full py-2.5 px-3 text-xs sm:text-sm rounded-xl border border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-deepGreen font-medium"
             >
               <option value="">Semua Divisi</option>
@@ -422,7 +422,7 @@
           <div class="md:col-span-2">
             <select 
               id="filterProdi" 
-              onchange="handleFilterChange()" 
+              onchange="handleFilterChange(true)" 
               class="w-full py-2.5 px-3 text-xs sm:text-sm rounded-xl border border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-deepGreen font-medium"
             >
               <option value="">Semua Prodi</option>
@@ -433,7 +433,7 @@
           <div class="md:col-span-2">
             <select 
               id="filterStatus" 
-              onchange="handleFilterChange()" 
+              onchange="handleFilterChange(true)" 
               class="w-full py-2.5 px-3 text-xs sm:text-sm rounded-xl border border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-deepGreen font-medium"
             >
               <option value="">Status Penilaian</option>
@@ -491,7 +491,7 @@
 
             <!-- Deduplication Checkbox -->
             <label class="inline-flex items-center gap-1.5 ml-1 px-2.5 py-1 bg-amber-50 text-amber-900 border border-amber-300 rounded-lg cursor-pointer select-none font-semibold hover:bg-amber-100 transition-colors" title="Sembunyikan entri berulang dari pendaftar yang sama, hanya tampilkan submisi terbaru">
-              <input type="checkbox" id="hideDuplicatesCheckbox" onchange="handleFilterChange()" checked class="rounded text-amber-600 focus:ring-amber-500">
+              <input type="checkbox" id="hideDuplicatesCheckbox" onchange="handleFilterChange(true)" checked class="rounded text-amber-600 focus:ring-amber-500">
               <span>Sembunyikan Duplikat</span>
             </label>
 
@@ -508,7 +508,7 @@
             <span class="text-slate-500 font-medium">Urutan:</span>
             <select 
               id="sortBy" 
-              onchange="handleFilterChange()" 
+              onchange="handleFilterChange(true)" 
               class="py-1 px-2 text-xs rounded-lg border border-cream-300 bg-white font-medium text-deepGreen outline-none"
             >
               <option value="time_desc">Waktu Daftar (Terbaru)</option>
@@ -820,19 +820,20 @@
           </label>
         </div>
 
-        <div class="pt-3 border-t border-cream-200 flex justify-between items-center">
+        <div class="pt-3 border-t border-cream-200 flex flex-col sm:flex-row justify-between items-center gap-3">
           <button 
             type="button" 
-            onclick="clearAllScoringData()" 
-            class="text-rose-600 hover:text-rose-800 font-semibold text-[11px] flex items-center gap-1"
+            onclick="handleWipeAll()" 
+            class="w-full sm:w-auto px-4 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95 cursor-pointer"
+            title="Wipe All: Reset total seluruh data nilai, cache pendaftar, dan paksa sinkronisasi ulang langsung dari Google Sheets"
           >
-            <i class="fa-solid fa-trash-can"></i>
-            <span>Hapus Seluruh Data Nilai</span>
+            <i class="fa-solid fa-trash-can text-rose-600"></i>
+            <span>Wipe All (Reset Semua Data & Cache)</span>
           </button>
           <button 
             type="button" 
             onclick="closeBackupModal()" 
-            class="px-4 py-2 bg-deepGreen text-white font-bold rounded-xl hover:bg-forestGreen"
+            class="w-full sm:w-auto px-5 py-2.5 bg-deepGreen text-white font-bold rounded-xl hover:bg-forestGreen transition-colors cursor-pointer"
           >
             Tutup
           </button>
@@ -1240,42 +1241,64 @@ function doPost(e) {
           cleanup();
 
           try {
-            if (!gvizData || !gvizData.table || !gvizData.table.rows) {
+            if (!gvizData || !gvizData.table) {
               throw new Error("Format respon Google Sheets tidak valid.");
             }
 
-            const cols = gvizData.table.cols.map(c => c.label || c.id);
-            const parsedRows = gvizData.table.rows.map((row, index) => {
+            const cols = (gvizData.table.cols || []).map(c => c.label || c.id);
+            const parsedRows = (gvizData.table.rows || []).map((row, index) => {
               const obj = { id: index + 1 };
-              row.c.forEach((cell, colIdx) => {
-                const colName = cols[colIdx] || `Col_${colIdx}`;
-                obj[colName] = cell ? (cell.f || cell.v || "") : "";
-              });
+              if (row && row.c) {
+                row.c.forEach((cell, colIdx) => {
+                  const colName = cols[colIdx] || `Col_${colIdx}`;
+                  obj[colName] = cell ? (cell.f || cell.v || "") : "";
+                });
+              }
               return obj;
+            }).filter(item => {
+              return (item["Nama lengkap:"] || item["NIM:"] || "").toString().trim().length > 0;
             });
 
-            if (parsedRows.length > 0) {
-              rawApplicants = parsedRows;
-              if (liveStatusDot) liveStatusDot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
-              if (liveStatusText) liveStatusText.textContent = `Live Sheets (${rawApplicants.length} data)`;
-              const now = new Date();
-              if (syncTimestamp) syncTimestamp.textContent = `Sinkron: ${now.toLocaleTimeString('id-ID')}`;
-              
-              // Sync scores from Google Apps Script if connected
-              if (cloudSyncEndpoint) {
-                await fetchCloudScores();
-              }
+            rawApplicants = parsedRows;
+            computeDuplicateMetadata();
+            populateDynamicFilterDropdowns();
 
-              applyFiltersAndRender();
+            // Sync scores & notes from Google Apps Script if connected
+            if (cloudSyncEndpoint) {
+              await fetchCloudScores();
+            }
 
-              // Auto-select first applicant on initial load if none selected
-              if (!selectedApplicantId && filteredApplicants.length > 0) {
-                selectApplicant(filteredApplicants[0].id);
-              }
+            const now = new Date();
+            if (syncTimestamp) syncTimestamp.textContent = `Sinkron: ${now.toLocaleTimeString('id-ID')}`;
 
+            // Handle empty / wiped sheet (0 rows)
+            if (rawApplicants.length === 0) {
+              filteredApplicants = [];
+              selectedApplicantId = null;
+              updateStats();
+              renderApplicantList();
+              renderDetailPane(null);
+              if (liveStatusDot) liveStatusDot.className = "w-2 h-2 rounded-full bg-amber-400";
+              if (liveStatusText) liveStatusText.textContent = "Live Sheets (0 data / Kosong)";
               if (isManual) {
-                showToast("Sinkron Berhasil", `Berhasil memuat ${rawApplicants.length} pendaftar terbaru dari Google Sheets.`);
+                showToast("Sinkron Berhasil", "Data Google Sheets kosong (0 pendaftar).", "amber");
               }
+              resolve();
+              return;
+            }
+
+            if (liveStatusDot) liveStatusDot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
+            if (liveStatusText) liveStatusText.textContent = `Live Sheets (${rawApplicants.length} data)`;
+
+            applyFiltersAndRender();
+
+            // Auto-select first applicant on initial load if none selected
+            if (!selectedApplicantId && filteredApplicants.length > 0) {
+              selectApplicant(filteredApplicants[0].id);
+            }
+
+            if (isManual) {
+              showToast("Sinkron Berhasil", `Berhasil memuat ${rawApplicants.length} pendaftar & nilai terwawancara.`);
             }
           } catch (err) {
             console.error("Gviz JSONP parsing error:", err);
@@ -1306,17 +1329,35 @@ function doPost(e) {
         const csvResp = await fetch(CSV_URL, { cache: "no-store" });
         if (csvResp.ok) {
           const csvText = await csvResp.text();
-          const parsedCsv = parseCSV(csvText);
-          if (parsedCsv.length > 0) {
-            rawApplicants = parsedCsv;
-            const liveStatusDot = document.getElementById("liveStatusDot");
-            const liveStatusText = document.getElementById("liveStatusText");
-            if (liveStatusDot) liveStatusDot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
-            if (liveStatusText) liveStatusText.textContent = `Live CSV (${rawApplicants.length} data)`;
-            applyFiltersAndRender();
-            if (isManual) showToast("Sinkron Berhasil", `Memuat ${rawApplicants.length} data dari CSV.`);
+          const parsedCsv = parseCSV(csvText).filter(item => (item["Nama lengkap:"] || item["NIM:"] || "").toString().trim().length > 0);
+          rawApplicants = parsedCsv;
+          computeDuplicateMetadata();
+          populateDynamicFilterDropdowns();
+          
+          if (cloudSyncEndpoint) {
+            await fetchCloudScores();
+          }
+
+          const liveStatusDot = document.getElementById("liveStatusDot");
+          const liveStatusText = document.getElementById("liveStatusText");
+
+          if (rawApplicants.length === 0) {
+            filteredApplicants = [];
+            selectedApplicantId = null;
+            updateStats();
+            renderApplicantList();
+            renderDetailPane(null);
+            if (liveStatusDot) liveStatusDot.className = "w-2 h-2 rounded-full bg-amber-400";
+            if (liveStatusText) liveStatusText.textContent = "Live CSV (0 data / Kosong)";
+            if (isManual) showToast("Sinkron Berhasil", "Data CSV kosong (0 pendaftar).", "amber");
             return;
           }
+
+          if (liveStatusDot) liveStatusDot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
+          if (liveStatusText) liveStatusText.textContent = `Live CSV (${rawApplicants.length} data)`;
+          applyFiltersAndRender();
+          if (isManual) showToast("Sinkron Berhasil", `Memuat ${rawApplicants.length} data & status penilaian dari CSV.`);
+          return;
         }
       } catch (e) {
         console.warn("CSV fallback also failed:", e);
@@ -1384,9 +1425,17 @@ function doPost(e) {
 
     // =========================================================================
     // FILTERING, SORTING & STATS
-    // =========================================================================
-    function handleFilterChange() {
-      applyFiltersAndRender();
+    let filterDebounceTimer = null;
+    function handleFilterChange(immediate = false) {
+      if (immediate) {
+        clearTimeout(filterDebounceTimer);
+        applyFiltersAndRender();
+        return;
+      }
+      clearTimeout(filterDebounceTimer);
+      filterDebounceTimer = setTimeout(() => {
+        applyFiltersAndRender();
+      }, 180);
     }
 
     function clearSearch() {
@@ -1417,12 +1466,12 @@ function doPost(e) {
       applyFiltersAndRender();
     }
 
-    // Populate dynamic divisions and prodis into dropdowns
+    // Populate dynamic divisions and prodis into dropdowns (only called on data sync/change)
     function populateDynamicFilterDropdowns() {
       const divisiSelect = document.getElementById("filterDivisi");
       const prodiSelect = document.getElementById("filterProdi");
 
-      if (divisiSelect && divisiSelect.options.length <= 1) {
+      if (divisiSelect) {
         const currentVal = divisiSelect.value;
         const uniqueDivisi = new Set();
         rawApplicants.forEach(a => {
@@ -1437,7 +1486,7 @@ function doPost(e) {
         divisiSelect.innerHTML = divHtml;
       }
 
-      if (prodiSelect && prodiSelect.options.length <= 1) {
+      if (prodiSelect) {
         const currentVal = prodiSelect.value;
         const uniqueProdi = new Set();
         rawApplicants.forEach(a => {
@@ -1453,7 +1502,7 @@ function doPost(e) {
       }
     }
 
-    // Build deduplication mapping
+    // Build deduplication mapping (only called on data sync/change)
     function computeDuplicateMetadata() {
       const groupMap = new Map();
       rawApplicants.forEach(a => {
@@ -1476,10 +1525,8 @@ function doPost(e) {
       });
     }
 
+    // Fast filter & render without expensive re-index computations
     function applyFiltersAndRender() {
-      populateDynamicFilterDropdowns();
-      computeDuplicateMetadata();
-
       const query = (document.getElementById("searchInput")?.value || "").toLowerCase().trim();
       const roleFilter = document.getElementById("filterRole")?.value || "";
       const divisiFilter = document.getElementById("filterDivisi")?.value || "";
@@ -1624,6 +1671,12 @@ function doPost(e) {
     // =========================================================================
     // APPLICANT LIST RENDERING (LEFT COLUMN)
     // =========================================================================
+    let maxRenderCards = 35;
+    function renderAllCards() {
+      maxRenderCards = 999999;
+      renderApplicantList();
+    }
+
     function renderApplicantList() {
       const container = document.getElementById("applicantListContainer");
       if (!container) return;
@@ -1634,17 +1687,16 @@ function doPost(e) {
             <div class="w-12 h-12 rounded-xl bg-cream-100 text-slate-400 flex items-center justify-center mx-auto text-xl">
               <i class="fa-solid fa-user-slash"></i>
             </div>
-            <div class="font-bold text-deepGreen text-sm">Tidak Ada Pendaftar yang Cocok</div>
-            <p class="text-xs text-slate-500">Coba ubah kata kunci pencarian atau bersihkan filter.</p>
-            <button onclick="resetAllFilters()" class="text-xs text-forestGreen font-bold hover:underline mt-2 inline-block">
-              Bersihkan Semua Filter
-            </button>
+            <div class="font-bold text-deepGreen text-sm">${rawApplicants.length === 0 ? 'Data Google Sheets Kosong (0 Data)' : 'Tidak Ada Pendaftar yang Cocok'}</div>
+            <p class="text-xs text-slate-500">${rawApplicants.length === 0 ? 'Sheet tidak memiliki baris data pendaftar.' : 'Coba ubah kata kunci pencarian atau bersihkan filter.'}</p>
+            ${rawApplicants.length > 0 ? `<button onclick="resetAllFilters()" class="text-xs text-forestGreen font-bold hover:underline mt-2 inline-block">Bersihkan Semua Filter</button>` : ''}
           </div>
         `;
         return;
       }
 
-      container.innerHTML = filteredApplicants.map(applicant => {
+      const visibleSlice = filteredApplicants.slice(0, maxRenderCards);
+      const cardsHtml = visibleSlice.map(applicant => {
         const isSelected = applicant.id === selectedApplicantId;
         const name = applicant["Nama lengkap:"] || "Tanpa Nama";
         const nim = applicant["NIM:"] || "-";
@@ -1749,6 +1801,25 @@ function doPost(e) {
           </div>
         `;
       }).join('');
+
+      let loadMoreHtml = '';
+      if (filteredApplicants.length > maxRenderCards) {
+        const remaining = filteredApplicants.length - maxRenderCards;
+        loadMoreHtml = `
+          <div class="pt-2 pb-1 text-center">
+            <button 
+              type="button" 
+              onclick="renderAllCards()" 
+              class="w-full py-2.5 px-4 bg-cream-100 hover:bg-cream-200 text-forestGreen border border-cream-300 rounded-xl font-bold text-xs transition-all shadow-sm active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <i class="fa-solid fa-list-ul text-gold"></i>
+              <span>Tampilkan ${remaining} Pendaftar Lainnya (Total ${filteredApplicants.length})</span>
+            </button>
+          </div>
+        `;
+      }
+
+      container.innerHTML = cardsHtml + loadMoreHtml;
     }
 
     function selectApplicant(id, autoScroll = false) {
@@ -3155,15 +3226,34 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
       reader.readAsArrayBuffer(file);
     }
 
-    function clearAllScoringData() {
-      if (!confirm("PERINGATAN: Apakah antum yakin ingin menghapus seluruh data penilaian di peramban ini? Tindakan ini tidak dapat dibatalkan!")) return;
+    async function handleWipeAll() {
+      if (!confirm("PERINGATAN WIPE ALL (RESET TOTAL):\n\nTindakan ini akan:\n1. Menghapus seluruh penilaian & catatan wawancara lokal di perangkat ini\n2. Mengosongkan memori & cache pendaftar\n3. Memaksa peramban menyinkronkan ulang data langsung dari Google Sheets (jika sheet kosong, tampilan akan reset jadi 0)\n\nApakah antum yakin ingin melanjutkan Wipe All?")) {
+        return;
+      }
+
+      // 1. Reset scores and localStorage
       interviewScores = {};
-      persistScores();
+      try {
+        localStorage.removeItem(STORAGE_KEY_SCORES);
+      } catch (e) {}
+
+      // 2. Reset applicant memory
+      rawApplicants = [];
+      filteredApplicants = [];
+      selectedApplicantId = null;
+      maxRenderCards = 35;
+
       updateStats();
-      renderApplicantList();
-      if (selectedApplicantId) renderDetailPane(selectedApplicantId);
+      renderLoadingSkeleton();
+      renderDetailPane(null);
       closeBackupModal();
-      showToast("Dihapus", "Seluruh data penilaian telah dibersihkan.", "amber");
+
+      showToast("Wipe All Berjalan...", "Mengosongkan cache dan menyinkronkan langsung dari Google Sheets...", "amber");
+
+      // 3. Force live fetch from Google Sheets
+      await syncDataFromSheets(true);
+
+      showToast("Wipe All Selesai", "Semua data lokal & cache berhasil direset total.");
     }
 
     // UI Toast Notification
