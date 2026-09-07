@@ -889,7 +889,7 @@
     const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json`;
     const CSV_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv`;
     const STORAGE_KEY_SCORES = "rd_interview_scores_v1";
-    const STORAGE_KEY_INTERVIEWER = "rd_interviewer_name_v1";
+    const DEFAULT_CLOUD_SYNC_URL = "https://script.google.com/macros/s/AKfycbynakEGabRfxbDVjm38njXF6hh4q8qWBHWC5Rc21kbRNuZNs3IH3i7I8xDl_xM080sacA/exec";
     const STORAGE_KEY_CLOUD_SYNC = "rd_cloud_sync_endpoint_v1";
 
     // Global State: Starts completely empty so it ALWAYS loads fresh directly from Google Sheets!
@@ -898,9 +898,7 @@
     let selectedApplicantId = null;
     let interviewScores = {}; // Key: applicant unique key (NIM or ID)
     let currentInterviewerName = "";
-    let cloudSyncEndpoint = "";
-
-    // =========================================================================
+    let cloudSyncEndpoint = DEFAULT_CLOUD_SYNC_URL;
     // INITIALIZATION
     // =========================================================================
     document.addEventListener("DOMContentLoaded", () => {
@@ -965,16 +963,17 @@
       const paramSync = urlParams.get('sync') || urlParams.get('api');
       if (paramSync) {
         cloudSyncEndpoint = decodeURIComponent(paramSync).trim();
-        try {
-          localStorage.setItem(STORAGE_KEY_CLOUD_SYNC, cloudSyncEndpoint);
-        } catch (e) {}
       } else {
-        try {
-          cloudSyncEndpoint = (localStorage.getItem(STORAGE_KEY_CLOUD_SYNC) || "").trim();
-        } catch (e) {}
+        const stored = (localStorage.getItem(STORAGE_KEY_CLOUD_SYNC) || "").trim();
+        if (!stored || stored.includes("test")) {
+          cloudSyncEndpoint = DEFAULT_CLOUD_SYNC_URL;
+        } else {
+          cloudSyncEndpoint = stored;
+        }
       }
-
-      updateCloudSyncUI();
+      try {
+        localStorage.setItem(STORAGE_KEY_CLOUD_SYNC, cloudSyncEndpoint);
+      } catch (e) {}
     }
 
     function updateCloudSyncUI() {
@@ -1171,11 +1170,14 @@ function doPost(e) {
         if (resp.ok) {
           const cloudData = await resp.json();
           if (cloudData && typeof cloudData === 'object') {
-            interviewScores = { ...interviewScores, ...cloudData };
-            persistScores();
-            updateStats();
-            renderApplicantList();
-            if (selectedApplicantId) renderDetailPane(selectedApplicantId);
+            const scoresMap = cloudData.scores || cloudData;
+            if (scoresMap && typeof scoresMap === 'object') {
+              interviewScores = { ...scoresMap };
+              persistScores();
+              updateStats();
+              renderApplicantList();
+              if (selectedApplicantId) renderDetailPane(selectedApplicantId);
+            }
           }
         }
       } catch (err) {
@@ -1183,20 +1185,55 @@ function doPost(e) {
       }
     }
 
-    async function pushScoreToCloud(scorePayload) {
+    async function pushScoreToCloud(key, scoreData) {
       if (!cloudSyncEndpoint) return;
       try {
         await fetch(cloudSyncEndpoint, {
           method: "POST",
           mode: "no-cors",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify(scorePayload)
+          body: JSON.stringify({
+            key: key,
+            data: scoreData
+          })
         });
       } catch (err) {
         console.warn("Failed to push score to Google Apps Script:", err);
       }
     }
 
+    async function deleteScoreFromCloud(key) {
+      if (!cloudSyncEndpoint) return;
+      try {
+        await fetch(cloudSyncEndpoint, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({
+            action: "delete",
+            key: key
+          })
+        });
+      } catch (err) {
+        console.warn("Failed to delete score from Google Apps Script:", err);
+      }
+    }
+
+    async function clearAllFromCloud() {
+      if (!cloudSyncEndpoint) return;
+      try {
+        await fetch(cloudSyncEndpoint, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({
+            action: "clear_all"
+          })
+        });
+      } catch (err) {
+        console.warn("Failed to clear all from Google Apps Script:", err);
+      }
+    }
     // =========================================================================
     // DATA SYNC ENGINE (GOOGLE SHEETS)
     // =========================================================================
@@ -2803,7 +2840,7 @@ function doPost(e) {
 
       // Push directly to Google Sheets via Cloud Sync if connected!
       if (cloudSyncEndpoint) {
-        pushScoreToCloud(interviewScores[key]);
+        pushScoreToCloud(key, interviewScores[key]);
       }
 
       persistScores();
@@ -2813,6 +2850,7 @@ function doPost(e) {
         showToast("Tersimpan", `Nilai untuk ${applicant["Nama lengkap:"] || "calon"} berhasil disimpan.`);
       }
     }
+
     function resetCurrentScore(id) {
       const applicant = rawApplicants.find(a => a.id === id);
       if (!applicant) return;
@@ -2821,6 +2859,9 @@ function doPost(e) {
 
       const key = getApplicantKey(applicant);
       delete interviewScores[key];
+      if (cloudSyncEndpoint) {
+        deleteScoreFromCloud(key);
+      }
       persistScores();
       updateStats();
       renderApplicantList();
@@ -3237,7 +3278,10 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
         localStorage.removeItem(STORAGE_KEY_SCORES);
       } catch (e) {}
 
-      // 2. Reset applicant memory
+      // Clear cloud scores in Google Sheets as well
+      if (cloudSyncEndpoint) {
+        await clearAllFromCloud();
+      }
       rawApplicants = [];
       filteredApplicants = [];
       selectedApplicantId = null;

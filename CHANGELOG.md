@@ -3,6 +3,21 @@
 Semua catatan pembaruan, perubahan teknis, dan riwayat pengerjaan proyek.
 
 ---
+## [2026-09-05 - Update 14] - Integrasi Bawaan Google Apps Script Web App Resmi Tanpa Input Manual
+
+### ⚡ Integrasi URL Bawaan Otomatis (*Zero-Config Cloud Sync*)
+- Memasukkan URL resmi Google Apps Script Web App yang telah dideploy panitia:  
+  `https://script.google.com/macros/s/AKfycbynakEGabRfxbDVjm38njXF6hh4q8qWBHWC5Rc21kbRNuZNs3IH3i7I8xDl_xM080sacA/exec`
+  sebagai endpoint bawaan portal `wawancara.html`.
+- **Hasil bagi Panitia:** Seluruh panitia yang membuka portal dari perangkat apa pun (laptop, tablet, HP) **langsung terhubung secara otomatis** ke tab `Hasil_Penilaian` di Google Spreadsheet tanpa perlu memasukkan URL secara manual.
+
+### ☁️ Penyelarasan Penuh Kontrak API Apps Script
+- Menyesuaikan format payload pengiriman nilai (`POST`) agar presisi sesuai struktur `key` dan `data` di `Hasil_Penilaian`.
+- Mengintegrasikan aksi penghapusan baris tunggal (`action: 'delete'`) saat mereset nilai calon tertentu, serta penghapusan total (`action: 'clear_all'`) saat penguji mengeksekusi fitur *Wipe All*.
+- Data nilai wawancara, catatan, dan nama evaluator kini senantiasa sinkron 100% secara *real-time* di seluruh perangkat.
+
+---
+
 ## [2026-09-05 - Update 13] - Perbaikan Reset Sheet Kosong, Sinkronisasi Menyeluruh Tombol Perbarui & Opsi Tunggal Wipe All
 
 ### 🔄 Sinkronisasi Menyeluruh pada Tombol "Perbarui"
