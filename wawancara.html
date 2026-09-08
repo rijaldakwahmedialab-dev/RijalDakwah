@@ -387,35 +387,35 @@
       <!-- Filter & Search Toolbar Card -->
       <div class="bg-white rounded-2xl p-4 sm:p-5 border border-cream-300 shadow-sm space-y-3">
         
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-2.5 sm:gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-3">
           <!-- Text Search Bar -->
-          <div class="md:col-span-12 lg:col-span-3 relative">
-            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-              <i class="fa-solid fa-magnifying-glass text-forestGreen"></i>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+              <i class="fa-solid fa-magnifying-glass text-forestGreen text-xs"></i>
             </div>
             <input 
               type="text" 
               id="searchInput" 
               oninput="handleFilterChange(false)" 
-              placeholder="Cari nama, NIM, prodi, skillset..." 
-              class="w-full pl-10 pr-9 py-2.5 text-xs sm:text-sm rounded-xl border border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none text-deepGreen bg-cream-50 font-medium transition-all"
+              placeholder="Cari nama, NIM, prodi..." 
+              class="w-full pl-8 pr-8 py-2 text-xs rounded-xl border border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none text-deepGreen bg-cream-50 font-medium transition-all h-[38px]"
             />
             <button 
               type="button" 
               id="clearSearchBtn" 
               onclick="clearSearch()" 
-              class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+              class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
             >
-              <i class="fa-solid fa-xmark"></i>
+              <i class="fa-solid fa-xmark text-xs"></i>
             </button>
           </div>
 
           <!-- Jalur Dropdown -->
-          <div class="md:col-span-6 lg:col-span-2">
+          <div>
             <select 
               id="filterRole" 
               onchange="handleFilterChange(true)" 
-              class="w-full py-2.5 px-3 text-xs sm:text-sm rounded-xl border border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-deepGreen font-medium"
+              class="w-full py-2 px-2.5 text-xs rounded-xl border border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-deepGreen font-medium h-[38px] cursor-pointer"
             >
               <option value="">Semua Jalur</option>
               <option value="pengurus">Pengurus</option>
@@ -424,44 +424,44 @@
           </div>
 
           <!-- Divisi Utama Dropdown (Target Wawancara!) -->
-          <div class="md:col-span-6 lg:col-span-2">
+          <div>
             <select 
               id="filterDivisiUtama" 
               onchange="handleFilterChange(true)" 
-              class="w-full py-2.5 px-3 text-xs sm:text-sm rounded-xl border-2 border-forestGreen/40 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-deepGreen font-bold"
+              class="w-full py-2 px-2.5 text-xs rounded-xl border-2 border-forestGreen/40 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-deepGreen font-bold h-[38px] cursor-pointer"
             >
-              <option value="">🎯 Divisi Utama: Semua</option>
+              <option value="">🎯 Semua Divisi</option>
             </select>
           </div>
 
           <!-- Divisi Cadangan Dropdown -->
-          <div class="md:col-span-6 lg:col-span-2">
+          <div>
             <select 
               id="filterDivisiCadangan" 
               onchange="handleFilterChange(true)" 
-              class="w-full py-2.5 px-3 text-xs sm:text-sm rounded-xl border border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-deepGreen font-medium"
+              class="w-full py-2 px-2.5 text-xs rounded-xl border border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-deepGreen font-medium h-[38px] cursor-pointer"
             >
               <option value="">Cadangan: Semua</option>
             </select>
           </div>
 
           <!-- Program Studi Dropdown -->
-          <div class="md:col-span-6 lg:col-span-2">
+          <div>
             <select 
               id="filterProdi" 
               onchange="handleFilterChange(true)" 
-              class="w-full py-2.5 px-3 text-xs sm:text-sm rounded-xl border border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-deepGreen font-medium"
+              class="w-full py-2 px-2.5 text-xs rounded-xl border border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-deepGreen font-medium h-[38px] cursor-pointer"
             >
               <option value="">Semua Prodi</option>
             </select>
           </div>
 
           <!-- Status Penilaian Dropdown -->
-          <div class="md:col-span-12 lg:col-span-1">
+          <div>
             <select 
               id="filterStatus" 
               onchange="handleFilterChange(true)" 
-              class="w-full py-2.5 px-2 text-xs rounded-xl border border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-deepGreen font-medium"
+              class="w-full py-2 px-2.5 text-xs rounded-xl border border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-deepGreen font-medium h-[38px] cursor-pointer"
             >
               <option value="">Status Penilaian</option>
               <option value="unscored">Belum Dinilai</option>
@@ -471,72 +471,79 @@
               <option value="recom_cadangan">Pengurus Cadangan</option>
               <option value="recom_anggota">Diterima Anggota</option>
               <option value="recom_belum_diterima">Belum Diterima</option>
+            </select>
           </div>
         </div>
 
         <!-- Quick Filter Pills, Duplicates Toggle & Order -->
-        <div class="flex flex-wrap items-center justify-between gap-2.5 pt-2.5 border-t border-cream-200 text-xs text-slate-600">
-          <div class="flex items-center gap-1.5 flex-wrap">
-            <span class="text-slate-500 font-bold text-[11px]">Filter Cepat:</span>
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2.5 pt-2.5 border-t border-cream-200 text-xs text-slate-600">
+          <!-- Left: Filter Cepat Pills -->
+          <div class="flex items-center gap-1 flex-wrap">
+            <span class="text-slate-500 font-bold text-[11px] flex items-center gap-1 mr-0.5">
+              <i class="fa-solid fa-filter text-gold text-[10px]"></i>
+              <span>Filter:</span>
+            </span>
             <button 
               type="button" 
               onclick="setQuickFilter('unscored')" 
-              class="px-2.5 py-1 rounded-lg bg-cream-100 hover:bg-gold/20 text-deepGreen border border-cream-300 font-semibold transition-colors cursor-pointer"
+              class="px-2 py-0.5 rounded-lg bg-cream-100 hover:bg-gold/20 text-deepGreen border border-cream-300 font-semibold transition-colors cursor-pointer text-[11px]"
             >
               Belum Dinilai
             </button>
             <button 
               type="button" 
               onclick="setQuickFilterDivisiUtama('Media')" 
-              class="px-2.5 py-1 rounded-lg bg-cream-100 hover:bg-gold/20 text-deepGreen border border-cream-300 font-semibold transition-colors cursor-pointer"
+              class="px-2 py-0.5 rounded-lg bg-cream-100 hover:bg-gold/20 text-deepGreen border border-cream-300 font-semibold transition-colors cursor-pointer text-[11px]"
             >
-              🎯 Media (Utama)
+              Media
             </button>
             <button 
               type="button" 
               onclick="setQuickFilterDivisiUtama('Dakwah Digital')" 
-              class="px-2.5 py-1 rounded-lg bg-cream-100 hover:bg-gold/20 text-deepGreen border border-cream-300 font-semibold transition-colors cursor-pointer"
+              class="px-2 py-0.5 rounded-lg bg-cream-100 hover:bg-gold/20 text-deepGreen border border-cream-300 font-semibold transition-colors cursor-pointer text-[11px]"
             >
-              🎯 Dakwah Digital
+              Dakwah Digital
             </button>
             <button 
               type="button" 
               onclick="setQuickFilterDivisiUtama('Keilmuan')" 
-              class="px-2.5 py-1 rounded-lg bg-cream-100 hover:bg-gold/20 text-deepGreen border border-cream-300 font-semibold transition-colors cursor-pointer"
+              class="px-2 py-0.5 rounded-lg bg-cream-100 hover:bg-gold/20 text-deepGreen border border-cream-300 font-semibold transition-colors cursor-pointer text-[11px]"
             >
-              🎯 Keilmuan
+              Keilmuan
             </button>
             <button 
               type="button" 
               onclick="setQuickFilterDivisiUtama('TPQ')" 
-              class="px-2.5 py-1 rounded-lg bg-cream-100 hover:bg-gold/20 text-deepGreen border border-cream-300 font-semibold transition-colors cursor-pointer"
+              class="px-2 py-0.5 rounded-lg bg-cream-100 hover:bg-gold/20 text-deepGreen border border-cream-300 font-semibold transition-colors cursor-pointer text-[11px]"
             >
-              🎯 TPQ
+              TPQ
             </button>
             <button 
               type="button" 
               onclick="setQuickFilterDivisiUtama('Acara')" 
-              class="px-2.5 py-1 rounded-lg bg-cream-100 hover:bg-gold/20 text-deepGreen border border-cream-300 font-semibold transition-colors cursor-pointer"
+              class="px-2 py-0.5 rounded-lg bg-cream-100 hover:bg-gold/20 text-deepGreen border border-cream-300 font-semibold transition-colors cursor-pointer text-[11px]"
             >
-              🎯 Acara
+              Acara
             </button>
             <button 
               type="button" 
               onclick="setQuickFilterDivisiUtama('Humas')" 
-              class="px-2.5 py-1 rounded-lg bg-cream-100 hover:bg-gold/20 text-deepGreen border border-cream-300 font-semibold transition-colors cursor-pointer"
+              class="px-2 py-0.5 rounded-lg bg-cream-100 hover:bg-gold/20 text-deepGreen border border-cream-300 font-semibold transition-colors cursor-pointer text-[11px]"
             >
-              🎯 Humas
+              Humas
             </button>
             <button 
               type="button" 
               onclick="setQuickFilterDivisiUtama('Inventaris')" 
-              class="px-2.5 py-1 rounded-lg bg-cream-100 hover:bg-gold/20 text-deepGreen border border-cream-300 font-semibold transition-colors cursor-pointer"
+              class="px-2 py-0.5 rounded-lg bg-cream-100 hover:bg-gold/20 text-deepGreen border border-cream-300 font-semibold transition-colors cursor-pointer text-[11px]"
             >
-              🎯 Inventaris
+              Inventaris
             </button>
-
+          </div>
+          <!-- Right: Controls (Duplikat, Reset, Urutan) -->
+          <div class="flex items-center gap-2.5 flex-wrap flex-shrink-0 self-end lg:self-auto">
             <!-- Deduplication Checkbox -->
-            <label class="inline-flex items-center gap-1.5 ml-1 px-2.5 py-1 bg-amber-50 text-amber-900 border border-amber-300 rounded-lg cursor-pointer select-none font-bold hover:bg-amber-100 transition-colors" title="Sembunyikan entri berulang dari pendaftar yang sama, hanya tampilkan submisi terbaru">
+            <label class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 text-amber-900 border border-amber-300 rounded-lg cursor-pointer select-none font-bold hover:bg-amber-100 transition-colors text-xs" title="Sembunyikan entri berulang dari pendaftar yang sama, hanya tampilkan submisi terbaru">
               <input type="checkbox" id="hideDuplicatesCheckbox" onchange="handleFilterChange(true)" checked class="rounded text-amber-600 focus:ring-amber-500">
               <span>Sembunyikan Duplikat</span>
             </label>
@@ -544,25 +551,27 @@
             <button 
               type="button" 
               onclick="resetAllFilters()" 
-              class="text-xs text-rose-600 hover:underline font-bold ml-1 cursor-pointer"
+              class="text-xs text-rose-600 hover:text-rose-800 hover:underline font-bold cursor-pointer"
             >
               Reset
             </button>
-          </div>
 
-          <div class="flex items-center gap-2">
-            <span class="text-slate-500 font-medium">Urutan:</span>
-            <select 
-              id="sortBy" 
-              onchange="handleFilterChange(true)" 
-              class="py-1 px-2 text-xs rounded-lg border border-cream-300 bg-white font-medium text-deepGreen outline-none"
-            >
-              <option value="time_desc">Waktu Daftar (Terbaru)</option>
-              <option value="time_asc">Waktu Daftar (Terlama)</option>
-              <option value="name_asc">Nama (A - Z)</option>
-              <option value="score_desc">Nilai Tertinggi</option>
-              <option value="nim_asc">NIM</option>
-            </select>
+            <span class="w-px h-4 bg-cream-300 mx-0.5 hidden sm:inline-block"></span>
+
+            <div class="flex items-center gap-1.5">
+              <span class="text-slate-500 font-medium text-xs">Urutan:</span>
+              <select 
+                id="sortBy" 
+                onchange="handleFilterChange(true)" 
+                class="py-1 px-2.5 text-xs rounded-lg border border-cream-300 bg-white font-medium text-deepGreen outline-none cursor-pointer h-[28px]"
+              >
+                <option value="time_desc">Waktu Daftar (Terbaru)</option>
+                <option value="time_asc">Waktu Daftar (Terlama)</option>
+                <option value="name_asc">Nama (A - Z)</option>
+                <option value="score_desc">Nilai Tertinggi</option>
+                <option value="nim_asc">NIM</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -1654,7 +1663,7 @@ function initScoresSheet(ss) {
           if (div1) uniqueDivUtama.add(div1);
         });
 
-        let divHtml = '<option value="">🎯 Divisi Utama: Semua</option>';
+        let divHtml = '<option value="">🎯 Semua Divisi</option>';
         Array.from(uniqueDivUtama).sort().forEach(div => {
           divHtml += `<option value="${escapeHtml(div)}" ${currentVal === div ? 'selected' : ''}>🎯 ${escapeHtml(div)}</option>`;
         });
