@@ -260,10 +260,10 @@
             <span>Guidebook</span>
           </a>
 
-          <!-- CTA 2: Join Us (Google Form) -->
-          <a href="#join-us" class="btn-gold px-5 py-2.5 rounded-xl text-sm flex items-center gap-2">
-            <i class="fa-solid fa-paper-plane text-xs"></i>
-            <span>Join Us (Daftar)</span>
+          <!-- CTA 2: Pendaftaran Ditutup -->
+          <a href="#join-us" class="bg-slate-700/80 hover:bg-slate-700 text-slate-300 px-5 py-2.5 rounded-xl text-sm flex items-center gap-2 border border-slate-600 shadow-sm transition-all">
+            <i class="fa-solid fa-lock text-xs text-slate-400"></i>
+            <span>Pendaftaran Ditutup</span>
           </a>
         </div>
 
@@ -287,8 +287,8 @@
       <a href="#guidebook" class="block px-3 py-2.5 rounded-xl text-base font-bold text-forestGreen bg-cream-100 border border-cream-300 mobile-link">
         <i class="fa-solid fa-book-open mr-2 text-gold"></i> Guidebook Pendaftaran
       </a>
-      <a href="#join-us" class="block w-full text-center btn-gold px-4 py-3 rounded-xl font-bold mobile-link">
-        <i class="fa-solid fa-paper-plane mr-2"></i> Join Us via Google Form
+      <a href="#join-us" class="block w-full text-center bg-slate-700 text-slate-300 px-4 py-3 rounded-xl font-bold mobile-link border border-slate-600">
+        <i class="fa-solid fa-lock mr-2 text-slate-400"></i> Pendaftaran Ditutup (Tahap Seleksi Berkas)
       </a>
     </div>
   </nav>
@@ -335,10 +335,10 @@
           <!-- ========================================== -->
           <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
             
-            <!-- 1. JOIN US BUTTON (Direct Google Form Link) -->
-            <a href="#join-us" class="w-full sm:w-auto btn-gold px-8 py-4 rounded-2xl text-base font-bold flex items-center justify-center gap-3 group">
-              <i class="fa-solid fa-paper-plane group-hover:translate-x-1 transition-transform"></i>
-              <span>Join Us (Google Form)</span>
+            <!-- 1. JOIN US BUTTON (Pendaftaran Ditutup) -->
+            <a href="#join-us" class="w-full sm:w-auto bg-slate-800/90 border-2 border-slate-600 hover:bg-slate-700 text-slate-300 px-8 py-4 rounded-2xl text-base font-bold flex items-center justify-center gap-3 transition-colors shadow-sm">
+              <i class="fa-solid fa-lock text-slate-400"></i>
+              <span>Pendaftaran Ditutup (Seleksi Berkas)</span>
             </a>
 
             <!-- 2. GUIDEBOOK BUTTON (View & Download Guidebook) -->
@@ -697,10 +697,9 @@
                 <span class="w-7 h-7 rounded-lg bg-forestGreen text-gold text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">4</span>
                 <div>
                   <h4 class="font-bold text-sm text-charcoal">Timeline & Tahapan Seleksi</h4>
-                  <p class="text-xs text-slate-500 mt-0.5 leading-relaxed">Pendaftaran (2-5 Sept), Seleksi Berkas (6 Sept), Wawancara (7 Sept), & Pengumuman (11 Sept).</p>
+                  <p class="text-xs text-slate-500 mt-0.5 leading-relaxed">Pendaftaran (2-6 Sept), Seleksi Berkas (7-10 Sept), Wawancara (11 Sept), & Pengumuman (14 Sept).</p>
                 </div>
               </div>
-
             </div>
 
             <!-- Download CTA Strip -->
@@ -951,8 +950,8 @@
                 <p class="text-xs text-slate-500 font-medium mt-0.5">Tersambung langsung ke Google Form Resmi UKM Rijal Dakwah</p>
               </div>
             </div>
-            <span class="text-xs bg-emerald-100 text-emerald-800 font-bold px-3.5 py-1.5 rounded-full border border-emerald-300 flex items-center gap-1.5">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Pendaftaran Dibuka
+            <span class="text-xs bg-slate-200 text-slate-700 font-bold px-3.5 py-1.5 rounded-full border border-slate-300 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-amber-500"></span> Pendaftaran Ditutup
             </span>
           </div>
 
@@ -982,30 +981,33 @@
             </div>
           </div>
 
-          <!-- Action Box: Google Form Link + Copy + Embed Modal -->
+          <!-- Action Box: Google Form Link + Status + Cek Hasil -->
           <div class="p-6 sm:p-8 rounded-2xl bg-cream-100 border border-cream-300 space-y-5 text-center">
             
-            <div>
-              <p class="text-sm font-semibold text-deepGreen">
-                Klik tombol utama di bawah ini untuk membuka formulir pendaftaran di tab baru:
-              </p>
-              <p class="text-xs text-slate-500 mt-1">
-                Link: <code id="formUrlDisplay" class="bg-white px-2 py-0.5 rounded border text-forestGreen font-mono text-[11px] font-bold break-all">https://docs.google.com/forms/d/e/1FAIpQLSelXYoYwr466Hm02HzaqwuFMssdVjdqKxt5xTw3kRT1jKH6uA/viewform?usp=header</code>
+            <div class="max-w-xl mx-auto space-y-2">
+              <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300">
+                <i class="fa-solid fa-lock text-amber-700"></i>
+                <span>PENDAFTARAN RESMI DITUTUP (6 SEPTEMBER)</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Batas pengisian formulir pendaftaran online telah berakhir pada 6 September 2026. Tahapan saat ini adalah seleksi berkas & wawancara. Silakan cek status dan hasil seleksi melalui tombol di bawah ini:
               </p>
             </div>
 
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-1">
               
-              <!-- Direct Link to Google Form -->
-              <a id="mainGoogleFormBtn" href="https://docs.google.com/forms/d/e/1FAIpQLSelXYoYwr466Hm02HzaqwuFMssdVjdqKxt5xTw3kRT1jKH6uA/viewform?usp=header" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto btn-gold px-9 py-4 rounded-2xl text-base font-bold flex items-center justify-center gap-3 shadow-xl group">
-                <i class="fa-solid fa-arrow-up-right-from-square text-sm group-hover:scale-110 transition-transform"></i>
-                <span>Buka Google Form Pendaftaran</span>
+              <!-- Tombol Pendaftaran Diabu-abukan -->
+              <span id="mainGoogleFormBtn" class="w-full sm:w-auto bg-slate-300 text-slate-600 px-8 py-4 rounded-2xl text-sm sm:text-base font-bold flex items-center justify-center gap-2.5 cursor-not-allowed border border-slate-400 select-none shadow-sm opacity-90">
+                <i class="fa-solid fa-lock text-slate-500"></i>
+                <span>Pendaftaran Ditutup</span>
+              </span>
+
+              <!-- Tombol Cek Hasil Seleksi -->
+              <a href="pengumuman.html" class="w-full sm:w-auto btn-gold px-8 py-4 rounded-2xl text-sm sm:text-base font-bold flex items-center justify-center gap-2.5 shadow-xl group">
+                <i class="fa-solid fa-square-poll-vertical text-deepGreen group-hover:scale-110 transition-transform"></i>
+                <span>Cek Hasil Seleksi</span>
+                <i class="fa-solid fa-arrow-right text-xs text-deepGreen group-hover:translate-x-1 transition-transform"></i>
               </a>
-              <!-- Copy Link Button -->
-              <button onclick="copyGoogleFormLink()" class="w-full sm:w-auto px-6 py-4 rounded-2xl bg-white border border-cream-300 text-charcoal hover:bg-cream-200 text-sm font-bold flex items-center justify-center gap-2 transition-colors shadow-sm">
-                <i class="fa-solid fa-copy text-gold"></i>
-                <span id="copyBtnText">Salin Link Form</span>
-              </button>
 
             </div>
 
@@ -1020,22 +1022,22 @@
               <div class="p-3 rounded-2xl bg-cream-50 border border-cream-200 card-hover-lift reveal" data-delay="100">
                 <span class="text-[11px] font-bold text-gold-dark bg-gold/15 px-2.5 py-0.5 rounded-full">Tahap 1</span>
                 <p class="font-bold text-xs sm:text-sm text-deepGreen mt-1.5">Pendaftaran</p>
-                <p class="text-[11px] text-slate-500 mt-0.5">2 - 5 September</p>
+                <p class="text-[11px] text-slate-500 mt-0.5">2 - 6 September</p>
               </div>
               <div class="p-3 rounded-2xl bg-cream-50 border border-cream-200 card-hover-lift reveal" data-delay="200">
                 <span class="text-[11px] font-bold text-gold-dark bg-gold/15 px-2.5 py-0.5 rounded-full">Tahap 2</span>
                 <p class="font-bold text-xs sm:text-sm text-deepGreen mt-1.5">Seleksi Berkas</p>
-                <p class="text-[11px] text-slate-500 mt-0.5">6 September</p>
+                <p class="text-[11px] text-slate-500 mt-0.5">7 - 10 September</p>
               </div>
               <div class="p-3 rounded-2xl bg-cream-50 border border-cream-200 card-hover-lift reveal" data-delay="300">
                 <span class="text-[11px] font-bold text-gold-dark bg-gold/15 px-2.5 py-0.5 rounded-full">Tahap 3</span>
                 <p class="font-bold text-xs sm:text-sm text-deepGreen mt-1.5">Wawancara Ta'aruf</p>
-                <p class="text-[11px] text-slate-500 mt-0.5">7 September</p>
+                <p class="text-[11px] text-slate-500 mt-0.5">11 September</p>
               </div>
               <div class="p-3 rounded-2xl bg-cream-50 border border-cream-200 card-hover-lift reveal" data-delay="400">
                 <span class="text-[11px] font-bold text-gold-dark bg-gold/15 px-2.5 py-0.5 rounded-full">Tahap 4</span>
                 <p class="font-bold text-xs sm:text-sm text-deepGreen mt-1.5">Pengumuman Hasil Seleksi</p>
-                <p class="text-[11px] text-slate-500 mt-0.5">11 September</p>
+                <p class="text-[11px] text-slate-500 mt-0.5">14 September</p>
                 <a href="pengumuman.html" class="inline-flex items-center gap-1 text-[11px] font-bold text-forestGreen hover:text-gold mt-1.5 underline">
                   <span>Cek Hasil Seleksi</span>
                   <i class="fa-solid fa-arrow-right text-[9px]"></i>
@@ -1329,8 +1331,8 @@
           <i class="fa-solid fa-download text-gold"></i>
           <span>Unduh Versi Lengkap (PDF)</span>
         </a>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSelXYoYwr466Hm02HzaqwuFMssdVjdqKxt5xTw3kRT1jKH6uA/viewform?usp=header" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto btn-gold px-5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2">
-          <span>Lanjut Isi Google Form</span>
+        <a href="pengumuman.html" class="w-full sm:w-auto btn-gold px-5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2">
+          <span>Cek Hasil Seleksi</span>
           <i class="fa-solid fa-arrow-right"></i>
         </a>
       </div>

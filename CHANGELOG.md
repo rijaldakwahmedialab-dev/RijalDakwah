@@ -3,6 +3,26 @@
 Semua catatan pembaruan, perubahan teknis, dan riwayat pengerjaan proyek.
 
 ---
+## [2026-09-08 - Update 18] - Penyesuaian Timeline Rekrutmen 2026 & Penonaktifan Tombol Pendaftaran (Diabu-abukan)
+
+### 📅 Pembaruan Jadwal & Timeline Tahapan Rekrutmen 2026 (`index.html`)
+- **Penyesuaian Tanggal Resmi Seluruh Tahapan**:
+  1. **Tahap 1 (Pendaftaran)**: Diperbarui menjadi **2 - 6 September 2026** (berakhir 6 September).
+  2. **Tahap 2 (Seleksi Berkas)**: Diperbarui menjadi **7 - 10 September 2026**.
+  3. **Tahap 3 (Wawancara Ta'aruf)**: Diperbarui menjadi **11 September 2026**.
+  4. **Tahap 4 (Pengumuman Hasil Seleksi)**: Diperbarui menjadi **14 September 2026**.
+- **Sinkronisasi Deskripsi Panduan**: Teks ringkasan timeline pada kartu preview Buku Panduan diselaraskan dengan jadwal terbaru.
+
+### 🔘 Penonaktifan Tombol Pendaftaran & Integrasi Aksi Cek Hasil Seleksi (`index.html`)
+- **Tombol Pendaftaran Diabu-abukan (*Disabled State*)**:
+  - Tombol pendaftaran Google Form pada kotak aksi utama resmi diabu-abukan (*grayed out*) dengan status `cursor-not-allowed` bertuliskan *"Pendaftaran Ditutup"*.
+  - Lencana status formulir diperbarui menjadi *"Pendaftaran Ditutup"* dengan aksen amber/slate.
+  - Tombol CTA navbar dan hero diselaraskan menuju status penutupan pendaftaran.
+- **Tombol Cek Hasil Seleksi**:
+  - Menyediakan tombol utama emas (*gold*) **"Cek Hasil Seleksi"** yang langsung menghubungkan pengunjung ke portal resmi `pengumuman.html`.
+  - Tautan pada modal guidebook juga diarahkan langsung ke halaman cek hasil seleksi.
+
+---
 ## [2026-09-08 - Update 17] - Local-First Auto-Save Panel Penilaian & Pembaruan 4 Opsi Putusan Wawancara
 
 ### 🛡️ Perbaikan Masalah Panel Penilaian Kereset Otomatis (Anti-Hanyut Auto-Refresh)
