@@ -3,6 +3,37 @@
 Semua catatan pembaruan, perubahan teknis, dan riwayat pengerjaan proyek.
 
 ---
+## [2026-09-08 - Update 17] - Local-First Auto-Save Panel Penilaian & Pembaruan 4 Opsi Putusan Wawancara
+
+### 🛡️ Perbaikan Masalah Panel Penilaian Kereset Otomatis (Anti-Hanyut Auto-Refresh)
+- **Penyimpanan Lokal Instan (*Local-First Real-Time Persistence*)**:
+  - Seluruh parameter formulir evaluasi wawancara (4 *slider* rubrik nilai, dropdown status wawancara, tombol radio putusan rekomendasi, catatan esai evaluator, dan nama pewawancara) kini **disimpan langsung secara otomatis ke memori lokal (`localStorage`) pada setiap pergeseran *slider* atau ketikan huruf**.
+  - Menambahkan fungsi `autoSaveCurrentForm()` yang menjaga data draf evaluator tetap aman dan utuh tanpa perlu menunggu tombol simpan ditekan.
+- **Perlindungan Draf dari Polling Latar Belakang (*Background Refresh Isolation*)**:
+  - Memperbaiki fungsi `fetchCloudScores()` agar melakukan *smart merge* (hanya memperbarui jika data cloud memiliki cap waktu `updatedAt` yang lebih baru) serta **melindungi berkas calon yang sedang aktif dinilai di layar agar tidak tertimpa oleh respon cloud**.
+  - Menghapus pemanggilan ulang paksa `renderDetailPane()` pada siklus polling latar belakang 20 detik (`syncDataFromSheets(false)`). DOM formulir penilaian tetap stabil, fokus kursor tidak hilang, dan posisi *slider* tidak melompat.
+- **Sinkronisasi Halus ke Google Sheets (*Debounced Cloud Push*)**:
+  - Perubahan nilai dan catatan secara halus disinkronkan ke Google Apps Script di latar belakang (*debounced* 1,2 detik) sehingga tidak membebani kuota API peramban dan sheet tetap terbarui secara *real-time*.
+
+### 📋 Pembaruan 4 Opsi Lembar Putusan Penilaian Wawancara
+- **Penyelarasan 4 Pilihan Keputusan Resmi**:
+  1. **`Diterima sebagai Pengurus`** (`value="pengurus"`, tema lencana *Emerald Green*)
+  2. **`Diterima Pengurus Divisi Cadangan`** (`value="cadangan"`, tema lencana *Amber / Gold*)
+  3. **`Diterima sebagai Anggota`** (`value="anggota"`, tema lencana *Sky Blue*)
+  4. **`Belum Diterima`** (`value="belum_diterima"`, tema lencana *Rose Red*)
+- **Dukungan Menyeluruh pada Seluruh Modul**:
+  - **Filter Status Navbar**: Menambahkan filter cepat untuk keempat opsi putusan (`recom_pengurus`, `recom_cadangan`, `recom_anggota`, `recom_belum_diterima`) dengan kompatibilitas mundur (*backward-compatible*) terhadap nilai lama.
+  - **Kartu Antrean Calon**: Lencana rekomendasi dinamis sesuai status keputusan evaluator.
+  - **Ekspor Excel & CSV**: Menggunakan label resmi bahasa Indonesia yang seragam.
+  - **Cetak Lembar Wawancara (Print/PDF)**: Judul putusan tercetak jelas dalam huruf kapital (*DITERIMA SEBAGAI PENGURUS, dll.*).
+  - **Salin Ringkasan Evaluator (Telegram/WA)**: Format teks ringkas mengikuti 4 status putusan terbaru.
+
+### ☁️ Endpoint Google Apps Script Resmi
+- **URL Deployment**: `https://script.google.com/macros/s/AKfycbynakEGabRfxbDVjm38njXF6hh4q8qWBHWC5Rc21kbRNuZNs3IH3i7I8xDl_xM080sacA/exec`
+- **Tab Target**: `Hasil_Penilaian` (Tab 2 Google Spreadsheet).
+- **Pembaruan Cuplikan Kode Modal**: Cuplikan kode Apps Script pada modal kini diperbarui ke Versi 2.0 yang mendukung operasi pembersihan data dan perlindungan baris.
+
+---
 ## [2026-09-05 - Update 16] - Pengembalian Floating Mini Timer Wawancara (Pojok Desktop & Tengah Mobile)
 
 ### ⏱️ Pengembalian Widget Timer Wawancara (`#miniInterviewTimer`)

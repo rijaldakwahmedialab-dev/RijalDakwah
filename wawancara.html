@@ -463,16 +463,14 @@
               onchange="handleFilterChange(true)" 
               class="w-full py-2.5 px-2 text-xs rounded-xl border border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-deepGreen font-medium"
             >
-              <option value="">Status</option>
-              <option value="unscored">Belum</option>
-              <option value="in_progress">Wawancara</option>
-              <option value="scored">Dinilai</option>
-              <option value="recom_priority">Prioritas</option>
-              <option value="recom_yes">Lolos</option>
-              <option value="recom_backup">Cadangan</option>
-              <option value="recom_redirect">Dialihkan</option>
-              <option value="recom_reject">Tidak</option>
-            </select>
+              <option value="">Status Penilaian</option>
+              <option value="unscored">Belum Dinilai</option>
+              <option value="in_progress">Sedang Wawancara</option>
+              <option value="scored">Selesai Dinilai</option>
+              <option value="recom_pengurus">Diterima Pengurus</option>
+              <option value="recom_cadangan">Pengurus Cadangan</option>
+              <option value="recom_anggota">Diterima Anggota</option>
+              <option value="recom_belum_diterima">Belum Diterima</option>
           </div>
         </div>
 
@@ -1150,81 +1148,120 @@
     function renderAppsScriptSnippet() {
       const textarea = document.getElementById("appsScriptSnippetText");
       if (textarea) {
-        textarea.value = `function doGet(e) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getSheetByName("Penilaian");
-  if (!sheet) {
-    sheet = ss.insertSheet("Penilaian");
-    sheet.appendRow(["NIM", "Nama", "Status", "Skor_Adab", "Skor_Visi", "Skor_Teknis", "Skor_Komitmen", "Nilai_Akhir", "Rekomendasi", "Catatan", "Pewawancara", "Update_Terakhir"]);
-    return ContentService.createTextOutput(JSON.stringify({})).setMimeType(ContentService.MimeType.JSON);
-  }
-  var values = sheet.getDataRange().getValues();
-  var result = {};
-  for (var i = 1; i < values.length; i++) {
-    var nim = String(values[i][0]).trim();
-    if (nim) {
-      result["nim_" + nim] = {
-        applicantNim: nim,
-        applicantName: values[i][1],
-        status: values[i][2],
-        scoreAdab: Number(values[i][3]) || 80,
-        scoreVisi: Number(values[i][4]) || 80,
-        scoreKeahlian: Number(values[i][5]) || 80,
-        scoreKomitmen: Number(values[i][6]) || 80,
-        finalScore: Number(values[i][7]) || 80,
-        recommendation: values[i][8] || "yes",
-        notes: values[i][9] || "",
-        interviewer: values[i][10] || "",
-        updatedAt: values[i][11] || ""
-      };
+        textarea.value = `const SHEET_NAME_SCORES = "Hasil_Penilaian";
+
+function doGet(e) {
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    let sheet = ss.getSheetByName(SHEET_NAME_SCORES);
+    if (!sheet) sheet = initScoresSheet(ss);
+
+    if (e && e.parameter && e.parameter.action === 'cleanup') {
+      const lastRow = sheet.getLastRow();
+      if (lastRow > 1) sheet.deleteRows(2, lastRow - 1);
+      return ContentService.createTextOutput(JSON.stringify({ status: "success", scores: {} })).setMimeType(ContentService.MimeType.JSON);
     }
+    
+    const data = sheet.getDataRange().getValues();
+    const scores = {};
+    if (data.length > 1) {
+      for (let i = 1; i < data.length; i++) {
+        const row = data[i];
+        const key = String(row[0] || "").trim();
+        if (!key || key === "test_check_connection") continue;
+        const statusVal = String(row[5] || "scored").trim().toLowerCase();
+        if (statusVal === "unscored" || statusVal === "deleted") continue;
+
+        scores[key] = {
+          applicantKey: key,
+          applicantNim: String(row[1] || "").trim(),
+          applicantName: String(row[2] || "").trim(),
+          applicantProdi: String(row[3] || "").trim(),
+          applicantDivisi: String(row[4] || "").trim(),
+          status: statusVal || "scored",
+          scoreAdab: Number(row[6]) || 0,
+          scoreVisi: Number(row[7]) || 0,
+          scoreKeahlian: Number(row[8]) || 0,
+          scoreKomitmen: Number(row[9]) || 0,
+          finalScore: Number(row[10]) || 0,
+          recommendation: String(row[11] || "").trim(),
+          notes: String(row[12] || "").trim(),
+          interviewer: String(row[13] || "").trim(),
+          updatedAt: row[14] ? new Date(row[14]).toISOString() : new Date().toISOString()
+        };
+      }
+    }
+    return ContentService.createTextOutput(JSON.stringify({ status: "success", totalScores: Object.keys(scores).length, scores: scores })).setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: "error", message: err.toString() })).setMimeType(ContentService.MimeType.JSON);
   }
-  return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
 }
 
 function doPost(e) {
   try {
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = ss.getSheetByName("Penilaian");
-    if (!sheet) {
-      sheet = ss.insertSheet("Penilaian");
-      sheet.appendRow(["NIM", "Nama", "Status", "Skor_Adab", "Skor_Visi", "Skor_Teknis", "Skor_Komitmen", "Nilai_Akhir", "Rekomendasi", "Catatan", "Pewawancara", "Update_Terakhir"]);
+    let payload = e.postData && e.postData.contents ? JSON.parse(e.postData.contents) : null;
+    if (!payload) throw new Error("Data payload kosong.");
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    let sheet = ss.getSheetByName(SHEET_NAME_SCORES);
+    if (!sheet) sheet = initScoresSheet(ss);
+
+    if (payload.action === 'clear_all') {
+      const lastRow = sheet.getLastRow();
+      if (lastRow > 1) sheet.deleteRows(2, lastRow - 1);
+      return ContentService.createTextOutput(JSON.stringify({ status: "success", action: "cleared_all" })).setMimeType(ContentService.MimeType.JSON);
     }
-    var data = JSON.parse(e.postData.contents);
-    var nim = String(data.applicantNim || "").trim();
-    if (!nim) return ContentService.createTextOutput(JSON.stringify({ error: "NIM kosong" })).setMimeType(ContentService.MimeType.JSON);
-    
-    var values = sheet.getDataRange().getValues();
-    var foundRow = -1;
-    for (var i = 1; i < values.length; i++) {
-      if (String(values[i][0]).trim() === nim) {
-        foundRow = i + 1;
+
+    const key = String(payload.key || "").trim();
+    if (!key) throw new Error("Key required.");
+    const data = sheet.getDataRange().getValues();
+    let rowIndex = -1;
+    const cleanKey = key.replace(/[^a-zA-Z0-9]/g, '');
+    for (let i = 1; i < data.length; i++) {
+      const rowKey = String(data[i][0] || "").trim();
+      const rowNim = String(data[i][1] || "").trim();
+      if (rowKey === key || rowKey.replace(/[^a-zA-Z0-9]/g, '') === cleanKey || (rowNim && rowNim.replace(/[^a-zA-Z0-9]/g, '') === cleanKey)) {
+        rowIndex = i + 1;
         break;
       }
     }
-    var rowData = [
-      nim,
-      data.applicantName || "",
-      data.status || "scored",
-      data.scoreAdab || 80,
-      data.scoreVisi || 80,
-      data.scoreKeahlian || 80,
-      data.scoreKomitmen || 80,
-      data.finalScore || 80,
-      data.recommendation || "yes",
-      data.notes || "",
-      data.interviewer || "",
-      data.updatedAt || new Date().toISOString()
-    ];
-    if (foundRow > 0) {
-      sheet.getRange(foundRow, 1, 1, 12).setValues([rowData]);
-    } else {
-      sheet.appendRow(rowData);
+
+    if (payload.action === 'delete') {
+      if (rowIndex > 0) sheet.deleteRow(rowIndex);
+      return ContentService.createTextOutput(JSON.stringify({ status: "success", action: "deleted", key: key })).setMimeType(ContentService.MimeType.JSON);
     }
-    return ContentService.createTextOutput(JSON.stringify({ status: "success", nim: nim })).setMimeType(ContentService.MimeType.JSON);
+
+    const s = payload.data || {};
+    const statusVal = s.status || "scored";
+    if ((statusVal === "unscored" || statusVal === "deleted") && rowIndex > 0) {
+      sheet.deleteRow(rowIndex);
+      return ContentService.createTextOutput(JSON.stringify({ status: "success", action: "deleted_unscored", key: key })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    const rowValues = [
+      key, s.applicantNim || "", s.applicantName || "", s.applicantProdi || "", s.applicantDivisi || "",
+      statusVal, s.scoreAdab || 0, s.scoreVisi || 0, s.scoreKeahlian || 0, s.scoreKomitmen || 0,
+      s.finalScore || 0, s.recommendation || "", s.notes || "", s.interviewer || "", s.updatedAt || new Date().toISOString()
+    ];
+
+    if (rowIndex > 0) {
+      sheet.getRange(rowIndex, 1, 1, rowValues.length).setValues([rowValues]);
+    } else {
+      sheet.appendRow(rowValues);
+    }
+    return ContentService.createTextOutput(JSON.stringify({ status: "success", action: rowIndex > 0 ? "updated" : "inserted", key: key })).setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
-    return ContentService.createTextOutput(JSON.stringify({ error: err.toString() })).setMimeType(ContentService.MimeType.JSON);
+    return ContentService.createTextOutput(JSON.stringify({ status: "error", message: err.toString() })).setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+function initScoresSheet(ss) {
+  const sheet = ss.insertSheet(SHEET_NAME_SCORES, 1);
+  const headers = ["Key (ID)", "NIM", "Nama Lengkap", "Program Studi", "Divisi / Jalur", "Status Penilaian", "Skor Adab (25%)", "Skor Visi (25%)", "Skor Keahlian (30%)", "Skor Komitmen (20%)", "Total Nilai", "Rekomendasi", "Catatan Pewawancara", "Nama Pewawancara", "Waktu Update"];
+  sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+  sheet.getRange(1, 1, 1, headers.length).setFontWeight("bold").setBackground("#0C2B33").setFontColor("#DFB76C").setHorizontalAlignment("center");
+  sheet.setFrozenRows(1);
+  sheet.getRange("O2:O").setNumberFormat("yyyy-mm-dd hh:mm:ss");
+  return sheet;
 }`;
       }
     }
@@ -1239,11 +1276,37 @@ function doPost(e) {
           if (cloudData && typeof cloudData === 'object') {
             const scoresMap = cloudData.scores || cloudData;
             if (scoresMap && typeof scoresMap === 'object') {
-              interviewScores = { ...scoresMap };
-              persistScores();
-              updateStats();
-              renderApplicantList();
-              if (selectedApplicantId) renderDetailPane(selectedApplicantId);
+              let updatedAny = false;
+              const activeApplicant = rawApplicants.find(a => a.id === selectedApplicantId);
+              const activeKey = activeApplicant ? getApplicantKey(activeApplicant) : null;
+
+              for (const [key, cloudScore] of Object.entries(scoresMap)) {
+                if (!cloudScore || typeof cloudScore !== 'object') continue;
+                const localScore = interviewScores[key];
+
+                // If candidate is currently active on screen, protect local draft!
+                if (key === activeKey && localScore) {
+                  continue;
+                }
+
+                if (!localScore) {
+                  interviewScores[key] = cloudScore;
+                  updatedAny = true;
+                } else {
+                  const cloudTime = cloudScore.updatedAt ? new Date(cloudScore.updatedAt).getTime() : 0;
+                  const localTime = localScore.updatedAt ? new Date(localScore.updatedAt).getTime() : 0;
+                  if (cloudTime > localTime) {
+                    interviewScores[key] = { ...localScore, ...cloudScore };
+                    updatedAny = true;
+                  }
+                }
+              }
+
+              if (updatedAny) {
+                persistScores();
+                updateStats();
+                renderApplicantList();
+              }
             }
           }
         }
@@ -1394,7 +1457,7 @@ function doPost(e) {
             if (liveStatusDot) liveStatusDot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
             if (liveStatusText) liveStatusText.textContent = `Live Sheets (${rawApplicants.length} data)`;
 
-            applyFiltersAndRender();
+            applyFiltersAndRender(isManual);
 
             // Auto-select first applicant on initial load if none selected
             if (!selectedApplicantId && filteredApplicants.length > 0) {
@@ -1459,7 +1522,7 @@ function doPost(e) {
 
           if (liveStatusDot) liveStatusDot.className = "w-2 h-2 rounded-full bg-emerald-400 animate-pulse";
           if (liveStatusText) liveStatusText.textContent = `Live CSV (${rawApplicants.length} data)`;
-          applyFiltersAndRender();
+          applyFiltersAndRender(isManual);
           if (isManual) showToast("Sinkron Berhasil", `Memuat ${rawApplicants.length} data & status penilaian dari CSV.`);
           return;
         }
@@ -1475,7 +1538,7 @@ function doPost(e) {
       if (liveStatusDot) liveStatusDot.className = "w-2 h-2 rounded-full bg-amber-400";
       if (liveStatusText) liveStatusText.textContent = `Mode Offline (${rawApplicants.length} data)`;
 
-      applyFiltersAndRender();
+      applyFiltersAndRender(isManual);
 
       if (isManual) {
         showToast("Perhatian", `${message} Menggunakan data lokal (${rawApplicants.length} pendaftar).`, "amber");
@@ -1653,7 +1716,7 @@ function doPost(e) {
     }
 
     // Fast filter & render without expensive re-index computations
-    function applyFiltersAndRender() {
+    function applyFiltersAndRender(forceDetailRender = true) {
       const query = (document.getElementById("searchInput")?.value || "").toLowerCase().trim();
       const roleFilter = document.getElementById("filterRole")?.value || "";
       const divUtamaFilter = (document.getElementById("filterDivisiUtama")?.value || "").toLowerCase().trim();
@@ -1726,7 +1789,18 @@ function doPost(e) {
             if (!scoreData || scoreData.status !== 'scored') return false;
           } else if (statusFilter.startsWith('recom_')) {
             const recomTarget = statusFilter.replace('recom_', '');
-            if (!scoreData || scoreData.recommendation !== recomTarget) return false;
+            const r = scoreData?.recommendation;
+            if (recomTarget === 'pengurus') {
+              if (r !== 'pengurus' && r !== 'priority' && r !== 'yes') return false;
+            } else if (recomTarget === 'cadangan') {
+              if (r !== 'cadangan' && r !== 'backup') return false;
+            } else if (recomTarget === 'anggota') {
+              if (r !== 'anggota' && r !== 'redirect_member' && r !== 'redirect_div') return false;
+            } else if (recomTarget === 'belum_diterima') {
+              if (r !== 'belum_diterima' && r !== 'reject') return false;
+            } else {
+              if (!scoreData || scoreData.recommendation !== recomTarget) return false;
+            }
           }
         }
 
@@ -1759,7 +1833,7 @@ function doPost(e) {
         const stillInList = filteredApplicants.some(a => a.id === selectedApplicantId);
         if (!stillInList) {
           selectApplicant(filteredApplicants[0].id);
-        } else {
+        } else if (forceDetailRender) {
           renderDetailPane(selectedApplicantId);
         }
       } else {
@@ -1843,16 +1917,15 @@ function doPost(e) {
         if (scoreData && scoreData.status === 'scored') {
           const finalScore = scoreData.finalScore || 0;
           let recomBadge = '';
-          if (scoreData.recommendation === 'priority') {
-            recomBadge = '<span class="bg-emerald-100 text-emerald-800 border border-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full">★ Sangat Prioritas</span>';
-          } else if (scoreData.recommendation === 'yes') {
-            recomBadge = '<span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold px-2 py-0.5 rounded-full">Direkomendasikan</span>';
-          } else if (scoreData.recommendation === 'backup') {
-            recomBadge = '<span class="bg-amber-100 text-amber-800 border border-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full">Cadangan</span>';
-          } else if (scoreData.recommendation === 'reject') {
-            recomBadge = '<span class="bg-rose-100 text-rose-800 border border-rose-300 text-[10px] font-bold px-2 py-0.5 rounded-full">Tidak Lolos</span>';
-          } else {
-            recomBadge = '<span class="bg-blue-100 text-blue-800 border border-blue-300 text-[10px] font-bold px-2 py-0.5 rounded-full">Dialihkan</span>';
+          const recom = scoreData.recommendation;
+          if (recom === 'pengurus' || recom === 'priority' || recom === 'yes') {
+            recomBadge = '<span class="bg-emerald-100 text-emerald-800 border border-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full">Diterima Pengurus</span>';
+          } else if (recom === 'cadangan' || recom === 'backup') {
+            recomBadge = '<span class="bg-amber-100 text-amber-800 border border-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full">Pengurus Cadangan</span>';
+          } else if (recom === 'anggota' || recom === 'redirect_member' || recom === 'redirect_div') {
+            recomBadge = '<span class="bg-blue-100 text-blue-800 border border-blue-300 text-[10px] font-bold px-2 py-0.5 rounded-full">Diterima Anggota</span>';
+          } else if (recom === 'belum_diterima' || recom === 'reject') {
+            recomBadge = '<span class="bg-rose-100 text-rose-800 border border-rose-300 text-[10px] font-bold px-2 py-0.5 rounded-full">Belum Diterima</span>';
           }
           statusBadgeHtml = `
             <div class="flex items-center gap-1.5 flex-wrap">
@@ -2072,10 +2145,15 @@ function doPost(e) {
         scoreKeahlian: 80,
         scoreKomitmen: 80,
         finalScore: 80,
-        recommendation: 'yes',
+        recommendation: 'pengurus',
         notes: '',
         interviewer: currentInterviewerName
       };
+
+      const isCadangan = scoreData.recommendation === 'cadangan' || scoreData.recommendation === 'backup';
+      const isAnggota = scoreData.recommendation === 'anggota' || scoreData.recommendation === 'redirect_member' || scoreData.recommendation === 'redirect_div';
+      const isBelumDiterima = scoreData.recommendation === 'belum_diterima' || scoreData.recommendation === 'reject';
+      const isPengurus = !isCadangan && !isAnggota && !isBelumDiterima;
 
       // Clean Telegram Link
       let tgUrl = "";
@@ -2349,7 +2427,8 @@ function doPost(e) {
             <div>
               <select 
                 id="interviewStatusSelect" 
-                class="text-xs font-bold px-3 py-1.5 rounded-xl border border-cream-300 bg-cream-50 text-deepGreen outline-none"
+                onchange="onInterviewStatusChange(${applicant.id})"
+                class="text-xs font-bold px-3 py-1.5 rounded-xl border border-cream-300 bg-cream-50 text-deepGreen outline-none cursor-pointer"
               >
                 <option value="unscored" ${scoreData.status === 'unscored' ? 'selected' : ''}>Status: Belum Diwawancarai</option>
                 <option value="in_progress" ${scoreData.status === 'in_progress' ? 'selected' : ''}>Status: Sedang Wawancara</option>
@@ -2394,7 +2473,7 @@ function doPost(e) {
                 min="40" 
                 max="100" 
                 value="${scoreData.scoreAdab || 80}" 
-                oninput="calculateLiveScore()" 
+                oninput="onScoreSliderInput(${applicant.id})" 
                 class="w-full h-2 bg-cream-300 rounded-lg appearance-none cursor-pointer"
               />
               <div class="flex justify-between text-[10px] text-slate-400">
@@ -2417,7 +2496,7 @@ function doPost(e) {
                 min="40" 
                 max="100" 
                 value="${scoreData.scoreVisi || 80}" 
-                oninput="calculateLiveScore()" 
+                oninput="onScoreSliderInput(${applicant.id})" 
                 class="w-full h-2 bg-cream-300 rounded-lg appearance-none cursor-pointer"
               />
               <div class="flex justify-between text-[10px] text-slate-400">
@@ -2440,7 +2519,7 @@ function doPost(e) {
                 min="40" 
                 max="100" 
                 value="${scoreData.scoreKeahlian || 80}" 
-                oninput="calculateLiveScore()" 
+                oninput="onScoreSliderInput(${applicant.id})" 
                 class="w-full h-2 bg-cream-300 rounded-lg appearance-none cursor-pointer"
               />
               <div class="flex justify-between text-[10px] text-slate-400">
@@ -2463,7 +2542,7 @@ function doPost(e) {
                 min="40" 
                 max="100" 
                 value="${scoreData.scoreKomitmen || 80}" 
-                oninput="calculateLiveScore()" 
+                oninput="onScoreSliderInput(${applicant.id})" 
                 class="w-full h-2 bg-cream-300 rounded-lg appearance-none cursor-pointer"
               />
               <div class="flex justify-between text-[10px] text-slate-400">
@@ -2476,7 +2555,7 @@ function doPost(e) {
 
           </div>
 
-          <!-- Rekomendasi Keputusan Akhir -->
+          <!-- Rekomendasi Keputusan Akhir (Lembar Putusan Penilaian) -->
           <div class="space-y-2">
             <label class="text-xs font-bold text-deepGreen block">
               Rekomendasi Keputusan Pewawancara:
@@ -2484,33 +2563,23 @@ function doPost(e) {
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
               
               <label class="p-2.5 rounded-xl border border-cream-300 bg-cream-50 hover:bg-emerald-50 cursor-pointer flex items-center space-x-2 transition-colors">
-                <input type="radio" name="recommendation" value="priority" ${scoreData.recommendation === 'priority' ? 'checked' : ''} class="text-emerald-600 focus:ring-emerald-500">
-                <span class="font-bold text-emerald-800">★ Sangat Direkomendasikan (Prioritas)</span>
-              </label>
-
-              <label class="p-2.5 rounded-xl border border-cream-300 bg-cream-50 hover:bg-emerald-50 cursor-pointer flex items-center space-x-2 transition-colors">
-                <input type="radio" name="recommendation" value="yes" ${scoreData.recommendation === 'yes' ? 'checked' : ''} class="text-emerald-600 focus:ring-emerald-500">
-                <span class="font-semibold text-emerald-700">Direkomendasikan (Lolos)</span>
+                <input type="radio" name="recommendation" value="pengurus" onchange="onRecommendationChange(${applicant.id})" ${isPengurus ? 'checked' : ''} class="text-emerald-600 focus:ring-emerald-500">
+                <span class="font-bold text-emerald-800">Diterima sebagai Pengurus</span>
               </label>
 
               <label class="p-2.5 rounded-xl border border-cream-300 bg-cream-50 hover:bg-amber-50 cursor-pointer flex items-center space-x-2 transition-colors">
-                <input type="radio" name="recommendation" value="backup" ${scoreData.recommendation === 'backup' ? 'checked' : ''} class="text-amber-600 focus:ring-amber-500">
-                <span class="font-semibold text-amber-800">Pertimbangkan / Masuk Cadangan</span>
+                <input type="radio" name="recommendation" value="cadangan" onchange="onRecommendationChange(${applicant.id})" ${isCadangan ? 'checked' : ''} class="text-amber-600 focus:ring-amber-500">
+                <span class="font-semibold text-amber-800">Diterima Pengurus Divisi Cadangan</span>
               </label>
 
               <label class="p-2.5 rounded-xl border border-cream-300 bg-cream-50 hover:bg-blue-50 cursor-pointer flex items-center space-x-2 transition-colors">
-                <input type="radio" name="recommendation" value="redirect_div" ${scoreData.recommendation === 'redirect_div' ? 'checked' : ''} class="text-blue-600 focus:ring-blue-500">
-                <span class="font-semibold text-blue-800">Dialihkan ke Divisi Lain</span>
-              </label>
-
-              <label class="p-2.5 rounded-xl border border-cream-300 bg-cream-50 hover:bg-blue-50 cursor-pointer flex items-center space-x-2 transition-colors">
-                <input type="radio" name="recommendation" value="redirect_member" ${scoreData.recommendation === 'redirect_member' ? 'checked' : ''} class="text-blue-600 focus:ring-blue-500">
-                <span class="font-semibold text-blue-800">Dialihkan ke Anggota Biasa</span>
+                <input type="radio" name="recommendation" value="anggota" onchange="onRecommendationChange(${applicant.id})" ${isAnggota ? 'checked' : ''} class="text-blue-600 focus:ring-blue-500">
+                <span class="font-semibold text-blue-800">Diterima sebagai Anggota</span>
               </label>
 
               <label class="p-2.5 rounded-xl border border-cream-300 bg-cream-50 hover:bg-rose-50 cursor-pointer flex items-center space-x-2 transition-colors">
-                <input type="radio" name="recommendation" value="reject" ${scoreData.recommendation === 'reject' ? 'checked' : ''} class="text-rose-600 focus:ring-rose-500">
-                <span class="font-semibold text-rose-700">Tidak Direkomendasikan</span>
+                <input type="radio" name="recommendation" value="belum_diterima" onchange="onRecommendationChange(${applicant.id})" ${isBelumDiterima ? 'checked' : ''} class="text-rose-600 focus:ring-rose-500">
+                <span class="font-semibold text-rose-700">Belum Diterima</span>
               </label>
 
             </div>
@@ -2541,6 +2610,7 @@ function doPost(e) {
                 type="text" 
                 id="interviewerNameInput" 
                 value="${escapeHtml(scoreData.interviewer || currentInterviewerName || '')}" 
+                oninput="onInterviewerNameInput(${applicant.id})"
                 placeholder="Nama antum..." 
                 class="px-3 py-1.5 rounded-xl border border-cream-300 bg-cream-50 focus:border-gold outline-none text-xs font-semibold text-deepGreen w-40"
               />
@@ -2824,10 +2894,15 @@ function doPost(e) {
       const keahlian = parseInt(document.getElementById("scoreKeahlian")?.value || 80);
       const komitmen = parseInt(document.getElementById("scoreKomitmen")?.value || 80);
 
-      document.getElementById("labelScoreAdab").textContent = adab;
-      document.getElementById("labelScoreVisi").textContent = visi;
-      document.getElementById("labelScoreKeahlian").textContent = keahlian;
-      document.getElementById("labelScoreKomitmen").textContent = komitmen;
+      const labelAdab = document.getElementById("labelScoreAdab");
+      const labelVisi = document.getElementById("labelScoreVisi");
+      const labelKeahlian = document.getElementById("labelScoreKeahlian");
+      const labelKomitmen = document.getElementById("labelScoreKomitmen");
+
+      if (labelAdab) labelAdab.textContent = adab;
+      if (labelVisi) labelVisi.textContent = visi;
+      if (labelKeahlian) labelKeahlian.textContent = keahlian;
+      if (labelKomitmen) labelKomitmen.textContent = komitmen;
 
       // Weighted average: Adab 25%, Visi 25%, Keahlian 30%, Komitmen 20%
       const finalScore = Math.round((adab * 0.25) + (visi * 0.25) + (keahlian * 0.30) + (komitmen * 0.20));
@@ -2837,6 +2912,105 @@ function doPost(e) {
         previewBadge.textContent = `Nilai Akhir: ${finalScore}/100`;
       }
       return finalScore;
+    }
+
+    // Auto-save form parameters immediately to local state and localStorage
+    function autoSaveCurrentForm(applicantId, options = {}) {
+      const applicant = rawApplicants.find(a => a.id === applicantId);
+      if (!applicant) return null;
+
+      const key = getApplicantKey(applicant);
+      const prevData = interviewScores[key] || {};
+
+      let status = document.getElementById("interviewStatusSelect")?.value || prevData.status || "unscored";
+
+      const adab = parseInt(document.getElementById("scoreAdab")?.value || prevData.scoreAdab || 80);
+      const visi = parseInt(document.getElementById("scoreVisi")?.value || prevData.scoreVisi || 80);
+      const keahlian = parseInt(document.getElementById("scoreKeahlian")?.value || prevData.scoreKeahlian || 80);
+      const komitmen = parseInt(document.getElementById("scoreKomitmen")?.value || prevData.scoreKomitmen || 80);
+      const finalScore = Math.round((adab * 0.25) + (visi * 0.25) + (keahlian * 0.30) + (komitmen * 0.20));
+
+      const recomRadios = document.getElementsByName("recommendation");
+      let recommendation = prevData.recommendation || "pengurus";
+      for (const r of recomRadios) {
+        if (r.checked) {
+          recommendation = r.value;
+          break;
+        }
+      }
+
+      const notesEl = document.getElementById("interviewNotesInput");
+      const notes = notesEl !== null ? notesEl.value : (prevData.notes || "");
+
+      const interviewerEl = document.getElementById("interviewerNameInput");
+      const interviewer = interviewerEl !== null ? interviewerEl.value : (prevData.interviewer || currentInterviewerName);
+
+      if (interviewer) {
+        saveInterviewerName(interviewer);
+      }
+
+      const updated = {
+        ...prevData,
+        applicantId: applicant.id,
+        applicantNim: applicant["NIM:"] || "",
+        applicantName: applicant["Nama lengkap:"] || "",
+        applicantProdi: applicant["Prodi:"] || "",
+        applicantDivisi: applicant["Divisi Utama"] || "",
+        status: status,
+        scoreAdab: adab,
+        scoreVisi: visi,
+        scoreKeahlian: keahlian,
+        scoreKomitmen: komitmen,
+        finalScore: finalScore,
+        recommendation: recommendation,
+        notes: notes,
+        interviewer: interviewer,
+        updatedAt: new Date().toISOString()
+      };
+
+      interviewScores[key] = updated;
+      persistScores();
+      updateStats();
+      renderApplicantList();
+
+      if (options.pushCloud && cloudSyncEndpoint) {
+        triggerDebouncedCloudPush(key, updated);
+      }
+
+      return updated;
+    }
+
+    // Slider input handler (updates live calculation & auto-saves locally immediately)
+    function onScoreSliderInput(applicantId) {
+      calculateLiveScore();
+      autoSaveCurrentForm(applicantId, { pushCloud: true });
+    }
+
+    // Recommendation radio change handler
+    function onRecommendationChange(applicantId) {
+      autoSaveCurrentForm(applicantId, { pushCloud: true });
+    }
+
+    // Interview status dropdown change handler
+    function onInterviewStatusChange(applicantId) {
+      autoSaveCurrentForm(applicantId, { pushCloud: true });
+    }
+
+    // Interviewer name input handler
+    function onInterviewerNameInput(applicantId) {
+      const input = document.getElementById("interviewerNameInput");
+      if (input) saveInterviewerName(input.value);
+      autoSaveCurrentForm(applicantId, { pushCloud: false });
+    }
+
+    // Debounced cloud push
+    let cloudPushDebounceTimer = null;
+    function triggerDebouncedCloudPush(key, scoreData) {
+      if (!cloudSyncEndpoint) return;
+      clearTimeout(cloudPushDebounceTimer);
+      cloudPushDebounceTimer = setTimeout(() => {
+        pushScoreToCloud(key, scoreData);
+      }, 1200);
     }
 
     // Preset scoring buttons handler
@@ -2853,7 +3027,7 @@ function doPost(e) {
 
       calculateLiveScore();
       if (selectedApplicantId) {
-        saveCurrentScore(selectedApplicantId, true);
+        autoSaveCurrentForm(selectedApplicantId, { pushCloud: true });
       }
     }
 
@@ -2866,9 +3040,12 @@ function doPost(e) {
         indicator.className = "text-[11px] text-amber-600 font-medium";
       }
 
+      // Save locally immediately on every keystroke
+      autoSaveCurrentForm(id, { pushCloud: false });
+
       clearTimeout(notesDebounceTimer);
       notesDebounceTimer = setTimeout(() => {
-        saveCurrentScore(id, true);
+        autoSaveCurrentForm(id, { pushCloud: true });
         if (indicator) {
           indicator.textContent = "Tersimpan otomatis ✓";
           indicator.className = "text-[11px] text-emerald-600 font-medium";
@@ -2890,62 +3067,58 @@ function doPost(e) {
       return interviewScores[key] || null;
     }
 
+    function getRecommendationLabel(recom) {
+      if (!recom) return "Belum Ditentukan";
+      const r = String(recom).trim();
+      if (r === 'pengurus' || r === 'priority' || r === 'yes') return "Diterima sebagai Pengurus";
+      if (r === 'cadangan' || r === 'backup') return "Diterima Pengurus Divisi Cadangan";
+      if (r === 'anggota' || r === 'redirect_member' || r === 'redirect_div') return "Diterima sebagai Anggota";
+      if (r === 'belum_diterima' || r === 'reject') return "Belum Diterima";
+      return r;
+    }
+
+    function getRecommendationBadge(recom) {
+      if (!recom) return "";
+      const r = String(recom).trim();
+      if (r === 'pengurus' || r === 'priority' || r === 'yes') {
+        return '<span class="bg-emerald-100 text-emerald-800 border border-emerald-300 text-[10px] font-bold px-2 py-0.5 rounded-full">Diterima Pengurus</span>';
+      }
+      if (r === 'cadangan' || r === 'backup') {
+        return '<span class="bg-amber-100 text-amber-800 border border-amber-300 text-[10px] font-bold px-2 py-0.5 rounded-full">Pengurus Cadangan</span>';
+      }
+      if (r === 'anggota' || r === 'redirect_member' || r === 'redirect_div') {
+        return '<span class="bg-blue-100 text-blue-800 border border-blue-300 text-[10px] font-bold px-2 py-0.5 rounded-full">Diterima Anggota</span>';
+      }
+      if (r === 'belum_diterima' || r === 'reject') {
+        return '<span class="bg-rose-100 text-rose-800 border border-rose-300 text-[10px] font-bold px-2 py-0.5 rounded-full">Belum Diterima</span>';
+      }
+      return `<span class="bg-slate-100 text-slate-800 border border-slate-300 text-[10px] font-bold px-2 py-0.5 rounded-full">${escapeHtml(r)}</span>`;
+    }
+
     function saveCurrentScore(id, isSilent = false) {
       const applicant = rawApplicants.find(a => a.id === id);
       if (!applicant) return;
 
       const key = getApplicantKey(applicant);
-      let status = document.getElementById("interviewStatusSelect")?.value || "scored";
-      if (status === "unscored") {
-        status = "scored";
-        const selectEl = document.getElementById("interviewStatusSelect");
-        if (selectEl) selectEl.value = "scored";
+      const statusSelect = document.getElementById("interviewStatusSelect");
+      if (statusSelect && statusSelect.value === "unscored") {
+        statusSelect.value = "scored";
       }
-      const adab = parseInt(document.getElementById("scoreAdab")?.value || 80);
-      const visi = parseInt(document.getElementById("scoreVisi")?.value || 80);
-      const keahlian = parseInt(document.getElementById("scoreKeahlian")?.value || 80);
-      const komitmen = parseInt(document.getElementById("scoreKomitmen")?.value || 80);
-      const finalScore = Math.round((adab * 0.25) + (visi * 0.25) + (keahlian * 0.30) + (komitmen * 0.20));
-      
-      const recomRadios = document.getElementsByName("recommendation");
-      let recommendation = "yes";
-      for (const r of recomRadios) {
-        if (r.checked) {
-          recommendation = r.value;
-          break;
+
+      const scoreObj = autoSaveCurrentForm(id, { pushCloud: false });
+      if (scoreObj) {
+        if (scoreObj.status === "unscored") {
+          scoreObj.status = "scored";
+          interviewScores[key] = scoreObj;
+          persistScores();
+        }
+
+        // Force immediate push to Google Sheets via Cloud Sync!
+        if (cloudSyncEndpoint) {
+          pushScoreToCloud(key, scoreObj);
         }
       }
 
-      const notes = document.getElementById("interviewNotesInput")?.value || "";
-      const interviewer = document.getElementById("interviewerNameInput")?.value || currentInterviewerName;
-
-      // Save interviewer name globally
-      if (interviewer) {
-        saveInterviewerName(interviewer);
-      }
-
-      interviewScores[key] = {
-        applicantId: applicant.id,
-        applicantNim: applicant["NIM:"] || "",
-        applicantName: applicant["Nama lengkap:"] || "",
-        status: status,
-        scoreAdab: adab,
-        scoreVisi: visi,
-        scoreKeahlian: keahlian,
-        scoreKomitmen: komitmen,
-        finalScore: finalScore,
-        recommendation: recommendation,
-        notes: notes,
-        interviewer: interviewer,
-        updatedAt: new Date().toISOString()
-      };
-
-      // Push directly to Google Sheets via Cloud Sync if connected!
-      if (cloudSyncEndpoint) {
-        pushScoreToCloud(key, interviewScores[key]);
-      }
-
-      persistScores();
       updateStats();
       renderApplicantList();
       if (!isSilent) {
@@ -3018,13 +3191,7 @@ function doPost(e) {
       const rows = rawApplicants.map((applicant, index) => {
         const scoreData = getApplicantScore(applicant) || {};
         
-        let recomLabel = "Belum Ada";
-        if (scoreData.recommendation === 'priority') recomLabel = "Sangat Direkomendasikan (Prioritas)";
-        else if (scoreData.recommendation === 'yes') recomLabel = "Direkomendasikan (Lolos)";
-        else if (scoreData.recommendation === 'backup') recomLabel = "Cadangan / Pertimbangkan";
-        else if (scoreData.recommendation === 'redirect_div') recomLabel = "Dialihkan ke Divisi Lain";
-        else if (scoreData.recommendation === 'redirect_member') recomLabel = "Dialihkan ke Anggota";
-        else if (scoreData.recommendation === 'reject') recomLabel = "Tidak Direkomendasikan";
+        let recomLabel = getRecommendationLabel(scoreData.recommendation);
 
         return {
           "No": index + 1,
@@ -3102,13 +3269,7 @@ function doPost(e) {
       const printContainer = document.getElementById("printSheetContainer");
       if (!printContainer) return;
 
-      let recomText = "Belum Ditentukan";
-      if (scoreData.recommendation === 'priority') recomText = "SANGAT DIREKOMENDASIKAN (Lolos Prioritas)";
-      else if (scoreData.recommendation === 'yes') recomText = "DIREKOMENDASIKAN (Lolos Seleksi)";
-      else if (scoreData.recommendation === 'backup') recomText = "CADANGAN / PERTIMBANGKAN";
-      else if (scoreData.recommendation === 'redirect_div') recomText = "DIALIHKAN KE DIVISI LAIN";
-      else if (scoreData.recommendation === 'redirect_member') recomText = "DIALIHKAN KE ANGGOTA BIASA";
-      else if (scoreData.recommendation === 'reject') recomText = "TIDAK DIREKOMENDASIKAN";
+      let recomText = getRecommendationLabel(scoreData.recommendation).toUpperCase();
 
       printContainer.innerHTML = `
         <div class="border-b-2 border-black pb-4 mb-6 flex items-center justify-between">
@@ -3263,7 +3424,7 @@ function doPost(e) {
       const div1 = applicant["Divisi Utama"] || "-";
       const div2 = applicant["Divisi Cadangan"] || "-";
       const score = scoreData.finalScore || "Belum Dinilai";
-      const recom = scoreData.recommendation || "Belum Ditentukan";
+      const recom = getRecommendationLabel(scoreData.recommendation);
       const notes = scoreData.notes || "-";
 
       const text = `📋 *DATA WAWANCARA CALON ANGGOTA RIJAL DAKWAH*
