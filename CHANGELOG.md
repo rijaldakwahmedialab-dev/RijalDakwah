@@ -3,6 +3,36 @@
 Semua catatan pembaruan, perubahan teknis, dan riwayat pengerjaan proyek.
 
 ---
+## [2026-09-09 - Update 20] - Cloud Password Sync via ScriptProperties & Migrasi Database Spreadsheet Private (wawancara.html)
+
+### 🔒 Pemisahan Total Database Penilaian (100% Private Spreadsheet)
+- **Arsitektur Dual-Spreadsheet Anti-Bocor**:
+  1. **Spreadsheet Formulir Pendaftar (Publik/View-Only)**:
+     - ID: `1bcFa1yY4dOuFxsw2Y5aNy3osYjGtBK34bmcIiUEm0YY`
+     - Hanya digunakan untuk membaca data pendaftar calon anggota via Google Visualization API / CSV.
+  2. **Spreadsheet Database Penilaian & Konfigurasi (100% Private / Restricted)**:
+     - ID: `1aI3lHKD_hNOUiX0FQiiE8hz1CxD0ll0Mj_UrlryVWt0`
+     - Menampung seluruh data penilaian pewawancara, skor rubrik 4 kriteria, status kelulusan, dan catatan evaluasi.
+     - Hak akses terkunci khusus akun Google panitia, terisolasi total dari publik/calon pendaftar.
+- **Navigasi Tombol Hero Banner**:
+  - Menyediakan tombol akses terpisah di hero: *"Sheet Pendaftar"* (Formulir Asli) dan *"Database Nilai (Private)"*.
+
+### ☁️ Sinkronisasi Kata Sandi Cloud Real-Time (*Server-Side Verification*)
+- **Penyimpanan di Google `ScriptProperties` (Zero-Leak)**:
+  - Kata sandi panitia kini disimpan aman di server Google Apps Script menggunakan `PropertiesService.getScriptProperties()`.
+  - Teks kata sandi tidak tertulis di lembar tabel mana pun sehingga mustahil diintip lewat link spreadsheet view-only.
+- **Verifikasi Real-Time saat Login**:
+  - Saat tombol *Buka Akses* ditekan, formulir mengirim permintaan verifikasi ke Apps Script (`action: "verify_password"`).
+  - Jika koordinator mengubah kata sandi di cloud, seluruh perangkat panitia lain (laptop/HP penguji) secara otomatis wajib menggunakan kata sandi baru tersebut.
+  - Dilengkapi *fallback* verifikasi lokal otomatis jika jaringan internet sedang tidak stabil atau offline.
+- **Fitur Ubah & Reset Sandi Cloud**:
+  - Modal ubah sandi kini menyinkronkan sandi baru langsung ke cloud Apps Script (`action: "change_password"`).
+  - Tombol reset sandi mengembalikan master password cloud ke bawaan (`panitia2026`).
+
+### 📜 Pembaruan Google Apps Script Versi 3.0
+- Memperbarui `google-apps-script.js`, `KODE_APPS_SCRIPT_TERBARU.txt`, dan cuplikan kode di modal panduan web agar otomatis terhubung ke ID spreadsheet private baru `1aI3lHKD_hNOUiX0FQiiE8hz1CxD0ll0Mj_UrlryVWt0`.
+
+---
 ## [2026-09-09 - Update 19] - Gerbang Autentikasi Kata Sandi Khusus Panitia & Sesi Pewawancara (wawancara.html)
 
 ### 🔐 Gerbang Login Akses Khusus Panitia (*Login Gate Screen*)

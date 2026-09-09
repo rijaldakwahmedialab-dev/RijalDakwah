@@ -513,10 +513,21 @@
           <a 
             href="https://docs.google.com/spreadsheets/d/1bcFa1yY4dOuFxsw2Y5aNy3osYjGtBK34bmcIiUEm0YY/edit?usp=sharing" 
             target="_blank" 
-            class="px-3 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 text-cream-100 border border-gold/40 flex items-center gap-2 backdrop-blur-sm transition-colors"
+            class="px-3 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 text-cream-100 border border-gold/40 flex items-center gap-1.5 backdrop-blur-sm transition-colors"
+            title="Buka Google Sheets Formulir Pendaftar Asli (View-Only)"
           >
             <i class="fa-solid fa-table-cells text-emerald-400"></i>
-            <span>Buka Google Sheets Asli</span>
+            <span>Sheet Pendaftar</span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-300"></i>
+          </a>
+          <a 
+            href="https://docs.google.com/spreadsheets/d/1aI3lHKD_hNOUiX0FQiiE8hz1CxD0ll0Mj_UrlryVWt0/edit?usp=sharing" 
+            target="_blank" 
+            class="px-3 py-2 rounded-xl text-xs font-semibold bg-emerald-950/60 hover:bg-emerald-900/80 text-emerald-300 border border-emerald-500/50 flex items-center gap-1.5 backdrop-blur-sm transition-colors shadow-sm"
+            title="Buka Google Sheets Database Penilaian Private (Khusus Panitia)"
+          >
+            <i class="fa-solid fa-lock text-gold text-xs"></i>
+            <span>Database Nilai (Private)</span>
             <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-300"></i>
           </a>
           <button 
@@ -938,7 +949,7 @@
 
           <div id="appsScriptGuideContent" class="hidden p-4 bg-white space-y-3 text-xs border-t border-cream-200">
             <ol class="list-decimal list-inside space-y-1.5 text-slate-700 leading-relaxed text-[11px] sm:text-xs">
-              <li>Buka spreadsheet formulir: <a href="https://docs.google.com/spreadsheets/d/1bcFa1yY4dOuFxsw2Y5aNy3osYjGtBK34bmcIiUEm0YY/edit?usp=sharing" target="_blank" class="text-forestGreen font-bold underline">Buka Google Sheets</a></li>
+              <li>Buka spreadsheet database private baru: <a href="https://docs.google.com/spreadsheets/d/1aI3lHKD_hNOUiX0FQiiE8hz1CxD0ll0Mj_UrlryVWt0/edit?usp=sharing" target="_blank" class="text-forestGreen font-bold underline">Buka Google Sheets Private</a> (ID: <code class="font-mono text-[10px] bg-cream-100 px-1 py-0.5 rounded text-deepGreen">1aI3lHKD...VWt0</code>)</li>
               <li>Klik menu <strong>Ekstensi (Extensions)</strong> &gt; <strong>Apps Script</strong>.</li>
               <li>Hapus tulisan bawaan di editor, lalu salin dan tempel kode di bawah ini.</li>
               <li>Klik tombol <strong>Simpan</strong> (ikon disket).</li>
@@ -1247,7 +1258,9 @@
   <!-- ========================================================================= -->
   <script>
     // Constants & Endpoints
-    const SPREADSHEET_ID = "1bcFa1yY4dOuFxsw2Y5aNy3osYjGtBK34bmcIiUEm0YY";
+    const SPREADSHEET_ID = "1bcFa1yY4dOuFxsw2Y5aNy3osYjGtBK34bmcIiUEm0YY"; // Sheet Formulir Pendaftar (View-Only)
+    const PRIVATE_DATABASE_SPREADSHEET_ID = "1aI3lHKD_hNOUiX0FQiiE8hz1CxD0ll0Mj_UrlryVWt0"; // Sheet Database Penilaian Private
+    const PRIVATE_DATABASE_SPREADSHEET_URL = `https://docs.google.com/spreadsheets/d/${PRIVATE_DATABASE_SPREADSHEET_ID}/edit?usp=sharing`;
     const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json`;
     const CSV_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv`;
     const STORAGE_KEY_SCORES = "rd_interview_scores_v1";
@@ -1255,7 +1268,7 @@
     const STORAGE_KEY_CLOUD_SYNC = "rd_cloud_sync_endpoint_v1";
     const STORAGE_KEY_INTERVIEWER = "rd_interviewer_name_v1";
 
-    // Auth & Protection Constants (Aligned with pengumuman.html)
+    // Auth & Protection Constants (Aligned with pengumuman.html & Cloud)
     const PANITIA_AUTH_KEY = "RIJAL_DAKWAH_PANITIA_AUTH_SESSION_V1";
     const PANITIA_PASSWORD_STORAGE_KEY = "RIJAL_DAKWAH_PANITIA_PASSWORD_CUSTOM_V1";
     const DEFAULT_PANITIA_PASSWORD = "panitia2026";
@@ -1271,7 +1284,7 @@
     let isPortalSessionActive = false;
 
     // =========================================================================
-    // AUTH & PANITIA ACCESS ENGINE
+    // AUTH & PANITIA ACCESS ENGINE (CLOUD SYNC REAL-TIME)
     // =========================================================================
     function getActivePanitiaPassword() {
       try {
@@ -1316,30 +1329,81 @@
           icon.classList.add("fa-eye");
         }
         input.focus();
-        showToast("Sandi Diisi", "Kata sandi default panitia telah diisi.");
+        showToast("Sandi Diisi", "Kata sandi bawaan panitia telah diisi.");
       }
     }
 
-    function handleLoginSubmit(event) {
+    async function handleLoginSubmit(event) {
       event.preventDefault();
       const passwordInput = document.getElementById("loginPasswordInput");
       const interviewerInput = document.getElementById("loginInterviewerInput");
       const rememberCheckbox = document.getElementById("loginRememberMe");
       const errorMsg = document.getElementById("loginErrorMessage");
       const container = document.getElementById("loginPasswordContainer");
+      const submitBtn = document.getElementById("btnSubmitLogin");
 
       const enteredPassword = (passwordInput ? passwordInput.value : "").trim();
-      const actualPassword = getActivePanitiaPassword();
+      if (!enteredPassword) return;
 
-      if (enteredPassword === actualPassword) {
+      const originalBtnHtml = submitBtn ? submitBtn.innerHTML : "";
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Memverifikasi Sandi ke Cloud...</span>';
+      }
+
+      let isAuthenticated = false;
+      let verifiedViaCloud = false;
+
+      // 1. Cek ke cloud Google Apps Script jika endpoint tersedia
+      if (cloudSyncEndpoint) {
+        try {
+          const checkUrl = `${cloudSyncEndpoint}${cloudSyncEndpoint.includes('?') ? '&' : '?'}action=verify_password&password=${encodeURIComponent(enteredPassword)}&t=${Date.now()}`;
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 6000); // 6 detik batas waktu
+
+          const resp = await fetch(checkUrl, { signal: controller.signal });
+          clearTimeout(timeoutId);
+
+          if (resp.ok) {
+            const data = await resp.json();
+            if (data.authenticated === true) {
+              isAuthenticated = true;
+              verifiedViaCloud = true;
+              try {
+                localStorage.setItem(PANITIA_PASSWORD_STORAGE_KEY, enteredPassword);
+              } catch (e) {}
+            } else if (data.status === "error" || data.authenticated === false) {
+              isAuthenticated = false;
+              verifiedViaCloud = true; // Cloud aktif dan memastikan sandi salah
+            }
+          }
+        } catch (err) {
+          console.warn("Verifikasi cloud offline/timeout, beralih ke verifikasi lokal:", err);
+        }
+      }
+
+      // 2. Fallback verifikasi lokal jika cloud offline/tidak merespon
+      if (!verifiedViaCloud) {
+        const actualPassword = getActivePanitiaPassword();
+        if (enteredPassword === actualPassword) {
+          isAuthenticated = true;
+        }
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+      }
+
+      if (isAuthenticated) {
         if (errorMsg) errorMsg.classList.add("hidden");
 
-        // Save interviewer name if provided
+        // Simpan nama interviewer jika diisi
         if (interviewerInput && interviewerInput.value.trim()) {
           saveInterviewerName(interviewerInput.value.trim());
         }
 
-        // Set Auth session / persistent
+        // Set status auth
         const isRemember = rememberCheckbox ? rememberCheckbox.checked : true;
         try {
           if (isRemember) {
@@ -1353,11 +1417,23 @@
 
         if (passwordInput) passwordInput.value = "";
 
-        // Reveal portal and start session
+        // Buka portal dan inisialisasi data
         revealProtectedPortal(false);
-        showToast("Akses Terbuka", "Ahlan wa Sahlan di Portal Wawancara Rijal Dakwah!");
+        if (verifiedViaCloud) {
+          showToast("Akses Cloud Terverifikasi", "Ahlan wa Sahlan di Portal Wawancara Rijal Dakwah!");
+        } else {
+          showToast("Akses Terbuka (Mode Lokal)", "Login berhasil dengan kata sandi lokal.");
+        }
       } else {
-        if (errorMsg) errorMsg.classList.remove("hidden");
+        if (errorMsg) {
+          const errorSpan = errorMsg.querySelector("span");
+          if (errorSpan) {
+            errorSpan.textContent = verifiedViaCloud 
+              ? "Kata sandi salah! Pastikan memasukkan kata sandi cloud panitia terbaru."
+              : "Kata sandi salah! Silakan periksa kembali atau tanyakan koordinator.";
+          }
+          errorMsg.classList.remove("hidden");
+        }
         if (container) {
           container.classList.remove("animate-shake");
           void container.offsetWidth; // Trigger reflow
@@ -1523,7 +1599,7 @@
       document.body.style.overflow = "auto";
     }
 
-    function handleChangePasswordSubmit(event) {
+    async function handleChangePasswordSubmit(event) {
       event.preventDefault();
       const curInput = document.getElementById("cpCurrentPassword");
       const newInput = document.getElementById("cpNewPassword");
@@ -1531,6 +1607,7 @@
       const nameInput = document.getElementById("cpInterviewerName");
       const err = document.getElementById("cpErrorMsg");
       const errText = document.getElementById("cpErrorText");
+      const submitBtn = event.target.querySelector('button[type="submit"]');
 
       if (nameInput && nameInput.value.trim() !== currentInterviewerName) {
         saveInterviewerName(nameInput.value.trim());
@@ -1539,27 +1616,70 @@
       const curVal = (curInput ? curInput.value : "").trim();
       const newVal = (newInput ? newInput.value : "").trim();
       const confVal = (confInput ? confInput.value : "").trim();
-      const actualPw = getActivePanitiaPassword();
-
-      if (curVal !== actualPw) {
-        if (errText) errText.textContent = "Kata sandi saat ini salah!";
-        if (err) err.classList.remove("hidden");
-        if (curInput) { curInput.focus(); curInput.select(); }
-        return;
-      }
 
       if (newVal.length < 4) {
         if (errText) errText.textContent = "Kata sandi baru minimal 4 karakter!";
         if (err) err.classList.remove("hidden");
-        if (newInput) { newInput.focus(); }
+        if (newInput) newInput.focus();
         return;
       }
 
       if (newVal !== confVal) {
         if (errText) errText.textContent = "Konfirmasi kata sandi baru tidak cocok!";
         if (err) err.classList.remove("hidden");
-        if (confInput) { confInput.focus(); }
+        if (confInput) confInput.focus();
         return;
+      }
+
+      const originalBtnHtml = submitBtn ? submitBtn.innerHTML : "";
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Menyimpan ke Cloud...</span>';
+      }
+
+      let cloudSuccess = false;
+      let cloudErrorMsg = "";
+
+      // 1. Coba update ke cloud Apps Script jika endpoint terhubung
+      if (cloudSyncEndpoint) {
+        try {
+          const updateUrl = `${cloudSyncEndpoint}${cloudSyncEndpoint.includes('?') ? '&' : '?'}action=change_password&current_password=${encodeURIComponent(curVal)}&new_password=${encodeURIComponent(newVal)}&t=${Date.now()}`;
+          const resp = await fetch(updateUrl);
+          if (resp.ok) {
+            const data = await resp.json();
+            if (data.status === "success") {
+              cloudSuccess = true;
+            } else {
+              cloudErrorMsg = data.message || "Gagal mengubah kata sandi di cloud.";
+            }
+          }
+        } catch (e) {
+          console.warn("Update kata sandi cloud gagal:", e);
+        }
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+      }
+
+      // Jika cloud merespon kesalahan (misal sandi lama salah)
+      if (cloudSyncEndpoint && !cloudSuccess && cloudErrorMsg) {
+        if (errText) errText.textContent = cloudErrorMsg;
+        if (err) err.classList.remove("hidden");
+        if (curInput) { curInput.focus(); curInput.select(); }
+        return;
+      }
+
+      // Jika tidak ada cloud atau cloud offline, lakukan verifikasi sandi lokal
+      if (!cloudSyncEndpoint) {
+        const actualPw = getActivePanitiaPassword();
+        if (curVal !== actualPw) {
+          if (errText) errText.textContent = "Kata sandi saat ini salah!";
+          if (err) err.classList.remove("hidden");
+          if (curInput) { curInput.focus(); curInput.select(); }
+          return;
+        }
       }
 
       try {
@@ -1568,14 +1688,26 @@
         if (hintCode) hintCode.textContent = newVal;
 
         closeChangePasswordModal();
-        showToast("Sandi Diperbarui", "Kata sandi panitia berhasil diubah!");
+        if (cloudSuccess) {
+          showToast("Sandi Cloud Diperbarui", "Kata sandi cloud berhasil diubah! Seluruh perangkat panitia kini wajib memakai sandi ini.");
+        } else {
+          showToast("Sandi Lokal Diperbarui", "Kata sandi disimpan di peramban ini.");
+        }
       } catch (e) {
         alert("Gagal menyimpan kata sandi: " + e.message);
       }
     }
 
-    function resetPanitiaPasswordToDefault() {
-      if (!confirm("Kembalikan kata sandi panitia ke kata sandi bawaan ('panitia2026')?")) return;
+    async function resetPanitiaPasswordToDefault() {
+      if (!confirm("Kembalikan kata sandi panitia ke kata sandi bawaan ('panitia2026') di cloud dan lokal?")) return;
+      
+      if (cloudSyncEndpoint) {
+        try {
+          const resetUrl = `${cloudSyncEndpoint}${cloudSyncEndpoint.includes('?') ? '&' : '?'}action=reset_password&t=${Date.now()}`;
+          await fetch(resetUrl);
+        } catch (e) {}
+      }
+
       try {
         localStorage.removeItem(PANITIA_PASSWORD_STORAGE_KEY);
         const hintCode = document.getElementById("loginPasswordHintCode");
@@ -1771,20 +1903,99 @@
     function renderAppsScriptSnippet() {
       const textarea = document.getElementById("appsScriptSnippetText");
       if (textarea) {
-        textarea.value = `const SHEET_NAME_SCORES = "Hasil_Penilaian";
+        textarea.value = `const PRIVATE_SPREADSHEET_ID = "1aI3lHKD_hNOUiX0FQiiE8hz1CxD0ll0Mj_UrlryVWt0";
+const SHEET_NAME_SCORES = "Hasil_Penilaian";
+const PROPERTY_KEY_PASSWORD = "PANITIA_PASSWORD";
+const DEFAULT_PASSWORD = "panitia2026";
+
+function getCloudPassword() {
+  const props = PropertiesService.getScriptProperties();
+  let pw = props.getProperty(PROPERTY_KEY_PASSWORD);
+  if (!pw) {
+    pw = DEFAULT_PASSWORD;
+    props.setProperty(PROPERTY_KEY_PASSWORD, DEFAULT_PASSWORD);
+    props.setProperty("PANITIA_PASSWORD_UPDATED_AT", new Date().toISOString());
+  }
+  return pw;
+}
+
+function setCloudPassword(newPassword) {
+  const props = PropertiesService.getScriptProperties();
+  props.setProperty(PROPERTY_KEY_PASSWORD, newPassword);
+  props.setProperty("PANITIA_PASSWORD_UPDATED_AT", new Date().toISOString());
+}
+
+function getDatabaseSpreadsheet() {
+  try {
+    return SpreadsheetApp.openById(PRIVATE_SPREADSHEET_ID);
+  } catch (e) {
+    return SpreadsheetApp.getActiveSpreadsheet();
+  }
+}
 
 function doGet(e) {
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const action = (e && e.parameter && e.parameter.action) ? String(e.parameter.action).trim() : "";
+
+    if (action === 'verify_password') {
+      const entered = String(e.parameter.password || "").trim();
+      const actual = getCloudPassword();
+      const isMatch = (entered === actual);
+      return ContentService.createTextOutput(JSON.stringify({
+        status: isMatch ? "success" : "error",
+        action: "verify_password",
+        authenticated: isMatch,
+        message: isMatch ? "Kata sandi benar." : "Kata sandi salah!"
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    if (action === 'change_password') {
+      const current = String(e.parameter.current_password || "").trim();
+      const newPw = String(e.parameter.new_password || "").trim();
+      const actual = getCloudPassword();
+      if (current !== actual) {
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "error",
+          action: "change_password",
+          authenticated: false,
+          message: "Kata sandi saat ini salah!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      if (newPw.length < 4) {
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "error",
+          action: "change_password",
+          message: "Kata sandi baru minimal 4 karakter!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      setCloudPassword(newPw);
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "success",
+        action: "change_password",
+        authenticated: true,
+        message: "Kata sandi panitia di cloud berhasil diperbarui!"
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    if (action === 'reset_password') {
+      setCloudPassword(DEFAULT_PASSWORD);
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "success",
+        action: "reset_password",
+        message: "Kata sandi berhasil dikembalikan ke bawaan (panitia2026)."
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    const ss = getDatabaseSpreadsheet();
     let sheet = ss.getSheetByName(SHEET_NAME_SCORES);
     if (!sheet) sheet = initScoresSheet(ss);
 
-    if (e && e.parameter && e.parameter.action === 'cleanup') {
+    if (action === 'cleanup') {
       const lastRow = sheet.getLastRow();
       if (lastRow > 1) sheet.deleteRows(2, lastRow - 1);
-      return ContentService.createTextOutput(JSON.stringify({ status: "success", scores: {} })).setMimeType(ContentService.MimeType.JSON);
+      return ContentService.createTextOutput(JSON.stringify({ status: "success", action: "cleanup", scores: {} })).setMimeType(ContentService.MimeType.JSON);
     }
-    
+
     const data = sheet.getDataRange().getValues();
     const scores = {};
     if (data.length > 1) {
@@ -1824,7 +2035,22 @@ function doPost(e) {
   try {
     let payload = e.postData && e.postData.contents ? JSON.parse(e.postData.contents) : null;
     if (!payload) throw new Error("Data payload kosong.");
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+
+    if (payload.action === 'change_password') {
+      const current = String(payload.current_password || "").trim();
+      const newPw = String(payload.new_password || "").trim();
+      const actual = getCloudPassword();
+      if (current !== actual) {
+        return ContentService.createTextOutput(JSON.stringify({ status: "error", message: "Kata sandi saat ini salah!" })).setMimeType(ContentService.MimeType.JSON);
+      }
+      if (newPw.length < 4) {
+        return ContentService.createTextOutput(JSON.stringify({ status: "error", message: "Kata sandi baru minimal 4 karakter!" })).setMimeType(ContentService.MimeType.JSON);
+      }
+      setCloudPassword(newPw);
+      return ContentService.createTextOutput(JSON.stringify({ status: "success", message: "Kata sandi cloud berhasil diperbarui!" })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    const ss = getDatabaseSpreadsheet();
     let sheet = ss.getSheetByName(SHEET_NAME_SCORES);
     if (!sheet) sheet = initScoresSheet(ss);
 
@@ -1878,7 +2104,8 @@ function doPost(e) {
 }
 
 function initScoresSheet(ss) {
-  const sheet = ss.insertSheet(SHEET_NAME_SCORES, 1);
+  let sheet = ss.getSheetByName(SHEET_NAME_SCORES);
+  if (!sheet) sheet = ss.insertSheet(SHEET_NAME_SCORES, 1);
   const headers = ["Key (ID)", "NIM", "Nama Lengkap", "Program Studi", "Divisi / Jalur", "Status Penilaian", "Skor Adab (25%)", "Skor Visi (25%)", "Skor Keahlian (30%)", "Skor Komitmen (20%)", "Total Nilai", "Rekomendasi", "Catatan Pewawancara", "Nama Pewawancara", "Waktu Update"];
   sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
   sheet.getRange(1, 1, 1, headers.length).setFontWeight("bold").setBackground("#0C2B33").setFontColor("#DFB76C").setHorizontalAlignment("center");

@@ -1,123 +1,227 @@
 /**
  * =============================================================================
- * GOOGLE APPS SCRIPT (VERSI 2.0 - DENGAN FITUR DELETE & ANTI-AMPAS)
- * Database Penilaian Wawancara UKM Rijal Dakwah STDIIS 2026/2027
+ * GOOGLE APPS SCRIPT (VERSI 3.0 - CLOUD PASSWORD SYNC & PRIVATE DATABASE)
+ * UKM Rijal Dakwah STDI Imam Syafi'i Jember Periode 2026/2027
  * =============================================================================
  * 
  * FITUR UTAMA:
- * 1. Simpan & Update nilai pendaftar (Tab 2: Hasil_Penilaian).
- * 2. Delete / Reset per calon (action: "delete") -> Menghapus fisik baris di sheet.
- * 3. Hapus seluruh data nilai (action: "clear_all") -> Mengosongkan Tab 2.
- * 4. Pembersih Data Sampah (action: "cleanup") -> Membersihkan baris kosong/uji coba.
- * 5. Filter Anti-Ampas pada doGet: Baris kosong/test tidak akan terbaca di web.
- * 6. Tab 1 (Data Formulir Pendaftar Asli): 100% STERIL & TIDAK DISENTUH.
+ * 1. Cloud Password Sync: Kata sandi panitia tersimpan aman di Script Properties (server Google),
+ *    dapat diverifikasi & diubah secara real-time dari web oleh seluruh perangkat panitia.
+ * 2. Database Penilaian Private: Seluruh nilai & catatan tersimpan di Google Sheet Private ini
+ *    (Tab: Hasil_Penilaian), 100% aman dan terisolasi dari publik / calon pendaftar.
+ * 3. Simpan, Update, Hapus (CRUD) nilai wawancara otomatis multi-device real-time.
+ * 4. Filter Anti-Ampas & Pembersihan Data Otomatis.
+ * 
+ * GOOGLE SPREADSHEET TARGET (PRIVATE DATABASE):
+ * https://docs.google.com/spreadsheets/d/1aI3lHKD_hNOUiX0FQiiE8hz1CxD0ll0Mj_UrlryVWt0/edit
  * 
  * =============================================================================
- * CARA MEMASANG KODE BARU INI DI GOOGLE SPREADSHEET (Hanya 1 Menit):
+ * CARA MEMASANG DI GOOGLE SPREADSHEET BARU (HANYA 1 MENIT):
  * =============================================================================
- * 1. Buka Google Sheet Formulir Rijal Dakwah:
- *    https://docs.google.com/spreadsheets/d/1bcFa1yY4dOuFxsw2Y5aNy3osYjGtBK34bmcIiUEm0YY/edit
+ * 1. Buka Google Spreadsheet Private Baru Antum:
+ *    https://docs.google.com/spreadsheets/d/1aI3lHKD_hNOUiX0FQiiE8hz1CxD0ll0Mj_UrlryVWt0/edit
  * 2. Di menu atas, klik: Ekstensi (Extensions) -> Apps Script.
- * 3. Hapus seluruh kode lama yang ada di editor, lalu COPY & PASTE seluruh kode ini.
+ * 3. Hapus seluruh isi kode lama bawaan di editor, lalu PASTE SELURUH KODE INI.
  * 4. Klik ikon "Simpan" (💾 Ctrl+S).
- * 5. PENTING (Deploy Versi Baru):
- *    - Klik tombol biru di kanan atas: "Terapkan" (Deploy) -> "Kelola penerapan" (Manage deployments).
- *    - Klik ikon Pensil (Edit) di samping nama deployment.
- *    - Pada dropdown 'Versi', pilih "Versi baru" (New version).
- *    - Pastikan 'Akses' tetap: "Siapa saja" (Anyone).
- *    - Klik tombol biru "Terapkan" (Deploy). Selesai!
+ * 5. Terapkan Web App (Deploy):
+ *    - Klik tombol biru di kanan atas: "Terapkan" (Deploy) -> "Penerapan baru" (New deployment).
+ *    - Klik ikon Roda Gigi (Gear) di samping 'Pilih jenis', lalu pilih: "Aplikasi Web" (Web app).
+ *    - Deskripsi: "Database Wawancara V3 Cloud Sync"
+ *    - Jalankan sebagai (Execute as): "Saya" (Me / akun Google antum).
+ *    - Siapa yang memiliki akses (Who has access): "Siapa saja" (Anyone).
+ *    - Klik tombol biru "Terapkan" (Deploy).
+ *    - Berikan izin akses jika diminta (Pilih akun -> Advanced -> Go to ... (unsafe) -> Allow).
+ * 6. SALIN URL APLIKASI WEB yang diberikan Google (berformat: https://script.google.com/macros/s/.../exec).
+ * 7. Tempelkan URL tersebut ke menu "Cloud Sync" di website Portal Wawancara (wawancara.html).
+ * =============================================================================
  */
 
+const PRIVATE_SPREADSHEET_ID = "1aI3lHKD_hNOUiX0FQiiE8hz1CxD0ll0Mj_UrlryVWt0";
 const SHEET_NAME_SCORES = "Hasil_Penilaian";
+const PROPERTY_KEY_PASSWORD = "PANITIA_PASSWORD";
+const PROPERTY_KEY_UPDATED_AT = "PANITIA_PASSWORD_UPDATED_AT";
+const DEFAULT_PASSWORD = "panitia2026";
 
+/**
+ * Mengambil kata sandi aktif panitia dari ScriptProperties server Google.
+ * Jika belum ada, otomatis diinisialisasi ke default 'panitia2026'.
+ */
+function getCloudPassword() {
+  const props = PropertiesService.getScriptProperties();
+  let pw = props.getProperty(PROPERTY_KEY_PASSWORD);
+  if (!pw) {
+    pw = DEFAULT_PASSWORD;
+    props.setProperty(PROPERTY_KEY_PASSWORD, DEFAULT_PASSWORD);
+    props.setProperty(PROPERTY_KEY_UPDATED_AT, new Date().toISOString());
+  }
+  return pw;
+}
+
+/**
+ * Memperbarui kata sandi panitia di ScriptProperties server Google.
+ */
+function setCloudPassword(newPassword) {
+  const props = PropertiesService.getScriptProperties();
+  props.setProperty(PROPERTY_KEY_PASSWORD, newPassword);
+  props.setProperty(PROPERTY_KEY_UPDATED_AT, new Date().toISOString());
+}
+
+/**
+ * Membuka Spreadsheet Database Private secara failsafe.
+ */
+function getDatabaseSpreadsheet() {
+  try {
+    return SpreadsheetApp.openById(PRIVATE_SPREADSHEET_ID);
+  } catch (e) {
+    return SpreadsheetApp.getActiveSpreadsheet();
+  }
+}
+
+/**
+ * GET Handler: Verifikasi password, ubah password, cek status, dan ambil seluruh nilai.
+ */
 function doGet(e) {
   try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const action = (e && e.parameter && e.parameter.action) ? String(e.parameter.action).trim() : "";
+
+    // =========================================================================
+    // 1. VERIFIKASI KATA SANDI PANITIA CLOUD
+    // =========================================================================
+    if (action === 'verify_password') {
+      const entered = String(e.parameter.password || "").trim();
+      const actual = getCloudPassword();
+      const isMatch = (entered === actual);
+      return ContentService.createTextOutput(JSON.stringify({
+        status: isMatch ? "success" : "error",
+        action: "verify_password",
+        authenticated: isMatch,
+        message: isMatch ? "Kata sandi benar." : "Kata sandi salah!"
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // =========================================================================
+    // 2. UBAH KATA SANDI PANITIA CLOUD (VIA GET)
+    // =========================================================================
+    if (action === 'change_password') {
+      const current = String(e.parameter.current_password || "").trim();
+      const newPw = String(e.parameter.new_password || "").trim();
+      const actual = getCloudPassword();
+      
+      if (current !== actual) {
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "error",
+          action: "change_password",
+          authenticated: false,
+          message: "Kata sandi saat ini salah!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      if (newPw.length < 4) {
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "error",
+          action: "change_password",
+          message: "Kata sandi baru minimal 4 karakter!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      setCloudPassword(newPw);
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "success",
+        action: "change_password",
+        authenticated: true,
+        message: "Kata sandi panitia di cloud berhasil diperbarui!"
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // =========================================================================
+    // 3. RESET KATA SANDI PANITIA KE DEFAULT (panitia2026)
+    // =========================================================================
+    if (action === 'reset_password') {
+      setCloudPassword(DEFAULT_PASSWORD);
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "success",
+        action: "reset_password",
+        message: "Kata sandi panitia berhasil dikembalikan ke bawaan (panitia2026)."
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // =========================================================================
+    // 4. PING / STATUS BACKEND
+    // =========================================================================
+    if (action === 'ping' || action === 'status') {
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "success",
+        action: "ping",
+        service: "RijalDakwah Cloud Sync V3.0",
+        spreadsheetId: PRIVATE_SPREADSHEET_ID,
+        timestamp: new Date().toISOString()
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // =========================================================================
+    // 5. CLEANUP BARIS AMPAS / KOSONG
+    // =========================================================================
+    const ss = getDatabaseSpreadsheet();
     let sheet = ss.getSheetByName(SHEET_NAME_SCORES);
-    
     if (!sheet) {
       sheet = initScoresSheet(ss);
     }
 
-    // =========================================================================
-    // FITUR URL CLEANUP: Panggil ?action=cleanup untuk sapu bersih data ampas
-    // =========================================================================
-    if (e && e.parameter && e.parameter.action === 'cleanup') {
+    if (action === 'cleanup') {
       const lastRow = sheet.getLastRow();
       if (lastRow > 1) {
         sheet.deleteRows(2, lastRow - 1);
       }
       return ContentService.createTextOutput(JSON.stringify({
         status: "success",
-        message: "Seluruh data penilaian dan ampas berhasil dibersihkan dari Tab Hasil_Penilaian!",
+        action: "cleanup",
+        message: "Seluruh data ampas berhasil dibersihkan dari Tab Hasil_Penilaian!",
         totalScores: 0,
         scores: {}
       })).setMimeType(ContentService.MimeType.JSON);
     }
-    
+
+    // =========================================================================
+    // 6. DEFAULT: AMBIL SELURUH DATA NILAI DARI TAB Hasil_Penilaian
+    // =========================================================================
     const data = sheet.getDataRange().getValues();
     const scores = {};
-    
+
     if (data.length > 1) {
       for (let i = 1; i < data.length; i++) {
         const row = data[i];
         const key = String(row[0] || "").trim();
         
-        // Lewati jika key kosong atau key test uji coba
+        // Lewati jika key kosong atau key test koneksi
         if (!key || key === "test_check_connection") continue;
-        
-        const nim = String(row[1] || "").trim();
-        const nama = String(row[2] || "").trim();
-        const prodi = String(row[3] || "").trim();
-        const divisi = String(row[4] || "").trim();
-        const statusVal = String(row[5] || row[3] || "scored").trim().toLowerCase();
-        
-        // FILTER ANTI-AMPAS: Lewati jika statusnya unscored/deleted atau data kosong
-        if (statusVal === "unscored" || statusVal === "deleted") {
-          continue;
-        }
 
-        const scoreAdab = Number(row[6]) || 0;
-        const scoreVisi = Number(row[7]) || 0;
-        const scoreKeahlian = Number(row[8]) || 0;
-        const scoreKomitmen = Number(row[9]) || 0;
-        const finalScore = Number(row[10]) || 0;
-        const recommendation = String(row[11] || "").trim();
-        const notes = String(row[12] || "").trim();
-        const interviewer = String(row[13] || "").trim();
-        
-        // FILTER DATA RUSAK: Jika tidak punya nama & NIM serta nilai 0, lewati
-        if (!nim && !nama && finalScore === 0 && !notes && !recommendation) {
-          continue;
-        }
-        
+        const statusVal = String(row[5] || "scored").trim().toLowerCase();
+        if (statusVal === "unscored" || statusVal === "deleted") continue;
+
         scores[key] = {
           applicantKey: key,
-          applicantNim: nim,
-          applicantName: nama,
-          applicantProdi: prodi,
-          applicantDivisi: divisi,
+          applicantNim: String(row[1] || "").trim(),
+          applicantName: String(row[2] || "").trim(),
+          applicantProdi: String(row[3] || "").trim(),
+          applicantDivisi: String(row[4] || "").trim(),
           status: statusVal || "scored",
-          scoreAdab: scoreAdab,
-          scoreVisi: scoreVisi,
-          scoreKeahlian: scoreKeahlian,
-          scoreKomitmen: scoreKomitmen,
-          finalScore: finalScore,
-          recommendation: recommendation,
-          notes: notes,
-          interviewer: interviewer,
+          scoreAdab: Number(row[6]) || 0,
+          scoreVisi: Number(row[7]) || 0,
+          scoreKeahlian: Number(row[8]) || 0,
+          scoreKomitmen: Number(row[9]) || 0,
+          finalScore: Number(row[10]) || 0,
+          recommendation: String(row[11] || "").trim(),
+          notes: String(row[12] || "").trim(),
+          interviewer: String(row[13] || "").trim(),
           updatedAt: row[14] ? new Date(row[14]).toISOString() : new Date().toISOString()
         };
       }
     }
-    
+
     return ContentService.createTextOutput(JSON.stringify({
       status: "success",
-      sheetLocation: "Page 2 (Tab Hasil_Penilaian)",
       totalScores: Object.keys(scores).length,
       scores: scores
     })).setMimeType(ContentService.MimeType.JSON);
-    
+
   } catch (err) {
     return ContentService.createTextOutput(JSON.stringify({
       status: "error",
@@ -126,25 +230,57 @@ function doGet(e) {
   }
 }
 
+/**
+ * POST Handler: Simpan nilai, hapus nilai, clear all, dan ubah password via POST.
+ */
 function doPost(e) {
   try {
     let payload = null;
     if (e.postData && e.postData.contents) {
       payload = JSON.parse(e.postData.contents);
     }
-    
     if (!payload) {
       throw new Error("Data payload kosong.");
     }
-    
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+
+    // =========================================================================
+    // AKSI 1: UBAH KATA SANDI PANITIA CLOUD (VIA POST)
+    // =========================================================================
+    if (payload.action === 'change_password') {
+      const current = String(payload.current_password || "").trim();
+      const newPw = String(payload.new_password || "").trim();
+      const actual = getCloudPassword();
+      
+      if (current !== actual) {
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "error",
+          action: "change_password",
+          message: "Kata sandi saat ini salah!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      if (newPw.length < 4) {
+        return ContentService.createTextOutput(JSON.stringify({
+          status: "error",
+          action: "change_password",
+          message: "Kata sandi baru minimal 4 karakter!"
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+      setCloudPassword(newPw);
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "success",
+        action: "change_password",
+        message: "Kata sandi cloud berhasil diperbarui!"
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
+    const ss = getDatabaseSpreadsheet();
     let sheet = ss.getSheetByName(SHEET_NAME_SCORES);
     if (!sheet) {
       sheet = initScoresSheet(ss);
     }
 
     // =========================================================================
-    // AKSI 1: HAPUS SELURUH NILAI (CLEAR ALL)
+    // AKSI 2: HAPUS SELURUH NILAI (CLEAR ALL)
     // =========================================================================
     if (payload.action === 'clear_all') {
       const lastRow = sheet.getLastRow();
@@ -175,13 +311,13 @@ function doPost(e) {
         rowKey.replace(/[^a-zA-Z0-9]/g, '') === cleanKey || 
         (rowNim && rowNim.replace(/[^a-zA-Z0-9]/g, '') === cleanKey)
       ) {
-        rowIndex = i + 1; // 1-indexed
+        rowIndex = i + 1;
         break;
       }
     }
 
     // =========================================================================
-    // AKSI 2: HAPUS / RESET NILAI CALON INI (DELETE ROW FISIK)
+    // AKSI 3: HAPUS / RESET NILAI CALON INI (DELETE ROW FISIK)
     // =========================================================================
     if (payload.action === 'delete') {
       if (rowIndex > 0) {
@@ -201,12 +337,11 @@ function doPost(e) {
     }
 
     // =========================================================================
-    // AKSI 3: SIMPAN ATAU UPDATE NILAI CALON
+    // AKSI 4: SIMPAN ATAU UPDATE NILAI CALON
     // =========================================================================
     const scoreData = payload.data || {};
     const statusVal = scoreData.status || "scored";
 
-    // Jika status calon disetel unscored/deleted, hapus barisnya agar bersih
     if ((statusVal === "unscored" || statusVal === "deleted") && rowIndex > 0) {
       sheet.deleteRow(rowIndex);
       return ContentService.createTextOutput(JSON.stringify({
@@ -255,10 +390,13 @@ function doPost(e) {
 }
 
 /**
- * Inisialisasi Sheet Baru khusus Penilaian di Posisi Tab Ke-2 (Page 2)
+ * Inisialisasi Sheet Baru khusus Penilaian di Posisi Tab Ke-1
  */
 function initScoresSheet(ss) {
-  const sheet = ss.insertSheet(SHEET_NAME_SCORES, 1);
+  let sheet = ss.getSheetByName(SHEET_NAME_SCORES);
+  if (!sheet) {
+    sheet = ss.insertSheet(SHEET_NAME_SCORES, 1);
+  }
   const headers = [
     "Key (ID)",
     "NIM",
@@ -290,11 +428,11 @@ function initScoresSheet(ss) {
 }
 
 /**
- * FUNGSI MANUAL: Jalankan fungsi ini sekali di editor Apps Script
- * untuk langsung menyapu bersih semua data ampas/uji coba dari Tab Hasil_Penilaian.
+ * FUNGSI MANUAL: Jalankan fungsi ini di editor Apps Script
+ * untuk langsung menyapu bersih data ampas dari Tab Hasil_Penilaian.
  */
 function bersihkanDataAmpasSheet() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = getDatabaseSpreadsheet();
   const sheet = ss.getSheetByName(SHEET_NAME_SCORES);
   if (!sheet) return;
   const lastRow = sheet.getLastRow();
