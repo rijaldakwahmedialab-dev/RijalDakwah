@@ -3,6 +3,34 @@
 Semua catatan pembaruan, perubahan teknis, dan riwayat pengerjaan proyek.
 
 ---
+## [2026-09-09 - Update 19] - Gerbang Autentikasi Kata Sandi Khusus Panitia & Sesi Pewawancara (wawancara.html)
+
+### 🔐 Gerbang Login Akses Khusus Panitia (*Login Gate Screen*)
+- **Proteksi Data Pendaftar & Rubrik Penilaian**:
+  - Mengunci seluruh halaman `wawancara.html` dari akses publik/calon pendaftar tidak berwenang.
+  - Menampilkan kartu login bernuansa Islami selaras identitas visual UKM Rijal Dakwah STDIIS (*Deep Green*, *Forest Green*, dan *Gold Accent*) lengkap dengan ornamen basmalah kaligrafi Arab dan logo resmi.
+  - Seluruh data calon pendaftar, statistik kelulusan, antrean berkas, dan rubrik penilaian **tidak diunduh dari Google Sheets sebelum kata sandi panitia diverifikasi**.
+
+### 🔑 Manajemen Kredensial & Sinkronisasi Ekosistem
+- **Kata Sandi Default & Fleksibilitas**:
+  - Menggunakan kata sandi standar panitia: `panitia2026` (diselaraskan dengan `pengumuman.html` melalui kunci penyimpanan `RIJAL_DAKWAH_PANITIA_PASSWORD_CUSTOM_V1`).
+  - Dilengkapi tombol bantu *fill default* untuk kemudahan pengisian cepat panitia/penguji.
+  - Input sandi dilengkapi fitur tampilkan/sembunyikan sandi (*eye toggle*) dan animasi getar (*shake effect*) jika salah sandi.
+  - Pilihan opsi *"Ingat sesi login di perangkat ini"* (`localStorage` vs `sessionStorage`) agar panitia tidak perlu memasukkan sandi berulang kali saat sesi wawancara berlangsung.
+
+### 👤 Identitas Penguji & Fitur Ubah Sandi
+- **Input Nama Penguji Terintegrasi**:
+  - Formulir login menyediakan kolom opsional nama pewawancara/penguji yang langsung tersambung otomatis ke lencana navbar, formulir lembar penilaian, dan cetak lembar wawancara resmi.
+- **Modal Pengaturan Kata Sandi & Profil Penguji**:
+  - Menambahkan tombol profil penguji di navbar yang membuka modal ubah kata sandi panitia (`#changePasswordModal`).
+  - Mendukung verifikasi kata sandi lama, validasi panjang minimal sandi, konfirmasi sandi, serta tombol reset cepat ke sandi bawaan (`panitia2026`).
+
+### 🚪 Kontrol Sesi & Tombol Kunci Portal (Logout)
+- **Penguncian Akses Instan**:
+  - Menambahkan tombol merah *"Kunci"* (Logout) di navbar utama.
+  - Mengunci kembali portal secara instan, menghapus sesi autentikasi dari memori peramban, menghentikan *polling* latar belakang, dan mengembalikan tampilan ke layar login terlindungi.
+
+---
 ## [2026-09-08 - Update 18] - Penyesuaian Timeline Rekrutmen 2026 & Penonaktifan Tombol Pendaftaran (Diabu-abukan)
 
 ### 📅 Pembaruan Jadwal & Timeline Tahapan Rekrutmen 2026 (`index.html`)

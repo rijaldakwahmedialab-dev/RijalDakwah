@@ -187,6 +187,14 @@
         bottom: 1rem !important;
       }
     }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    .animate-shake {
+      animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
   </style>
 </head>
 
@@ -199,14 +207,24 @@
     <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 flex justify-between items-center gap-2">
       <div class="flex items-center space-x-2 sm:space-x-3 truncate">
         <span class="text-gold-light font-arabic text-sm hidden xs:inline">بِسْمِ اللَّهِ</span>
-        <span class="inline-flex items-center gap-1.5 text-[11px] sm:text-xs px-2.5 py-0.5 rounded-full bg-emerald-950/70 border border-emerald-500/40 text-emerald-300 font-medium flex-shrink-0">
-          <span id="liveStatusDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span id="liveStatusText">Live Google Sheets</span>
-        </span>
-        <button type="button" onclick="openCloudSyncModal()" id="cloudSyncIndicatorBar" class="hidden sm:inline-flex items-center gap-1.5 text-[11px] sm:text-xs px-2.5 py-0.5 rounded-full bg-white/10 text-cream-200 border border-white/20 hover:bg-white/20 transition-colors cursor-pointer">
-          <i class="fa-solid fa-cloud text-gold text-[10px]"></i>
-          <span id="cloudSyncBarText">Cloud Sync</span>
-        </button>
+        
+        <!-- Authenticated Live Status (Visible when logged in) -->
+        <div id="topBarAuthStatus" class="hidden items-center space-x-2">
+          <span class="inline-flex items-center gap-1.5 text-[11px] sm:text-xs px-2.5 py-0.5 rounded-full bg-emerald-950/70 border border-emerald-500/40 text-emerald-300 font-medium flex-shrink-0">
+            <span id="liveStatusDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span id="liveStatusText">Live Google Sheets</span>
+          </span>
+          <button type="button" onclick="openCloudSyncModal()" id="cloudSyncIndicatorBar" class="hidden sm:inline-flex items-center gap-1.5 text-[11px] sm:text-xs px-2.5 py-0.5 rounded-full bg-white/10 text-cream-200 border border-white/20 hover:bg-white/20 transition-colors cursor-pointer">
+            <i class="fa-solid fa-cloud text-gold text-[10px]"></i>
+            <span id="cloudSyncBarText">Cloud Sync</span>
+          </button>
+        </div>
+
+        <!-- Locked Status (Visible when logged out) -->
+        <div id="topBarLockedStatus" class="inline-flex items-center gap-1.5 text-[11px] sm:text-xs px-2.5 py-0.5 rounded-full bg-rose-950/80 border border-rose-500/50 text-rose-300 font-medium flex-shrink-0">
+          <i class="fa-solid fa-lock text-rose-400 text-[10px]"></i>
+          <span>Autentikasi Panitia Diperlukan</span>
+        </div>
       </div>
       <div class="flex items-center space-x-3 text-[11px] sm:text-xs flex-shrink-0">
         <span id="syncTimestamp" class="text-cream-300 text-[10px] hidden md:inline">Memuat...</span>
@@ -245,41 +263,75 @@
 
         <!-- Right Action Buttons -->
         <div class="flex items-center space-x-1.5 sm:space-x-2.5 flex-shrink-0">
-          <!-- Cloud Sync Button -->
-          <button 
-            type="button" 
-            onclick="openCloudSyncModal()" 
-            id="btnCloudSync"
-            class="h-9 px-2.5 sm:px-3 rounded-xl text-xs font-semibold bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1.5 transition-all shadow-sm active:scale-95 cursor-pointer"
-            title="Pengaturan Sinkronisasi Nilai Cloud Antar-Perangkat (Google Sheets / Apps Script)"
-          >
-            <i class="fa-solid fa-cloud-arrow-up text-amber-600 text-xs sm:text-sm"></i>
-            <span class="hidden md:inline text-xs">Cloud Sync</span>
-            <span id="cloudSyncBadgeDot" class="w-2 h-2 rounded-full bg-emerald-400"></span>
-          </button>
+          
+          <!-- Locked Status Pill (Visible when unauthenticated) -->
+          <div id="navLockedBadge" class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 h-9 rounded-xl bg-amber-50 border border-amber-300 text-amber-800 text-xs font-bold shadow-sm">
+            <i class="fa-solid fa-shield-halved text-gold"></i>
+            <span class="hidden xs:inline">Khusus Panitia</span>
+          </div>
 
-          <!-- Refresh Data Button -->
-          <button 
-            type="button" 
-            onclick="syncDataFromSheets(true)" 
-            id="btnRefresh"
-            class="h-9 px-2.5 sm:px-3 rounded-xl text-xs font-semibold bg-cream-100 hover:bg-cream-200 text-forestGreen border border-cream-300 flex items-center gap-1.5 transition-all shadow-sm active:scale-95 cursor-pointer"
-            title="Sinkronkan data pendaftar & nilai terwawancara dari Google Sheets"
-          >
-            <i id="syncIcon" class="fa-solid fa-arrows-rotate text-gold text-xs sm:text-sm"></i>
-            <span class="hidden md:inline text-xs">Perbarui</span>
-          </button>
+          <!-- Protected Action Buttons (Visible ONLY when authenticated) -->
+          <div id="navProtectedActions" class="hidden items-center space-x-1.5 sm:space-x-2.5">
+            <!-- Cloud Sync Button -->
+            <button 
+              type="button" 
+              onclick="openCloudSyncModal()" 
+              id="btnCloudSync"
+              class="h-9 px-2.5 sm:px-3 rounded-xl text-xs font-semibold bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1.5 transition-all shadow-sm active:scale-95 cursor-pointer"
+              title="Pengaturan Sinkronisasi Nilai Cloud Antar-Perangkat (Google Sheets / Apps Script)"
+            >
+              <i class="fa-solid fa-cloud-arrow-up text-amber-600 text-xs sm:text-sm"></i>
+              <span class="hidden md:inline text-xs">Cloud Sync</span>
+              <span id="cloudSyncBadgeDot" class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            </button>
 
-          <!-- Export Rekap Nilai -->
-          <button 
-            type="button" 
-            onclick="exportInterviewRecap()" 
-            class="hidden sm:flex h-9 px-3 rounded-xl text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 items-center gap-1.5 transition-all shadow-sm active:scale-95 cursor-pointer"
-            title="Ekspor Rekapitulasi Penilaian ke File Excel/CSV"
-          >
-            <i class="fa-solid fa-file-excel text-emerald-600 text-sm"></i>
-            <span class="hidden lg:inline text-xs">Ekspor</span>
-          </button>
+            <!-- Refresh Data Button -->
+            <button 
+              type="button" 
+              onclick="syncDataFromSheets(true)" 
+              id="btnRefresh"
+              class="h-9 px-2.5 sm:px-3 rounded-xl text-xs font-semibold bg-cream-100 hover:bg-cream-200 text-forestGreen border border-cream-300 flex items-center gap-1.5 transition-all shadow-sm active:scale-95 cursor-pointer"
+              title="Sinkronkan data pendaftar & nilai terwawancara dari Google Sheets"
+            >
+              <i id="syncIcon" class="fa-solid fa-arrows-rotate text-gold text-xs sm:text-sm"></i>
+              <span class="hidden md:inline text-xs">Perbarui</span>
+            </button>
+
+            <!-- Export Rekap Nilai -->
+            <button 
+              type="button" 
+              onclick="exportInterviewRecap()" 
+              class="hidden sm:flex h-9 px-3 rounded-xl text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 items-center gap-1.5 transition-all shadow-sm active:scale-95 cursor-pointer"
+              title="Ekspor Rekapitulasi Penilaian ke File Excel/CSV"
+            >
+              <i class="fa-solid fa-file-excel text-emerald-600 text-sm"></i>
+              <span class="hidden lg:inline text-xs">Ekspor</span>
+            </button>
+
+            <!-- Ubah Sandi Panitia / Penguji Profile Button -->
+            <button 
+              type="button" 
+              onclick="openChangePasswordModal()" 
+              id="btnPanitiaProfile"
+              class="h-9 px-2.5 sm:px-3 rounded-xl text-xs font-bold bg-gold/15 hover:bg-gold/25 text-gold-dark border border-gold/40 flex items-center gap-1.5 transition-all shadow-sm active:scale-95 cursor-pointer"
+              title="Pengaturan Akun & Ubah Kata Sandi Panitia"
+            >
+              <i class="fa-solid fa-key text-gold"></i>
+              <span id="navInterviewerBadge" class="hidden md:inline max-w-[120px] truncate font-sans">Panitia</span>
+            </button>
+
+            <!-- Kunci Akses / Logout Button -->
+            <button 
+              type="button" 
+              onclick="lockPortalAccess()" 
+              id="btnLockPortal"
+              class="h-9 px-2.5 sm:px-3 rounded-xl text-xs font-bold bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 flex items-center gap-1.5 transition-all shadow-sm active:scale-95 cursor-pointer"
+              title="Kunci Akses Portal & Logout Sesi Panitia"
+            >
+              <i class="fa-solid fa-lock text-rose-500"></i>
+              <span class="hidden sm:inline">Kunci</span>
+            </button>
+          </div>
 
           <!-- Parent Website Link (REQUIRED) -->
           <a 
@@ -296,6 +348,145 @@
     </div>
   </nav>
 
+  <!-- ========================================================================= -->
+  <!-- LOGIN GATE SCREEN: PROTEKSI AKSES KHUSUS PANITIA & PEWAWANCARA -->
+  <!-- ========================================================================= -->
+  <section id="loginGateScreen" class="bg-islamic-hero text-white py-10 sm:py-16 px-4 sm:px-6 lg:px-8 flex-grow flex items-center justify-center no-print">
+    <div class="max-w-md w-full bg-white rounded-3xl shadow-2xl border-2 border-gold overflow-hidden transition-all">
+      
+      <!-- Card Header -->
+      <div class="bg-islamic-dark text-white p-6 text-center border-b border-gold/30 relative">
+        <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-white/10 backdrop-blur-md border border-gold/40 flex items-center justify-center shadow-lg p-2.5">
+          <img src="logo-rijal-dakwah.png" alt="Logo UKM Rijal Dakwah" class="w-full h-full object-contain" />
+        </div>
+        <div class="text-gold-light font-arabic text-base sm:text-lg mb-1">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+        <h2 class="font-serif font-bold text-lg sm:text-xl text-white tracking-tight">Portal Seleksi Wawancara</h2>
+        <p class="text-xs text-cream-200 mt-0.5">UKM Rijal Dakwah STDI Imam Syafi'i Jember</p>
+        
+        <div class="mt-3 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[11px] font-bold bg-gold/20 text-gold-light border border-gold/40">
+          <i class="fa-solid fa-shield-halved text-gold"></i>
+          <span>AREA TERPROTEKSI KHUSUS PANITIA</span>
+        </div>
+      </div>
+
+      <!-- Card Body / Login Form -->
+      <form id="panitiaLoginForm" onsubmit="handleLoginSubmit(event)" class="p-6 sm:p-7 space-y-4 text-sm text-slate-700">
+        
+        <div class="bg-cream-100 p-3.5 rounded-2xl border border-cream-300 text-xs text-slate-600 leading-relaxed flex items-start gap-2.5">
+          <i class="fa-solid fa-circle-info text-forestGreen mt-0.5 shrink-0 text-sm"></i>
+          <div>
+            Halaman ini memuat data pribadi calon pendaftar dan instrumen penilaian wawancara. Silakan masukkan kata sandi panitia untuk membuka akses.
+          </div>
+        </div>
+
+        <!-- Input: Nama Penguji (Opsional) -->
+        <div class="space-y-1">
+          <label for="loginInterviewerInput" class="block text-xs font-bold text-deepGreen uppercase tracking-wider">
+            Nama Penguji / Pewawancara <span class="text-slate-400 font-normal lowercase">(opsional)</span>
+          </label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <i class="fa-solid fa-user-pen text-forestGreen text-xs"></i>
+            </span>
+            <input 
+              type="text" 
+              id="loginInterviewerInput" 
+              placeholder="Contoh: Akh Zaki / Ustadz Fulan" 
+              class="w-full pl-9 pr-4 py-2.5 rounded-xl border-2 border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none font-sans text-xs text-deepGreen bg-cream-50"
+            />
+          </div>
+          <p class="text-[10px] text-slate-400">Otomatis tertera pada lembar penilaian & cetak nilai wawancara.</p>
+        </div>
+
+        <!-- Input: Kata Sandi -->
+        <div class="space-y-1">
+          <label for="loginPasswordInput" class="block text-xs font-bold text-deepGreen uppercase tracking-wider">
+            Kata Sandi Panitia <span class="text-rose-500">*</span>
+          </label>
+          <div class="relative" id="loginPasswordContainer">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <i class="fa-solid fa-key text-gold text-xs"></i>
+            </span>
+            <input 
+              type="password" 
+              id="loginPasswordInput" 
+              required 
+              placeholder="Masukkan kata sandi panitia..." 
+              class="w-full pl-9 pr-11 py-2.5 rounded-xl border-2 border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none font-sans text-xs text-deepGreen bg-cream-50"
+            />
+            <button 
+              type="button" 
+              onclick="toggleLoginPasswordEye()" 
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-forestGreen p-1"
+              title="Tampilkan / Sembunyikan Sandi"
+            >
+              <i class="fa-solid fa-eye" id="loginEyeIcon"></i>
+            </button>
+          </div>
+          <!-- Error Message -->
+          <p id="loginErrorMessage" class="hidden text-xs text-rose-600 font-semibold flex items-center gap-1.5 pt-1">
+            <i class="fa-solid fa-circle-exclamation text-rose-500"></i>
+            <span>Kata sandi salah! Silakan periksa kembali atau tanyakan koordinator.</span>
+          </p>
+        </div>
+
+        <!-- Ingat Sesi & Hint -->
+        <div class="space-y-2.5 pt-1">
+          <label class="flex items-center gap-2 cursor-pointer select-none">
+            <input 
+              type="checkbox" 
+              id="loginRememberMe" 
+              checked
+              class="w-4 h-4 rounded border-cream-300 text-forestGreen focus:ring-gold accent-forestGreen cursor-pointer"
+            />
+            <span class="text-xs text-slate-600 font-medium">Ingat sesi login di perangkat ini</span>
+          </label>
+
+          <div class="bg-cream-100 p-2.5 rounded-xl border border-cream-200 text-[11px] text-slate-500 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-1.5 truncate">
+              <i class="fa-solid fa-key text-gold shrink-0"></i>
+              <span>Kata sandi default:</span>
+            </div>
+            <button 
+              type="button" 
+              onclick="fillDefaultPassword()" 
+              class="text-forestGreen hover:text-deepGreen font-mono font-bold bg-white px-2 py-0.5 rounded border border-cream-300 text-[10px] shrink-0 hover:border-gold transition-colors cursor-pointer" 
+              title="Klik untuk memasukkan sandi default secara otomatis"
+            >
+              <code id="loginPasswordHintCode">panitia2026</code>
+            </button>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="pt-2 space-y-2">
+          <button 
+            type="submit" 
+            id="btnSubmitLogin"
+            class="w-full btn-gold py-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-lg hover:scale-[1.01] transition-transform cursor-pointer"
+          >
+            <i class="fa-solid fa-lock-open"></i>
+            <span>Buka Akses Portal Wawancara</span>
+          </button>
+
+          <a 
+            href="index.html" 
+            class="w-full py-2 rounded-xl text-xs font-semibold text-slate-500 hover:text-forestGreen flex items-center justify-center gap-1.5 transition-colors"
+          >
+            <i class="fa-solid fa-arrow-left text-[10px]"></i>
+            <span>Kembali ke Website Utama</span>
+          </a>
+        </div>
+
+      </form>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- PROTECTED PORTAL CONTENT (Terkunci Sebelum Login) -->
+  <!-- ========================================================================= -->
+  <div id="portalProtectedContent" class="hidden flex-grow flex flex-col">
   <!-- ========================================================================= -->
   <!-- 3. HERO / SUMMARY STATS BANNER -->
   <!-- ========================================================================= -->
@@ -636,6 +827,7 @@
 
     </div>
   </main>
+  </div> <!-- /portalProtectedContent -->
 
   <!-- ========================================================================= -->
   <!-- 5. PRINT-ONLY EVALUATION FORM (Triggered by window.print()) -->
@@ -906,6 +1098,113 @@
 
     </div>
   </div>
+  <!-- ========================================================================= -->
+  <!-- 6C. MODAL: UBAH KATA SANDI PANITIA -->
+  <!-- ========================================================================= -->
+  <div id="changePasswordModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-4 bg-deepGreen/85 backdrop-blur-sm no-print">
+    <div class="bg-white rounded-3xl max-w-md w-full shadow-2xl border-2 border-gold overflow-hidden animate-in">
+      
+      <!-- Header -->
+      <div class="bg-islamic-hero text-white p-5 flex items-center justify-between border-b border-gold/30">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-gold/20 flex items-center justify-center border border-gold/40 text-gold text-lg shadow-sm">
+            <i class="fa-solid fa-key"></i>
+          </div>
+          <div>
+            <h3 class="font-serif font-bold text-base text-white">Ubah Kata Sandi Panitia</h3>
+            <p class="text-xs text-gold-light">Pengaturan Akses Portal Wawancara</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeChangePasswordModal()" class="text-cream-200 hover:text-white text-xl p-1 rounded-lg focus:outline-none cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Form -->
+      <form onsubmit="handleChangePasswordSubmit(event)" class="p-6 space-y-4 text-xs text-slate-700">
+        <p class="text-slate-600 leading-relaxed">
+          Kata sandi baru akan disimpan di browser ini dan digunakan untuk mengamankan portal wawancara serta panel kelulusan pendaftar.
+        </p>
+
+        <div class="space-y-1">
+          <label for="cpInterviewerName" class="block font-bold text-deepGreen uppercase tracking-wider">Nama Penguji / Pewawancara</label>
+          <input 
+            type="text" 
+            id="cpInterviewerName" 
+            placeholder="Nama antum..." 
+            class="w-full px-3.5 py-2.5 rounded-xl border-2 border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-xs text-deepGreen font-medium"
+          />
+        </div>
+
+        <div class="space-y-1">
+          <label for="cpCurrentPassword" class="block font-bold text-deepGreen uppercase tracking-wider">Kata Sandi Saat Ini</label>
+          <input 
+            type="password" 
+            id="cpCurrentPassword" 
+            required 
+            placeholder="Masukkan kata sandi saat ini..." 
+            class="w-full px-3.5 py-2.5 rounded-xl border-2 border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-xs text-deepGreen"
+          />
+        </div>
+
+        <div class="space-y-1">
+          <label for="cpNewPassword" class="block font-bold text-deepGreen uppercase tracking-wider">Kata Sandi Baru (Min. 4 Karakter)</label>
+          <input 
+            type="password" 
+            id="cpNewPassword" 
+            required 
+            placeholder="Masukkan kata sandi baru..." 
+            class="w-full px-3.5 py-2.5 rounded-xl border-2 border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-xs text-deepGreen"
+          />
+        </div>
+
+        <div class="space-y-1">
+          <label for="cpConfirmPassword" class="block font-bold text-deepGreen uppercase tracking-wider">Ulangi Kata Sandi Baru</label>
+          <input 
+            type="password" 
+            id="cpConfirmPassword" 
+            required 
+            placeholder="Konfirmasi kata sandi baru..." 
+            class="w-full px-3.5 py-2.5 rounded-xl border-2 border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none bg-cream-50 text-xs text-deepGreen"
+          />
+        </div>
+
+        <!-- Error Message -->
+        <p id="cpErrorMsg" class="hidden text-rose-600 font-semibold flex items-center gap-1.5 pt-1">
+          <i class="fa-solid fa-circle-exclamation text-rose-500"></i>
+          <span id="cpErrorText">Kata sandi tidak valid.</span>
+        </p>
+
+        <div class="pt-2 flex gap-2.5">
+          <button 
+            type="button" 
+            onclick="closeChangePasswordModal()" 
+            class="w-1/3 py-2.5 rounded-xl border border-cream-300 bg-cream-100 hover:bg-cream-200 text-slate-600 font-bold transition-colors cursor-pointer"
+          >
+            Batal
+          </button>
+          <button 
+            type="submit" 
+            class="flex-1 btn-gold py-2.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow cursor-pointer"
+          >
+            <i class="fa-solid fa-check"></i>
+            <span>Simpan Perubahan</span>
+          </button>
+        </div>
+
+        <div class="pt-1 text-center">
+          <button 
+            type="button" 
+            onclick="resetPanitiaPasswordToDefault()" 
+            class="text-[11px] text-slate-400 hover:text-rose-600 underline cursor-pointer transition-colors"
+          >
+            Kembalikan ke sandi bawaan (<code class="font-mono">panitia2026</code>)
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
 
   <!-- Toast Notification -->
   <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none no-print">
@@ -954,6 +1253,12 @@
     const STORAGE_KEY_SCORES = "rd_interview_scores_v1";
     const DEFAULT_CLOUD_SYNC_URL = "https://script.google.com/macros/s/AKfycbynakEGabRfxbDVjm38njXF6hh4q8qWBHWC5Rc21kbRNuZNs3IH3i7I8xDl_xM080sacA/exec";
     const STORAGE_KEY_CLOUD_SYNC = "rd_cloud_sync_endpoint_v1";
+    const STORAGE_KEY_INTERVIEWER = "rd_interviewer_name_v1";
+
+    // Auth & Protection Constants (Aligned with pengumuman.html)
+    const PANITIA_AUTH_KEY = "RIJAL_DAKWAH_PANITIA_AUTH_SESSION_V1";
+    const PANITIA_PASSWORD_STORAGE_KEY = "RIJAL_DAKWAH_PANITIA_PASSWORD_CUSTOM_V1";
+    const DEFAULT_PANITIA_PASSWORD = "panitia2026";
 
     // Global State: Starts completely empty so it ALWAYS loads fresh directly from Google Sheets!
     let rawApplicants = [];
@@ -962,15 +1267,214 @@
     let interviewScores = {}; // Key: applicant unique key (NIM or ID)
     let currentInterviewerName = "";
     let cloudSyncEndpoint = DEFAULT_CLOUD_SYNC_URL;
-    // INITIALIZATION
+    let autoSyncPollingInterval = null;
+    let isPortalSessionActive = false;
+
     // =========================================================================
-    document.addEventListener("DOMContentLoaded", () => {
-      // 1. Initialize Cloud Sync Endpoint (from URL query ?sync=... or localStorage)
+    // AUTH & PANITIA ACCESS ENGINE
+    // =========================================================================
+    function getActivePanitiaPassword() {
+      try {
+        return localStorage.getItem(PANITIA_PASSWORD_STORAGE_KEY) || DEFAULT_PANITIA_PASSWORD;
+      } catch (e) {
+        return DEFAULT_PANITIA_PASSWORD;
+      }
+    }
+
+    function isPanitiaAuthenticated() {
+      try {
+        return sessionStorage.getItem(PANITIA_AUTH_KEY) === "true" ||
+               localStorage.getItem(PANITIA_AUTH_KEY) === "true";
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function toggleLoginPasswordEye() {
+      const input = document.getElementById("loginPasswordInput");
+      const icon = document.getElementById("loginEyeIcon");
+      if (!input || !icon) return;
+      if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+      } else {
+        input.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+      }
+    }
+
+    function fillDefaultPassword() {
+      const input = document.getElementById("loginPasswordInput");
+      if (input) {
+        input.value = getActivePanitiaPassword();
+        input.type = "password";
+        const icon = document.getElementById("loginEyeIcon");
+        if (icon) {
+          icon.classList.remove("fa-eye-slash");
+          icon.classList.add("fa-eye");
+        }
+        input.focus();
+        showToast("Sandi Diisi", "Kata sandi default panitia telah diisi.");
+      }
+    }
+
+    function handleLoginSubmit(event) {
+      event.preventDefault();
+      const passwordInput = document.getElementById("loginPasswordInput");
+      const interviewerInput = document.getElementById("loginInterviewerInput");
+      const rememberCheckbox = document.getElementById("loginRememberMe");
+      const errorMsg = document.getElementById("loginErrorMessage");
+      const container = document.getElementById("loginPasswordContainer");
+
+      const enteredPassword = (passwordInput ? passwordInput.value : "").trim();
+      const actualPassword = getActivePanitiaPassword();
+
+      if (enteredPassword === actualPassword) {
+        if (errorMsg) errorMsg.classList.add("hidden");
+
+        // Save interviewer name if provided
+        if (interviewerInput && interviewerInput.value.trim()) {
+          saveInterviewerName(interviewerInput.value.trim());
+        }
+
+        // Set Auth session / persistent
+        const isRemember = rememberCheckbox ? rememberCheckbox.checked : true;
+        try {
+          if (isRemember) {
+            localStorage.setItem(PANITIA_AUTH_KEY, "true");
+            sessionStorage.setItem(PANITIA_AUTH_KEY, "true");
+          } else {
+            sessionStorage.setItem(PANITIA_AUTH_KEY, "true");
+            localStorage.removeItem(PANITIA_AUTH_KEY);
+          }
+        } catch (e) {}
+
+        if (passwordInput) passwordInput.value = "";
+
+        // Reveal portal and start session
+        revealProtectedPortal(false);
+        showToast("Akses Terbuka", "Ahlan wa Sahlan di Portal Wawancara Rijal Dakwah!");
+      } else {
+        if (errorMsg) errorMsg.classList.remove("hidden");
+        if (container) {
+          container.classList.remove("animate-shake");
+          void container.offsetWidth; // Trigger reflow
+          container.classList.add("animate-shake");
+        }
+        if (passwordInput) {
+          passwordInput.focus();
+          passwordInput.select();
+        }
+      }
+    }
+
+    function revealProtectedPortal(isInit = false) {
+      const gate = document.getElementById("loginGateScreen");
+      const portal = document.getElementById("portalProtectedContent");
+      const navActions = document.getElementById("navProtectedActions");
+      const navLocked = document.getElementById("navLockedBadge");
+      const topAuth = document.getElementById("topBarAuthStatus");
+      const topLocked = document.getElementById("topBarLockedStatus");
+      const timerAside = document.getElementById("miniInterviewTimer");
+
+      if (gate) gate.classList.add("hidden");
+      if (portal) portal.classList.remove("hidden");
+      if (navActions) {
+        navActions.classList.remove("hidden");
+        navActions.classList.add("flex");
+      }
+      if (navLocked) navLocked.classList.add("hidden");
+      if (topAuth) {
+        topAuth.classList.remove("hidden");
+        topAuth.classList.add("flex");
+      }
+      if (topLocked) topLocked.classList.add("hidden");
+      if (timerAside) timerAside.classList.remove("hidden");
+
+      updateInterviewerBadge();
+      startPortalSession();
+    }
+
+    function showLoginGate() {
+      const gate = document.getElementById("loginGateScreen");
+      const portal = document.getElementById("portalProtectedContent");
+      const navActions = document.getElementById("navProtectedActions");
+      const navLocked = document.getElementById("navLockedBadge");
+      const topAuth = document.getElementById("topBarAuthStatus");
+      const topLocked = document.getElementById("topBarLockedStatus");
+      const timerAside = document.getElementById("miniInterviewTimer");
+      const mobileBar = document.getElementById("mobileBottomBar");
+
+      if (gate) gate.classList.remove("hidden");
+      if (portal) portal.classList.add("hidden");
+      if (navActions) {
+        navActions.classList.add("hidden");
+        navActions.classList.remove("flex");
+      }
+      if (navLocked) navLocked.classList.remove("hidden");
+      if (topAuth) {
+        topAuth.classList.add("hidden");
+        topAuth.classList.remove("flex");
+      }
+      if (topLocked) topLocked.classList.remove("hidden");
+      if (timerAside) timerAside.classList.add("hidden");
+      if (mobileBar) mobileBar.classList.add("translate-y-full");
+
+      loadInterviewerName();
+      const interviewerInput = document.getElementById("loginInterviewerInput");
+      if (interviewerInput && currentInterviewerName) {
+        interviewerInput.value = currentInterviewerName;
+      }
+
+      const hintCode = document.getElementById("loginPasswordHintCode");
+      if (hintCode) {
+        hintCode.textContent = getActivePanitiaPassword();
+      }
+
+      if (autoSyncPollingInterval) {
+        clearInterval(autoSyncPollingInterval);
+        autoSyncPollingInterval = null;
+      }
+
+      const pwInput = document.getElementById("loginPasswordInput");
+      if (pwInput) {
+        pwInput.value = "";
+        setTimeout(() => pwInput.focus(), 150);
+      }
+    }
+
+    function lockPortalAccess() {
+      if (!confirm("Kunci portal wawancara dan keluar dari sesi panitia?")) return;
+
+      try {
+        sessionStorage.removeItem(PANITIA_AUTH_KEY);
+        localStorage.removeItem(PANITIA_AUTH_KEY);
+      } catch (e) {}
+
+      showLoginGate();
+      showToast("Portal Terkunci", "Akses panitia berhasil dikunci kembali.", "amber");
+    }
+
+    function updateInterviewerBadge() {
+      const badge = document.getElementById("navInterviewerBadge");
+      if (badge) {
+        badge.textContent = currentInterviewerName ? currentInterviewerName : "Panitia";
+      }
+    }
+
+    function startPortalSession() {
+      if (isPortalSessionActive) return;
+      isPortalSessionActive = true;
+
+      // 1. Initialize Cloud Sync Endpoint
       initCloudSyncEndpoint();
 
       // 2. Load interviewer name & existing scores
       loadInterviewerName();
       loadStoredScores();
+      updateInterviewerBadge();
 
       // 3. Show clean loading skeleton in candidate queue
       renderLoadingSkeleton();
@@ -984,20 +1488,130 @@
       // 6. Fetch live applicant responses directly from Google Sheets immediately
       syncDataFromSheets(false);
 
-      // 7. Automatic periodic polling every 20 seconds so all devices stay in sync
-      setInterval(() => {
-        syncDataFromSheets(false);
+      // 7. Periodic polling every 20 seconds
+      if (autoSyncPollingInterval) clearInterval(autoSyncPollingInterval);
+      autoSyncPollingInterval = setInterval(() => {
+        if (isPanitiaAuthenticated()) {
+          syncDataFromSheets(false);
+        }
       }, 20000);
+    }
 
-      // 7. Auto-sync whenever tab regains focus or visibility
-      window.addEventListener("focus", () => syncDataFromSheets(false));
+    // Modal: Ubah Kata Sandi Panitia
+    function openChangePasswordModal() {
+      const modal = document.getElementById("changePasswordModal");
+      const curInput = document.getElementById("cpCurrentPassword");
+      const newInput = document.getElementById("cpNewPassword");
+      const confInput = document.getElementById("cpConfirmPassword");
+      const nameInput = document.getElementById("cpInterviewerName");
+      const err = document.getElementById("cpErrorMsg");
+
+      if (curInput) curInput.value = "";
+      if (newInput) newInput.value = "";
+      if (confInput) confInput.value = "";
+      if (nameInput) nameInput.value = currentInterviewerName || "";
+      if (err) err.classList.add("hidden");
+
+      if (modal) modal.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+      setTimeout(() => { if (curInput) curInput.focus(); }, 150);
+    }
+
+    function closeChangePasswordModal() {
+      const modal = document.getElementById("changePasswordModal");
+      if (modal) modal.classList.add("hidden");
+      document.body.style.overflow = "auto";
+    }
+
+    function handleChangePasswordSubmit(event) {
+      event.preventDefault();
+      const curInput = document.getElementById("cpCurrentPassword");
+      const newInput = document.getElementById("cpNewPassword");
+      const confInput = document.getElementById("cpConfirmPassword");
+      const nameInput = document.getElementById("cpInterviewerName");
+      const err = document.getElementById("cpErrorMsg");
+      const errText = document.getElementById("cpErrorText");
+
+      if (nameInput && nameInput.value.trim() !== currentInterviewerName) {
+        saveInterviewerName(nameInput.value.trim());
+      }
+
+      const curVal = (curInput ? curInput.value : "").trim();
+      const newVal = (newInput ? newInput.value : "").trim();
+      const confVal = (confInput ? confInput.value : "").trim();
+      const actualPw = getActivePanitiaPassword();
+
+      if (curVal !== actualPw) {
+        if (errText) errText.textContent = "Kata sandi saat ini salah!";
+        if (err) err.classList.remove("hidden");
+        if (curInput) { curInput.focus(); curInput.select(); }
+        return;
+      }
+
+      if (newVal.length < 4) {
+        if (errText) errText.textContent = "Kata sandi baru minimal 4 karakter!";
+        if (err) err.classList.remove("hidden");
+        if (newInput) { newInput.focus(); }
+        return;
+      }
+
+      if (newVal !== confVal) {
+        if (errText) errText.textContent = "Konfirmasi kata sandi baru tidak cocok!";
+        if (err) err.classList.remove("hidden");
+        if (confInput) { confInput.focus(); }
+        return;
+      }
+
+      try {
+        localStorage.setItem(PANITIA_PASSWORD_STORAGE_KEY, newVal);
+        const hintCode = document.getElementById("loginPasswordHintCode");
+        if (hintCode) hintCode.textContent = newVal;
+
+        closeChangePasswordModal();
+        showToast("Sandi Diperbarui", "Kata sandi panitia berhasil diubah!");
+      } catch (e) {
+        alert("Gagal menyimpan kata sandi: " + e.message);
+      }
+    }
+
+    function resetPanitiaPasswordToDefault() {
+      if (!confirm("Kembalikan kata sandi panitia ke kata sandi bawaan ('panitia2026')?")) return;
+      try {
+        localStorage.removeItem(PANITIA_PASSWORD_STORAGE_KEY);
+        const hintCode = document.getElementById("loginPasswordHintCode");
+        if (hintCode) hintCode.textContent = DEFAULT_PANITIA_PASSWORD;
+
+        closeChangePasswordModal();
+        showToast("Reset Sandi", "Kata sandi berhasil dikembalikan ke bawaan ('panitia2026').");
+      } catch (e) {
+        alert("Gagal mereset kata sandi: " + e.message);
+      }
+    }
+
+    // INITIALIZATION
+    // =========================================================================
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1. Check authentication status
+      if (isPanitiaAuthenticated()) {
+        revealProtectedPortal(true);
+      } else {
+        showLoginGate();
+      }
+
+      // 2. Auto-sync whenever tab regains focus or visibility (guarded by auth)
+      window.addEventListener("focus", () => {
+        if (isPanitiaAuthenticated()) syncDataFromSheets(false);
+      });
       document.addEventListener("visibilitychange", () => {
-        if (document.visibilityState === "visible") syncDataFromSheets(false);
+        if (document.visibilityState === "visible" && isPanitiaAuthenticated()) {
+          syncDataFromSheets(false);
+        }
       });
 
-      // Keyboard navigation shortcuts (Up/Down arrows to change candidate)
+      // 3. Keyboard navigation shortcuts (Up/Down arrows to change candidate)
       window.addEventListener("keydown", (e) => {
         if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+        if (!isPanitiaAuthenticated()) return;
         if (e.key === 'ArrowDown' || e.key === 'j') {
           navigateApplicant(1);
         } else if (e.key === 'ArrowUp' || e.key === 'k') {
@@ -3176,8 +3790,13 @@ function initScoresSheet(ss) {
     function loadInterviewerName() {
       try {
         currentInterviewerName = localStorage.getItem(STORAGE_KEY_INTERVIEWER) || "";
-        const input = document.getElementById("interviewerNameGlobal");
-        if (input) input.value = currentInterviewerName;
+        const inputGlobal = document.getElementById("interviewerNameGlobal");
+        if (inputGlobal) inputGlobal.value = currentInterviewerName;
+        const inputCp = document.getElementById("cpInterviewerName");
+        if (inputCp) inputCp.value = currentInterviewerName;
+        const inputLogin = document.getElementById("loginInterviewerInput");
+        if (inputLogin) inputLogin.value = currentInterviewerName;
+        updateInterviewerBadge();
       } catch (e) {}
     }
 
@@ -3186,6 +3805,13 @@ function initScoresSheet(ss) {
       try {
         localStorage.setItem(STORAGE_KEY_INTERVIEWER, currentInterviewerName);
       } catch (e) {}
+      const inputGlobal = document.getElementById("interviewerNameGlobal");
+      if (inputGlobal) inputGlobal.value = currentInterviewerName;
+      const inputCp = document.getElementById("cpInterviewerName");
+      if (inputCp) inputCp.value = currentInterviewerName;
+      const inputLogin = document.getElementById("loginInterviewerInput");
+      if (inputLogin) inputLogin.value = currentInterviewerName;
+      updateInterviewerBadge();
     }
 
     // =========================================================================
