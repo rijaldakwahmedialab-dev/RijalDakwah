@@ -442,19 +442,13 @@
             <span class="text-xs text-slate-600 font-medium">Ingat sesi login di perangkat ini</span>
           </label>
 
-          <div class="bg-cream-100 p-2.5 rounded-xl border border-cream-200 text-[11px] text-slate-500 flex items-center justify-between gap-2">
-            <div class="flex items-center gap-1.5 truncate">
-              <i class="fa-solid fa-key text-gold shrink-0"></i>
-              <span>Kata sandi default:</span>
-            </div>
-            <button 
-              type="button" 
-              onclick="fillDefaultPassword()" 
-              class="text-forestGreen hover:text-deepGreen font-mono font-bold bg-white px-2 py-0.5 rounded border border-cream-300 text-[10px] shrink-0 hover:border-gold transition-colors cursor-pointer" 
-              title="Klik untuk memasukkan sandi default secara otomatis"
-            >
-              <code id="loginPasswordHintCode">panitia2026</code>
-            </button>
+          <!-- Bantuan Akses & Lupa Sandi (Tanpa Bocoran Sandi) -->
+          <div class="flex items-center justify-between text-[11px] text-slate-500 pt-0.5 px-0.5">
+            <span class="text-slate-400">Lupa kata sandi?</span>
+            <a href="https://t.me/aburobiah" target="_blank" class="text-forestGreen hover:text-deepGreen hover:underline font-semibold flex items-center gap-1 transition-colors">
+              <i class="fa-brands fa-telegram text-sky-500 text-xs"></i>
+              <span>Hubungi Koordinator</span>
+            </a>
           </div>
         </div>
 
@@ -1209,7 +1203,7 @@
             onclick="resetPanitiaPasswordToDefault()" 
             class="text-[11px] text-slate-400 hover:text-rose-600 underline cursor-pointer transition-colors"
           >
-            Kembalikan ke sandi bawaan (<code class="font-mono">panitia2026</code>)
+            Kembalikan ke sandi bawaan sistem
           </button>
         </div>
 
@@ -1264,7 +1258,7 @@
     const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json`;
     const CSV_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv`;
     const STORAGE_KEY_SCORES = "rd_interview_scores_v1";
-    const DEFAULT_CLOUD_SYNC_URL = "https://script.google.com/macros/s/AKfycbynakEGabRfxbDVjm38njXF6hh4q8qWBHWC5Rc21kbRNuZNs3IH3i7I8xDl_xM080sacA/exec";
+    const DEFAULT_CLOUD_SYNC_URL = "https://script.google.com/macros/s/AKfycbw7qZCz_tlKyaKL3pV8IlIIEbk6-YNzjNgpUGL_JWFdFboNtP_HGEFKUmNlo_3eQDE/exec";
     const STORAGE_KEY_CLOUD_SYNC = "rd_cloud_sync_endpoint_v1";
     const STORAGE_KEY_INTERVIEWER = "rd_interviewer_name_v1";
 
@@ -1777,7 +1771,7 @@
         cloudSyncEndpoint = decodeURIComponent(paramSync).trim();
       } else {
         const stored = (localStorage.getItem(STORAGE_KEY_CLOUD_SYNC) || "").trim();
-        if (!stored || stored.includes("test")) {
+        if (!stored || stored.includes("test") || stored.includes("AKfycbynakEGabRfxbDVjm38njXF6hh4q8qWBHWC5Rc21kbRNuZNs3IH3i7I8xDl_xM080sacA")) {
           cloudSyncEndpoint = DEFAULT_CLOUD_SYNC_URL;
         } else {
           cloudSyncEndpoint = stored;

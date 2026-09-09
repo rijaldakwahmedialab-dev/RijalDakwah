@@ -3,6 +3,20 @@
 Semua catatan pembaruan, perubahan teknis, dan riwayat pengerjaan proyek.
 
 ---
+## [2026-09-09 - Update 21] - Pemasangan Endpoint Cloud Baru & Pembersihan Total Clue Sandi (wawancara.html)
+
+### 🚀 Integrasi Endpoint Apps Script Cloud Aktif
+- **URL Deployment Resmi Terpasang**:
+  `https://script.google.com/macros/s/AKfycbw7qZCz_tlKyaKL3pV8IlIIEbk6-YNzjNgpUGL_JWFdFboNtP_HGEFKUmNlo_3eQDE/exec`
+- **Otomatisasi Migrasi Cache**: Seluruh peramban panitia yang sebelumnya menyimpan endpoint lama otomatis diperbarui ke endpoint deployment baru tanpa perlu reset manual.
+- **Verifikasi Sukses**: Pengujian live membuktikan verifikasi kata sandi cloud berjalan secepat kilat dengan status `authenticated: true`.
+
+### 🚫 Pembersihan Total Clue Kata Sandi (*Zero Password Leak*)
+- **Menghapus Kotak Petunjuk Sandi Default**: Menghapus total kotak hint bawaan (`panitia2026`) dari formulir login sehingga pihak yang tidak berwenang sama sekali tidak melihat bocoran sandi apa pun di layar.
+- **Tautan Bantuan Koordinator**: Mengganti kotak hint dengan tautan bantuan santun *"Lupa kata sandi? Hubungi Koordinator"* langsung ke Telegram resmi.
+- **Pembersihan Modal Ubah Sandi**: Menghapus penyebutan teks `panitia2026` pada tombol reset bawaan modal ubah sandi menjadi *"Kembalikan ke sandi bawaan sistem"*.
+
+---
 ## [2026-09-09 - Update 20] - Cloud Password Sync via ScriptProperties & Migrasi Database Spreadsheet Private (wawancara.html)
 
 ### 🔒 Pemisahan Total Database Penilaian (100% Private Spreadsheet)

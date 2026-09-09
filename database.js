@@ -37,7 +37,7 @@
     databaseURL: "", // Contoh: "https://rijal-dakwah-wawancara-default-rtdb.asia-southeast1.firebasedatabase.app"
     
     // Pilihan 2: Google Apps Script Web App URL
-    appsScriptUrl: "https://script.google.com/macros/s/AKfycbynakEGabRfxbDVjm38njXF6hh4q8qWBHWC5Rc21kbRNuZNs3IH3i7I8xDl_xM080sacA/exec",
+    appsScriptUrl: "https://script.google.com/macros/s/AKfycbw7qZCz_tlKyaKL3pV8IlIIEbk6-YNzjNgpUGL_JWFdFboNtP_HGEFKUmNlo_3eQDE/exec",
 
     apiKey: "",
     authDomain: "",
