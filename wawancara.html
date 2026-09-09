@@ -533,6 +533,15 @@
             <i class="fa-solid fa-database text-gold"></i>
             <span>Backup Nilai</span>
           </button>
+          <button 
+            type="button" 
+            onclick="handleDevResetAllScores()" 
+            class="px-3 py-2 rounded-xl text-xs font-bold bg-rose-500/20 hover:bg-rose-500/35 text-rose-200 border border-rose-400/40 flex items-center gap-1.5 transition-all shadow-sm active:scale-95 cursor-pointer" 
+            title="Khusus Dev / Panitia: Hapus seluruh nilai di cloud private & peramban (Kembali ke 0 dinilai)"
+          >
+            <i class="fa-solid fa-trash-can text-rose-400"></i>
+            <span>Reset Nilai (Dev)</span>
+          </button>
         </div>
       </div>
 
@@ -2117,41 +2126,24 @@ function initScoresSheet(ss) {
         const resp = await fetch(url);
         if (resp.ok) {
           const cloudData = await resp.json();
-          if (cloudData && typeof cloudData === 'object') {
-            const scoresMap = cloudData.scores || cloudData;
-            if (scoresMap && typeof scoresMap === 'object') {
-              let updatedAny = false;
-              const activeApplicant = rawApplicants.find(a => a.id === selectedApplicantId);
-              const activeKey = activeApplicant ? getApplicantKey(activeApplicant) : null;
+          if (cloudData && typeof cloudData === 'object' && cloudData.status === "success") {
+            const scoresMap = cloudData.scores || {};
 
-              for (const [key, cloudScore] of Object.entries(scoresMap)) {
-                if (!cloudScore || typeof cloudScore !== 'object') continue;
-                const localScore = interviewScores[key];
+            const activeApplicant = rawApplicants.find(a => a.id === selectedApplicantId);
+            const activeKey = activeApplicant ? getApplicantKey(activeApplicant) : null;
+            const activeDraft = (activeKey && interviewScores[activeKey]) ? interviewScores[activeKey] : null;
 
-                // If candidate is currently active on screen, protect local draft!
-                if (key === activeKey && localScore) {
-                  continue;
-                }
+            // Terapkan data nilai cloud private secara murni (melepaskan seluruh skor sisa dari Sheet 2 lama)
+            interviewScores = { ...scoresMap };
 
-                if (!localScore) {
-                  interviewScores[key] = cloudScore;
-                  updatedAny = true;
-                } else {
-                  const cloudTime = cloudScore.updatedAt ? new Date(cloudScore.updatedAt).getTime() : 0;
-                  const localTime = localScore.updatedAt ? new Date(localScore.updatedAt).getTime() : 0;
-                  if (cloudTime > localTime) {
-                    interviewScores[key] = { ...localScore, ...cloudScore };
-                    updatedAny = true;
-                  }
-                }
-              }
-
-              if (updatedAny) {
-                persistScores();
-                updateStats();
-                renderApplicantList();
-              }
+            // Pertahankan draf penilaian aktif jika evaluator sedang mengetik di layar
+            if (activeKey && activeDraft) {
+              interviewScores[activeKey] = activeDraft;
             }
+
+            persistScores();
+            updateStats();
+            renderApplicantList();
           }
         }
       } catch (err) {
@@ -2271,6 +2263,7 @@ function initScoresSheet(ss) {
             });
 
             rawApplicants = parsedRows;
+            normalizeApplicantRoles(rawApplicants);
             computeDuplicateMetadata();
             populateDynamicFilterDropdowns();
 
@@ -2342,9 +2335,8 @@ function initScoresSheet(ss) {
           const csvText = await csvResp.text();
           const parsedCsv = parseCSV(csvText).filter(item => (item["Nama lengkap:"] || item["NIM:"] || "").toString().trim().length > 0);
           rawApplicants = parsedCsv;
+          normalizeApplicantRoles(rawApplicants);
           computeDuplicateMetadata();
-          populateDynamicFilterDropdowns();
-          
           if (cloudSyncEndpoint) {
             await fetchCloudScores();
           }
@@ -2534,6 +2526,26 @@ function initScoresSheet(ss) {
         });
         prodiSelect.innerHTML = prodiHtml;
       }
+    }
+
+    // Normalisasi Jalur: Pengurus vs Anggota (menangani pendaftar awal sebelum pertanyaan dibuat)
+    function normalizeApplicantRoles(list) {
+      if (!Array.isArray(list)) return;
+      list.forEach(obj => {
+        let role = (obj["Bergabung Sebagai"] || "").toString().trim().toLowerCase();
+        if (!role) {
+          const div = (obj["Divisi Utama"] || "").toString().trim();
+          if (div && div.length > 0 && div.toLowerCase() !== "tidak ada" && div.toLowerCase() !== "-") {
+            obj["Bergabung Sebagai"] = "Pengurus";
+          } else {
+            obj["Bergabung Sebagai"] = "Anggota";
+          }
+        } else if (role.includes("pengurus")) {
+          obj["Bergabung Sebagai"] = "Pengurus";
+        } else if (role.includes("anggota")) {
+          obj["Bergabung Sebagai"] = "Anggota";
+        }
+      });
     }
 
     // Build deduplication mapping (only called on data sync/change)
@@ -4391,6 +4403,51 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
         }
       };
       reader.readAsArrayBuffer(file);
+    }
+
+    // =========================================================================
+    // RESET TOTAL NILAI (KHUSUS DEV & PANITIA)
+    // =========================================================================
+    async function handleDevResetAllScores() {
+      const confirm1 = confirm(
+        "⚠️ PERINGATAN RESET TOTAL DATA NILAI (KHUSUS DEV / PANITIA):\n\n" +
+        "Tindakan ini akan:\n" +
+        "1. MENGHAPUS SEMUA DATA NILAI di Google Sheets Private (Tab Hasil_Penilaian dikosongkan total)\n" +
+        "2. Menghapus seluruh cache nilai di browser ini (melepaskan total dari Sheet 2 lama)\n" +
+        "3. Mengembalikan status seluruh pendaftar ke 'Belum Dinilai' (0 dinilai / 0% selesai)\n\n" +
+        "Lanjutkan proses reset total ini?"
+      );
+      if (!confirm1) return;
+
+      const confirm2 = prompt("Ketik kata 'RESET' (huruf kapital) untuk konfirmasi penghapusan:");
+      if (!confirm2 || confirm2.trim() !== "RESET") {
+        alert("Konfirmasi batal. Data nilai aman dan tidak dihapus.");
+        return;
+      }
+
+      showToast("Sedang Mereset...", "Mengosongkan seluruh nilai di cloud private & lokal...", "amber");
+
+      // 1. Kosongkan nilai di cloud private Apps Script
+      if (cloudSyncEndpoint) {
+        try {
+          await clearAllFromCloud();
+          await fetch(`${cloudSyncEndpoint}${cloudSyncEndpoint.includes('?') ? '&' : '?'}action=cleanup&t=${Date.now()}`);
+        } catch (e) {
+          console.warn("Gagal membersihkan cloud Apps Script:", e);
+        }
+      }
+
+      // 2. Kosongkan memori nilai lokal total
+      interviewScores = {};
+      try {
+        localStorage.removeItem(STORAGE_KEY_SCORES);
+      } catch (e) {}
+
+      // 3. Update stats & render ulang
+      updateStats();
+      applyFiltersAndRender(true);
+
+      showToast("Reset Total Berhasil!", "Seluruh data nilai di cloud dan lokal telah bersih (0 dinilai).");
     }
 
     async function handleWipeAll() {

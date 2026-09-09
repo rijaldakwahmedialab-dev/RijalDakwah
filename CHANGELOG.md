@@ -3,6 +3,28 @@
 Semua catatan pembaruan, perubahan teknis, dan riwayat pengerjaan proyek.
 
 ---
+## [2026-09-09 - Update 22] - Normalisasi Presisi Counter Jalur & Tombol Reset Total Nilai Khusus Dev (wawancara.html)
+
+### 📊 Perbaikan Inkonsistensi Counter Jalur Pendaftar (Presisi 100%)
+- **Akar Masalah Teridentifikasi**: 29 pendaftar pertama (pada tanggal 2 September 2026) mendaftar sebelum pertanyaan *"Bergabung Sebagai"* dibuat di Google Form, sehingga kolom tersebut kosong dan tidak terhitung ke Pengurus maupun Anggota (sebelumnya 68 Pengurus + 89 Anggota = 157, selisih 29 dari 186 total pendaftar).
+- **Normalisasi Cerdas (`normalizeApplicantRoles`)**: Seluruh 29 pendaftar tersebut terbukti memilih Divisi Utama (Dakwah Digital, TPQ, Keilmuan, Acara, Humas, Inventaris), sehingga dinormalisasi otomatis sebagai **Jalur Pengurus**.
+- **Hasil Akurat & Selaras**:
+  - **Total Pendaftar**: **186**
+  - **Jalur Pengurus**: **97**
+  - **Jalur Anggota**: **89**
+  - **Penjumlahan Presisi**: $97 + 89 = 186$ (Konsisten 100%, filter jalur kini mencakup seluruh berkas).
+
+### 🗑️ Tombol "Reset Nilai (Dev)" & Pelepasan Total dari Sheet 2 Lama
+- **Tombol Reset Khusus Dev / Panitia di Hero**:
+  - Menambahkan tombol merah beraksen rose: *"Reset Nilai (Dev)"* di samping tombol Backup Nilai.
+  - Menggunakan proteksi ganda (konfirmasi dialog dan pengetikan kata `"RESET"`) untuk mencegah ketidaksengajaan.
+  - Menghapus seluruh data nilai di Tab `Hasil_Penilaian` Google Sheets Private via Apps Script `clear_all` & `cleanup`.
+  - Mengosongkan seluruh skor lokal di browser peramban sehingga status kembali murni ke **0 dinilai** dan **186 antrean wawancara**.
+- **Pelepasan Total dari Sheet 2 Lama**:
+  - `fetchCloudScores()` kini secara otoritatif mengadopsi data nilai dari spreadsheet private baru `1aI3lHKD_hNOUiX0FQiiE8hz1CxD0ll0Mj_UrlryVWt0`.
+  - Menghilangkan seluruh "skor hantu" sisa uji coba dari Tab 2 spreadsheet lama.
+
+---
 ## [2026-09-09 - Update 21] - Pemasangan Endpoint Cloud Baru & Pembersihan Total Clue Sandi (wawancara.html)
 
 ### 🚀 Integrasi Endpoint Apps Script Cloud Aktif
