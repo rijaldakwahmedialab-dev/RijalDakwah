@@ -3,6 +3,36 @@
 Semua catatan pembaruan, perubahan teknis, dan riwayat pengerjaan proyek.
 
 ---
+## [2026-09-10 - Update 23] - Sistem Dual-Role (Super Admin admin2026 vs Panitia panitia2026) & Isolasi Presisi Reset Nilai Calon (wawancara.html)
+
+### 👥 Pemisahan Hak Akses Role (Dual-Role Authentication)
+- **Super User (`admin2026`)**:
+  - Hak akses kontrol penuh (*Full Control*).
+  - **Navbar**: Menampilkan tombol Cloud Sync, Perbarui, Ekspor Rekap, Profil Admin (dengan label `👑 Super Admin` & kontrol master password), Kunci Akses, dan Web Utama.
+  - **Top Bar**: Indikator Cloud Sync aktif dan status badge `👑 Mode: Super Admin`.
+  - **Hero Section**: Badge `PANEL SUPER USER (ADMIN2026)` serta 4 tombol tindakan manajemen: *Sheet Pendaftar*, *Database Nilai (Private)*, *Backup Nilai*, dan *Reset Nilai (Dev)*.
+  - Akses penuh tanpa hambatan ke seluruh modal konfigurasi dan fitur dev.
+- **Panitia Evaluator (`panitia2026`)**:
+  - Tampilan disederhanakan total agar bersih, fokus, dan bebas risiko salah klik.
+  - **Navbar**: Hanya menyisakan tombol esensial dan sinkron: **Perbarui** (*Sync Data Google Sheets*), **Kunci** (*Logout*), dan **Web Utama**.
+  - **Top Bar**: Menampilkan status live dan nama pewawancara (`👤 Pewawancara: [nama]` / `👤 Mode: Panitia`). Indikator Cloud Sync disembunyikan.
+  - **Hero Section**: Mengeliminasi seluruh tombol dev/admin (*Sheet Pendaftar*, *Database Nilai Private*, *Backup Nilai*, dan *Reset Nilai Dev* disembunyikan total). Badge disesuaikan menjadi `PANEL EVALUATOR WAWANCARA (PANITIA)`.
+  - Proteksi ketat (*Security Guards*): Fungsi admin seperti `openCloudSyncModal()`, `openBackupModal()`, `openChangePasswordModal()`, `exportInterviewRecap()`, dan `handleDevResetAllScores()` otomatis menolak eksekusi jika pengguna bukan Super User.
+
+### 🎯 Penegasan & Isolasi Presisi Tombol "Reset Nilai" Calon Terdaftar
+- **Isolasi Penghapusan Nilai Tunggal**: Tombol *"Reset Nilai"* di lembar penilaian bawah dijamin 100% hanya menghapus data penilaian calon yang sedang aktif dibuka (`delete interviewScores[key]`), tanpa menyentuh pendaftar lain.
+- **Keamanan Data Calon Terdaftar**: Data registrasi, biodata, dan jawaban formulir calon tetap utuh tersimpan di antrean pendaftar (`rawApplicants`), hanya status wawancara yang dikembalikan ke *"Belum Dinilai"*.
+- **Pembatalan Timer Autosave (*Debounce Guard*)**: Menambahkan pembatalan otomatis timer autosave (`notesDebounceTimer` & `cloudPushDebounceTimer`) sebelum eksekusi reset agar input ketikan catatan terakhir tidak tersimpan kembali secara tak sengaja.
+- **Dialog & Notifikasi Edukatif**:
+  - Dialog konfirmasi kini secara eksplisit mencantumkan nama dan NIM calon, menegaskan bahwa data pendaftaran tetap aman.
+  - Label dan tooltip tombol diperjelas dengan ikon rotasi: `Reset Nilai`.
+  - Notifikasi toast mengonfirmasi keberhasilan reset dan kepastian keamanan data calon.
+
+### ☁️ Sinkronisasi Script Cloud Backend (Google Apps Script)
+- Memperbarui `google-apps-script.js` dan `KODE_APPS_SCRIPT_TERBARU.txt` agar aksi `verify_password` mengenali `admin2026` sebagai role `admin` dan `panitia2026` sebagai role `panitia`.
+- Menyelaraskan fallback verifikasi sandi di `pengumuman.html`.
+
+---
 ## [2026-09-09 - Update 22] - Normalisasi Presisi Counter Jalur & Tombol Reset Total Nilai Khusus Dev (wawancara.html)
 
 ### 📊 Perbaikan Inkonsistensi Counter Jalur Pendaftar (Presisi 100%)

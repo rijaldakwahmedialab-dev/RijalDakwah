@@ -214,6 +214,7 @@
             <span id="liveStatusDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
             <span id="liveStatusText">Live Google Sheets</span>
           </span>
+          <span id="topBarRoleTag" class="hidden text-[10px] px-2 py-0.5 rounded-full font-semibold"></span>
           <button type="button" onclick="openCloudSyncModal()" id="cloudSyncIndicatorBar" class="hidden sm:inline-flex items-center gap-1.5 text-[11px] sm:text-xs px-2.5 py-0.5 rounded-full bg-white/10 text-cream-200 border border-white/20 hover:bg-white/20 transition-colors cursor-pointer">
             <i class="fa-solid fa-cloud text-gold text-[10px]"></i>
             <span id="cloudSyncBarText">Cloud Sync</span>
@@ -301,8 +302,9 @@
             <button 
               type="button" 
               onclick="exportInterviewRecap()" 
+              id="btnExport"
               class="hidden sm:flex h-9 px-3 rounded-xl text-xs font-semibold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 items-center gap-1.5 transition-all shadow-sm active:scale-95 cursor-pointer"
-              title="Ekspor Rekapitulasi Penilaian ke File Excel/CSV"
+              title="Ekspor Rekapitulasi Penilaian ke File Excel/CSV (Khusus Super User)"
             >
               <i class="fa-solid fa-file-excel text-emerald-600 text-sm"></i>
               <span class="hidden lg:inline text-xs">Ekspor</span>
@@ -411,7 +413,7 @@
               type="password" 
               id="loginPasswordInput" 
               required 
-              placeholder="Masukkan kata sandi panitia..." 
+              placeholder="Masukkan kata sandi panitia atau admin..."
               class="w-full pl-9 pr-11 py-2.5 rounded-xl border-2 border-cream-300 focus:border-gold focus:ring-2 focus:ring-gold/30 outline-none font-sans text-xs text-deepGreen bg-cream-50"
             />
             <button 
@@ -490,9 +492,9 @@
       <!-- Top Title & Badge -->
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div class="inline-flex items-center gap-2 bg-white/10 border border-gold/40 px-3.5 py-1 rounded-full backdrop-blur-sm text-xs font-semibold text-gold-light mb-2">
+          <div id="heroRoleBadge" class="inline-flex items-center gap-2 bg-white/10 border border-gold/40 px-3.5 py-1 rounded-full backdrop-blur-sm text-xs font-semibold text-gold-light mb-2">
             <i class="fa-solid fa-clipboard-user text-gold"></i>
-            <span>PANEL EVALUATOR & PEWAWANCARA KHUSUS PANITIA</span>
+            <span id="heroRoleBadgeText">PANEL EVALUATOR & PEWAWANCARA KHUSUS PANITIA</span>
           </div>
           <h1 class="text-2xl sm:text-3xl font-serif font-bold text-white tracking-tight">
             Penilaian Profil & Jawaban <span class="gold-gradient-text">Pendaftar</span>
@@ -502,9 +504,10 @@
           </p>
         </div>
 
-        <!-- Quick Action Link to Google Sheets -->
-        <div class="flex flex-wrap items-center gap-2">
+        <!-- Quick Action Link to Google Sheets (Khusus Super User admin2026) -->
+        <div id="heroAdminActions" class="flex flex-wrap items-center gap-2">
           <a 
+            id="linkSheetPendaftar"
             href="https://docs.google.com/spreadsheets/d/1bcFa1yY4dOuFxsw2Y5aNy3osYjGtBK34bmcIiUEm0YY/edit?usp=sharing" 
             target="_blank" 
             class="px-3 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 text-cream-100 border border-gold/40 flex items-center gap-1.5 backdrop-blur-sm transition-colors"
@@ -515,10 +518,11 @@
             <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-300"></i>
           </a>
           <a 
+            id="linkDatabaseNilai"
             href="https://docs.google.com/spreadsheets/d/1aI3lHKD_hNOUiX0FQiiE8hz1CxD0ll0Mj_UrlryVWt0/edit?usp=sharing" 
             target="_blank" 
             class="px-3 py-2 rounded-xl text-xs font-semibold bg-emerald-950/60 hover:bg-emerald-900/80 text-emerald-300 border border-emerald-500/50 flex items-center gap-1.5 backdrop-blur-sm transition-colors shadow-sm"
-            title="Buka Google Sheets Database Penilaian Private (Khusus Panitia)"
+            title="Buka Google Sheets Database Penilaian Private (Khusus Super User)"
           >
             <i class="fa-solid fa-lock text-gold text-xs"></i>
             <span>Database Nilai (Private)</span>
@@ -526,24 +530,25 @@
           </a>
           <button 
             type="button" 
+            id="btnBackupNilai"
             onclick="openBackupModal()" 
             class="px-3 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 text-cream-100 border border-white/20 flex items-center gap-1.5 transition-colors"
-            title="Kelola Penyimpanan Nilai & Cadangan"
+            title="Kelola Penyimpanan Nilai & Cadangan (Khusus Super User)"
           >
             <i class="fa-solid fa-database text-gold"></i>
             <span>Backup Nilai</span>
           </button>
           <button 
             type="button" 
+            id="btnDevResetScores"
             onclick="handleDevResetAllScores()" 
             class="px-3 py-2 rounded-xl text-xs font-bold bg-rose-500/20 hover:bg-rose-500/35 text-rose-200 border border-rose-400/40 flex items-center gap-1.5 transition-all shadow-sm active:scale-95 cursor-pointer" 
-            title="Khusus Dev / Panitia: Hapus seluruh nilai di cloud private & peramban (Kembali ke 0 dinilai)"
+            title="Khusus Super User (admin2026): Hapus seluruh nilai di cloud private & peramban (Kembali ke 0 dinilai)"
           >
             <i class="fa-solid fa-trash-can text-rose-400"></i>
             <span>Reset Nilai (Dev)</span>
           </button>
         </div>
-      </div>
 
       <!-- Stats Grid -->
       <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 pt-2">
@@ -1273,9 +1278,10 @@
 
     // Auth & Protection Constants (Aligned with pengumuman.html & Cloud)
     const PANITIA_AUTH_KEY = "RIJAL_DAKWAH_PANITIA_AUTH_SESSION_V1";
+    const PANITIA_ROLE_STORAGE_KEY = "RIJAL_DAKWAH_PANITIA_ROLE_SESSION_V1";
     const PANITIA_PASSWORD_STORAGE_KEY = "RIJAL_DAKWAH_PANITIA_PASSWORD_CUSTOM_V1";
+    const SUPERUSER_PASSWORD = "admin2026";
     const DEFAULT_PANITIA_PASSWORD = "panitia2026";
-
     // Global State: Starts completely empty so it ALWAYS loads fresh directly from Google Sheets!
     let rawApplicants = [];
     let filteredApplicants = [];
@@ -1296,6 +1302,32 @@
         return DEFAULT_PANITIA_PASSWORD;
       }
     }
+    function getCurrentUserRole() {
+      try {
+        const role = sessionStorage.getItem(PANITIA_ROLE_STORAGE_KEY) || 
+                     localStorage.getItem(PANITIA_ROLE_STORAGE_KEY);
+        if (role === "admin" || role === "panitia") return role;
+        if (isPanitiaAuthenticated()) return "panitia";
+      } catch (e) {}
+      return null;
+    }
+
+    function setCurrentUserRole(role, isRemember = true) {
+      try {
+        if (role) {
+          sessionStorage.setItem(PANITIA_ROLE_STORAGE_KEY, role);
+          if (isRemember) {
+            localStorage.setItem(PANITIA_ROLE_STORAGE_KEY, role);
+          } else {
+            localStorage.removeItem(PANITIA_ROLE_STORAGE_KEY);
+          }
+        } else {
+          sessionStorage.removeItem(PANITIA_ROLE_STORAGE_KEY);
+          localStorage.removeItem(PANITIA_ROLE_STORAGE_KEY);
+        }
+      } catch (e) {}
+    }
+
 
     function isPanitiaAuthenticated() {
       try {
@@ -1351,14 +1383,21 @@
       const originalBtnHtml = submitBtn ? submitBtn.innerHTML : "";
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Memverifikasi Sandi ke Cloud...</span>';
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Memverifikasi Sandi...</span>';
       }
 
       let isAuthenticated = false;
       let verifiedViaCloud = false;
+      let userRole = "panitia";
 
-      // 1. Cek ke cloud Google Apps Script jika endpoint tersedia
-      if (cloudSyncEndpoint) {
+      // 1. Verifikasi Super User Instan (admin2026)
+      if (enteredPassword === SUPERUSER_PASSWORD) {
+        isAuthenticated = true;
+        userRole = "admin";
+      }
+
+      // 2. Cek ke cloud Google Apps Script jika bukan super user
+      if (!isAuthenticated && cloudSyncEndpoint) {
         try {
           const checkUrl = `${cloudSyncEndpoint}${cloudSyncEndpoint.includes('?') ? '&' : '?'}action=verify_password&password=${encodeURIComponent(enteredPassword)}&t=${Date.now()}`;
           const controller = new AbortController();
@@ -1372,6 +1411,7 @@
             if (data.authenticated === true) {
               isAuthenticated = true;
               verifiedViaCloud = true;
+              userRole = (data.role === "admin" || enteredPassword === SUPERUSER_PASSWORD) ? "admin" : "panitia";
               try {
                 localStorage.setItem(PANITIA_PASSWORD_STORAGE_KEY, enteredPassword);
               } catch (e) {}
@@ -1385,11 +1425,12 @@
         }
       }
 
-      // 2. Fallback verifikasi lokal jika cloud offline/tidak merespon
-      if (!verifiedViaCloud) {
+      // 3. Fallback verifikasi lokal jika cloud offline/tidak merespon
+      if (!isAuthenticated && !verifiedViaCloud) {
         const actualPassword = getActivePanitiaPassword();
-        if (enteredPassword === actualPassword) {
+        if (enteredPassword === actualPassword || enteredPassword === DEFAULT_PANITIA_PASSWORD) {
           isAuthenticated = true;
+          userRole = "panitia";
         }
       }
 
@@ -1406,7 +1447,7 @@
           saveInterviewerName(interviewerInput.value.trim());
         }
 
-        // Set status auth
+        // Set status auth & user role
         const isRemember = rememberCheckbox ? rememberCheckbox.checked : true;
         try {
           if (isRemember) {
@@ -1416,24 +1457,27 @@
             sessionStorage.setItem(PANITIA_AUTH_KEY, "true");
             localStorage.removeItem(PANITIA_AUTH_KEY);
           }
+          setCurrentUserRole(userRole, isRemember);
         } catch (e) {}
 
         if (passwordInput) passwordInput.value = "";
 
         // Buka portal dan inisialisasi data
         revealProtectedPortal(false);
-        if (verifiedViaCloud) {
+        if (userRole === "admin") {
+          showToast("Akses Super User (admin2026)", "Ahlan wa Sahlan, Super Admin! Akses penuh aktif.", "emerald");
+        } else if (verifiedViaCloud) {
           showToast("Akses Cloud Terverifikasi", "Ahlan wa Sahlan di Portal Wawancara Rijal Dakwah!");
         } else {
-          showToast("Akses Terbuka (Mode Lokal)", "Login berhasil dengan kata sandi lokal.");
+          showToast("Akses Terbuka (Mode Panitia)", "Login berhasil sebagai Panitia Pewawancara.");
         }
       } else {
         if (errorMsg) {
           const errorSpan = errorMsg.querySelector("span");
           if (errorSpan) {
             errorSpan.textContent = verifiedViaCloud 
-              ? "Kata sandi salah! Pastikan memasukkan kata sandi cloud panitia terbaru."
-              : "Kata sandi salah! Silakan periksa kembali atau tanyakan koordinator.";
+              ? "Kata sandi salah! Masukkan kata sandi panitia (panitia2026) atau super user (admin2026)."
+              : "Kata sandi salah! Silakan periksa kembali atau hubungi koordinator.";
           }
           errorMsg.classList.remove("hidden");
         }
@@ -1445,6 +1489,110 @@
         if (passwordInput) {
           passwordInput.focus();
           passwordInput.select();
+        }
+      }
+    }
+
+    function applyRoleBasedUI() {
+      const role = getCurrentUserRole();
+      const isAdmin = (role === "admin");
+
+      // 1. Cloud Sync button in navbar (Admin Only)
+      const btnCloudSync = document.getElementById("btnCloudSync");
+      if (btnCloudSync) {
+        if (isAdmin) {
+          btnCloudSync.classList.remove("hidden");
+          btnCloudSync.classList.add("flex");
+        } else {
+          btnCloudSync.classList.add("hidden");
+          btnCloudSync.classList.remove("flex");
+        }
+      }
+
+      // 2. Refresh Data button in navbar (Essentials: Visible for Panitia & Admin)
+      const btnRefresh = document.getElementById("btnRefresh");
+      if (btnRefresh) {
+        btnRefresh.classList.remove("hidden");
+        btnRefresh.classList.add("flex");
+      }
+
+      // 3. Export button in navbar (Admin Only)
+      const btnExport = document.getElementById("btnExport");
+      if (btnExport) {
+        if (isAdmin) {
+          btnExport.classList.remove("hidden");
+          btnExport.classList.add("sm:flex");
+        } else {
+          btnExport.classList.add("hidden");
+          btnExport.classList.remove("sm:flex");
+        }
+      }
+
+      // 4. Admin Profile / Password button in navbar (Admin Only)
+      const btnPanitiaProfile = document.getElementById("btnPanitiaProfile");
+      if (btnPanitiaProfile) {
+        if (isAdmin) {
+          btnPanitiaProfile.classList.remove("hidden");
+          btnPanitiaProfile.classList.add("flex");
+          btnPanitiaProfile.title = "Pengaturan Akun & Kata Sandi Sistem (Super User)";
+          const badge = document.getElementById("navInterviewerBadge");
+          if (badge) badge.textContent = "Super Admin";
+        } else {
+          btnPanitiaProfile.classList.add("hidden");
+          btnPanitiaProfile.classList.remove("flex");
+        }
+      }
+
+      // 5. Cloud Sync indicator in Top Bar
+      const cloudSyncIndicatorBar = document.getElementById("cloudSyncIndicatorBar");
+      if (cloudSyncIndicatorBar) {
+        if (isAdmin) {
+          cloudSyncIndicatorBar.classList.remove("hidden");
+        } else {
+          cloudSyncIndicatorBar.classList.add("hidden");
+        }
+      }
+
+      // 6. Top Bar Role Tag
+      const topBarRoleTag = document.getElementById("topBarRoleTag");
+      if (topBarRoleTag) {
+        if (isAdmin) {
+          topBarRoleTag.textContent = "👑 Mode: Super Admin";
+          topBarRoleTag.className = "inline-flex items-center text-[10px] px-2 py-0.5 rounded-full bg-gold/20 text-gold-light border border-gold/50 font-bold flex-shrink-0";
+          topBarRoleTag.classList.remove("hidden");
+        } else {
+          topBarRoleTag.textContent = currentInterviewerName ? `👤 Pewawancara: ${currentInterviewerName}` : "👤 Mode: Panitia";
+          topBarRoleTag.className = "inline-flex items-center text-[10px] px-2 py-0.5 rounded-full bg-forestGreen/80 text-cream-200 border border-forestGreen font-medium flex-shrink-0";
+          topBarRoleTag.classList.remove("hidden");
+        }
+      }
+
+      // 7. Hero Role Badge
+      const heroRoleBadge = document.getElementById("heroRoleBadge");
+      const heroRoleBadgeText = document.getElementById("heroRoleBadgeText");
+      if (heroRoleBadge && heroRoleBadgeText) {
+        if (isAdmin) {
+          heroRoleBadge.className = "inline-flex items-center gap-2 bg-gold/20 border border-gold px-3.5 py-1 rounded-full backdrop-blur-sm text-xs font-extrabold text-gold-light mb-2";
+          const icon = heroRoleBadge.querySelector("i");
+          if (icon) icon.className = "fa-solid fa-crown text-gold";
+          heroRoleBadgeText.textContent = "PANEL SUPER USER (ADMIN2026)";
+        } else {
+          heroRoleBadge.className = "inline-flex items-center gap-2 bg-white/10 border border-emerald-400/40 px-3.5 py-1 rounded-full backdrop-blur-sm text-xs font-semibold text-emerald-200 mb-2";
+          const icon = heroRoleBadge.querySelector("i");
+          if (icon) icon.className = "fa-solid fa-clipboard-user text-emerald-300";
+          heroRoleBadgeText.textContent = "PANEL EVALUATOR WAWANCARA (PANITIA)";
+        }
+      }
+
+      // 8. Hero Admin Action Buttons (Sheet Pendaftar, Database Private, Backup Nilai, Reset Nilai Dev)
+      const heroAdminActions = document.getElementById("heroAdminActions");
+      if (heroAdminActions) {
+        if (isAdmin) {
+          heroAdminActions.classList.remove("hidden");
+          heroAdminActions.classList.add("flex");
+        } else {
+          heroAdminActions.classList.add("hidden");
+          heroAdminActions.classList.remove("flex");
         }
       }
     }
@@ -1473,6 +1621,7 @@
       if (timerAside) timerAside.classList.remove("hidden");
 
       updateInterviewerBadge();
+      applyRoleBasedUI();
       startPortalSession();
     }
 
@@ -1532,6 +1681,8 @@
         localStorage.removeItem(PANITIA_AUTH_KEY);
       } catch (e) {}
 
+        setCurrentUserRole(null);
+        applyRoleBasedUI();
       showLoginGate();
       showToast("Portal Terkunci", "Akses panitia berhasil dikunci kembali.", "amber");
     }
@@ -1578,6 +1729,10 @@
 
     // Modal: Ubah Kata Sandi Panitia
     function openChangePasswordModal() {
+      if (getCurrentUserRole() !== "admin") {
+        showToast("Akses Terbatas", "Pengaturan kata sandi sistem hanya dapat diakses oleh Super User (admin2026).", "rose");
+        return;
+      }
       const modal = document.getElementById("changePasswordModal");
       const curInput = document.getElementById("cpCurrentPassword");
       const newInput = document.getElementById("cpNewPassword");
@@ -1831,6 +1986,10 @@
     }
 
     function openCloudSyncModal() {
+      if (getCurrentUserRole() !== "admin") {
+        showToast("Akses Terbatas", "Pengaturan Cloud Sync hanya untuk Super User (admin2026).", "rose");
+        return;
+      }
       const modal = document.getElementById("cloudSyncModal");
       if (modal) modal.classList.remove("hidden");
       const mobileBar = document.getElementById("mobileBottomBar");
@@ -3476,12 +3635,12 @@ function initScoresSheet(ss) {
               <button 
                 type="button" 
                 onclick="resetCurrentScore(${applicant.id})" 
-                class="px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-500 hover:text-rose-600 bg-cream-100 hover:bg-rose-50 border border-cream-300 transition-colors"
-                title="Hapus penilaian untuk calon ini"
+                class="px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-500 hover:text-rose-600 bg-cream-100 hover:bg-rose-50 border border-cream-300 transition-colors flex items-center gap-1.5 cursor-pointer"
+                title="Reset nilai & catatan wawancara untuk calon ${escapeHtml(applicant['Nama lengkap:'] || 'ini')} (Hanya mereset skor calon ini, identitas pendaftar tetap aman)"
               >
-                Reset Nilai
+                <i class="fa-solid fa-rotate-left text-rose-500/70"></i>
+                <span>Reset Nilai</span>
               </button>
-
               <button 
                 type="button" 
                 onclick="saveCurrentScore(${applicant.id})" 
@@ -3986,18 +4145,46 @@ function initScoresSheet(ss) {
       const applicant = rawApplicants.find(a => a.id === id);
       if (!applicant) return;
 
-      if (!confirm(`Hapus seluruh penilaian untuk ${applicant["Nama lengkap:"]}?`)) return;
+      const candName = applicant["Nama lengkap:"] || "calon ini";
+      const candNim = applicant["NIM:"] ? ` (NIM: ${applicant["NIM:"]})` : "";
+
+      const confirmMsg = `Reset Penilaian: Hapus nilai wawancara untuk "${candName}"${candNim}?\n\n` +
+        `CATATAN PENTING:\n` +
+        `• Data formulir pendaftaran dan identitas calon TETAP AMAN di database.\n` +
+        `• Penilaian calon lain TIDAK AKAN terpengaruh sama sekali.\n` +
+        `• Hanya rubrik skor, rekomendasi, dan catatan wawancara untuk calon ini yang direset ke 'Belum Dinilai'.\n\n` +
+        `Lanjutkan reset nilai calon ini?`;
+
+      if (!confirm(confirmMsg)) return;
+
+      // Batalkan timer autosave jika ada yang sedang berjalan agar tidak menyimpan ulang
+      if (notesDebounceTimer) {
+        clearTimeout(notesDebounceTimer);
+        notesDebounceTimer = null;
+      }
+      if (cloudPushDebounceTimer) {
+        clearTimeout(cloudPushDebounceTimer);
+        cloudPushDebounceTimer = null;
+      }
 
       const key = getApplicantKey(applicant);
-      delete interviewScores[key];
+
+      // Hapus HANYA entri nilai untuk calon ini di memori lokal
+      if (interviewScores && interviewScores[key]) {
+        delete interviewScores[key];
+      }
+
+      // Hapus baris nilai di Google Sheets private via Apps Script (Tab Hasil_Penilaian)
       if (cloudSyncEndpoint) {
         deleteScoreFromCloud(key);
       }
+
       persistScores();
       updateStats();
       renderApplicantList();
       renderDetailPane(id);
-      showToast("Reset Berhasil", "Data nilai calon telah direset ke awal.", "amber");
+
+      showToast("Nilai Calon Direset", `Nilai untuk "${candName}" berhasil dikembalikan ke awal. Data pendaftar tetap aman.`, "amber");
     }
 
     function persistScores() {
@@ -4051,6 +4238,10 @@ function initScoresSheet(ss) {
     // EXPORT REKAP & BACKUP SYSTEM
     // =========================================================================
     function exportInterviewRecap() {
+      if (getCurrentUserRole() !== "admin") {
+        showToast("Akses Terbatas", "Fitur ekspor rekapitulasi penilaian hanya untuk Super User (admin2026).", "rose");
+        return;
+      }
       if (rawApplicants.length === 0) {
         alert("Tidak ada data pendaftar untuk diekspor.");
         return;
@@ -4322,6 +4513,10 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
 
     // Backup & Restore
     function openBackupModal() {
+      if (getCurrentUserRole() !== "admin") {
+        showToast("Akses Terbatas", "Fitur Backup & Restore nilai hanya untuk Super User (admin2026).", "rose");
+        return;
+      }
       const modal = document.getElementById("backupModal");
       if (modal) modal.classList.remove("hidden");
       const mobileBar = document.getElementById("mobileBottomBar");
@@ -4409,6 +4604,10 @@ Evaluator: ${scoreData.interviewer || currentInterviewerName || 'Panitia'}`;
     // RESET TOTAL NILAI (KHUSUS DEV & PANITIA)
     // =========================================================================
     async function handleDevResetAllScores() {
+      if (getCurrentUserRole() !== "admin") {
+        alert("Akses Ditolak: Fitur Reset Nilai (Dev) hanya dapat dieksekusi oleh Super User (admin2026).");
+        return;
+      }
       const confirm1 = confirm(
         "⚠️ PERINGATAN RESET TOTAL DATA NILAI (KHUSUS DEV / PANITIA):\n\n" +
         "Tindakan ini akan:\n" +

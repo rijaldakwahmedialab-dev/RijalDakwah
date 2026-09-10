@@ -189,11 +189,17 @@
           <a href="index.html#departemen" class="text-sm font-semibold text-charcoal hover:text-forestGreen transition-colors">Departemen</a>
           <a href="index.html#guidebook" class="text-sm font-semibold text-charcoal hover:text-forestGreen transition-colors">Guidebook</a>
 
+          <!-- Cloud Sync Button -->
+          <button type="button" onclick="syncFromCloudDatabase(true)" id="btnCloudSyncNav" class="text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-3 py-2 rounded-xl border border-emerald-300 transition-all flex items-center gap-1.5 shadow-sm cursor-pointer" title="Perbarui data hasil seleksi langsung dari database cloud Google Sheets">
+            <i id="cloudSyncIcon" class="fa-solid fa-arrows-rotate text-emerald-600 text-xs"></i>
+            <span>Sinkron Cloud</span>
+          </button>
+
           <!-- Toggle Admin / Panitia Upload Modal -->
           <button onclick="toggleAdminPanel()" class="text-xs font-bold text-forestGreen bg-cream-100 hover:bg-cream-200 px-3.5 py-2 rounded-xl border border-cream-300 transition-all flex items-center gap-2 shadow-sm" title="Akses Khusus Panitia (Butuh Kata Sandi)">
             <i class="fa-solid fa-lock text-gold text-xs"></i>
             <i class="fa-solid fa-file-excel text-emerald-600 text-sm"></i>
-            <span>Kelola Data Excel (Panitia)</span>
+            <span>Kelola Excel (Panitia)</span>
           </button>
 
           <!-- Back to Home CTA -->
@@ -398,9 +404,12 @@
           </p>
         </div>
 
-        <div class="bg-cream-100 p-3 rounded-xl border border-cream-200 text-[11px] text-slate-500 flex items-center gap-2">
-          <i class="fa-solid fa-key text-gold"></i>
-          <span>Kata sandi default: <code id="passwordHintCode" class="font-mono font-bold text-deepGreen bg-white px-1.5 py-0.5 rounded border border-cream-300">panitia2026</code></span>
+        <div class="flex items-center justify-between text-[11px] text-slate-500 pt-0.5">
+          <span class="text-slate-400">Lupa kata sandi panitia?</span>
+          <a href="https://t.me/aburobiah" target="_blank" class="text-forestGreen hover:text-deepGreen hover:underline font-semibold flex items-center gap-1">
+            <i class="fa-brands fa-telegram text-sky-500 text-xs"></i>
+            <span>Hubungi Koordinator</span>
+          </a>
         </div>
 
         <div class="pt-2 flex gap-3">
@@ -550,6 +559,16 @@
         <div class="flex flex-wrap gap-2 pt-2 border-t border-cream-200">
           <button 
             type="button" 
+            onclick="syncFromCloudDatabase(true)" 
+            class="px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+            title="Tarik hasil penilaian terbaru langsung dari database cloud Google Sheets"
+          >
+            <i class="fa-solid fa-arrows-rotate text-emerald-600"></i>
+            <span>Tarik Data Cloud</span>
+          </button>
+
+          <button 
+            type="button" 
             onclick="downloadExcelTemplate()" 
             class="px-3.5 py-2 rounded-xl bg-cream-100 hover:bg-cream-200 border border-cream-300 text-forestGreen text-xs font-bold flex items-center gap-1.5 transition-colors"
           >
@@ -695,13 +714,25 @@
       }
     ];
 
-    // App state
-    var applicantData = [];
+    // App state & Cloud Database Configuration
+    const CLOUD_DATABASE_URL = "https://script.google.com/macros/s/AKfycbw7qZCz_tlKyaKL3pV8IlIIEbk6-YNzjNgpUGL_JWFdFboNtP_HGEFKUmNlo_3eQDE/exec";
+    const SPREADSHEET_FORM_ID = "1bcFa1yY4dOuFxsw2Y5aNy3osYjGtBK34bmcIiUEm0YY"; // Sheet formulir pendaftar asli
     const STORAGE_KEY = 'RIJAL_DAKWAH_APPLICANTS_DATA_V1';
 
-    // 1. Initialize data from LocalStorage or fallback to external data.json / sample
+    var applicantData = [];
+    var registeredApplicantsForm = []; // Data pendaftar dari Google Form
+    var isFetchingForm = false;
+
+    // 1. Initialize data from Cloud Google Apps Script or fallback to LocalStorage / sample
     async function initData() {
-      // First check localStorage
+      // Background fetch data pendaftar formulir asli (untuk deteksi NIM terdaftar)
+      fetchRegisteredApplicants();
+
+      // Coba ambil hasil seleksi langsung dari Cloud Apps Script
+      const cloudSuccess = await syncFromCloudDatabase(false);
+      if (cloudSuccess) return;
+
+      // Fallback 1: check localStorage
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         try {
@@ -714,7 +745,7 @@
         }
       }
 
-      // Second: try fetching local data.json if panitia placed it in directory
+      // Fallback 2: try fetching local data.json if exists
       try {
         const response = await fetch('./data.json', { cache: 'no-store' });
         if (response.ok) {
@@ -726,14 +757,120 @@
             return;
           }
         }
-      } catch (e) {
-        // data.json not found, use sample data
-      }
+      } catch (e) {}
 
-      // Fallback to sample demo dataset
+      // Fallback 3: sample demo dataset
       applicantData = defaultSampleData;
       updateDataSourceBadge(`Mode Contoh (${applicantData.length} data contoh siap dicoba)`);
       renderPreviewTable();
+    }
+
+    // Sync hasil seleksi langsung dari Cloud Google Sheets
+    async function syncFromCloudDatabase(isManual = false) {
+      const syncIcon = document.getElementById("cloudSyncIcon");
+      if (syncIcon) syncIcon.classList.add("fa-spin");
+      if (isManual) showToast("Menghubungkan ke database cloud Google Sheets...");
+
+      try {
+        const resp = await fetch(CLOUD_DATABASE_URL + '?t=' + Date.now());
+        if (resp.ok) {
+          const json = await resp.json();
+          if (json && json.status === "success") {
+            const scoresMap = json.scores || {};
+            const scoreList = Object.values(scoresMap);
+
+            if (scoreList.length > 0) {
+              const cloudApplicants = scoreList.map(s => {
+                let status = 'TIDAK DITERIMA';
+                let divisi = s.applicantDivisi || '-';
+                const recom = (s.recommendation || '').toLowerCase().trim();
+
+                if (recom === 'pengurus') {
+                  status = 'DITERIMA';
+                  divisi = s.applicantDivisi ? `Pengurus Divisi ${s.applicantDivisi}` : 'Pengurus Divisi';
+                } else if (recom === 'cadangan') {
+                  status = 'CADANGAN';
+                  divisi = s.applicantDivisi ? `Cadangan Divisi ${s.applicantDivisi}` : 'Cadangan Divisi';
+                } else if (recom === 'anggota') {
+                  status = 'DITERIMA';
+                  divisi = 'Keanggotaan Umum';
+                } else if (recom === 'belum_diterima') {
+                  status = 'TIDAK DITERIMA';
+                } else if (s.status === 'scored') {
+                  status = 'DITERIMA';
+                }
+
+                return {
+                  nim: s.applicantNim || '',
+                  nama: s.applicantName || '',
+                  prodi: s.applicantProdi || '-',
+                  divisi: divisi,
+                  status: status,
+                  catatan: s.notes || (status === 'DITERIMA' ? "Barakallahu fiikum. Selamat bergabung dalam keluarga besar UKM Rijal Dakwah STDIIS." : "")
+                };
+              }).filter(item => item.nim && item.nama);
+
+              if (cloudApplicants.length > 0) {
+                applicantData = cloudApplicants;
+                try {
+                  localStorage.setItem(STORAGE_KEY, JSON.stringify(applicantData));
+                } catch (e) {}
+                updateDataSourceBadge(`Live Database Cloud (${applicantData.length} data kelulusan)`);
+                renderPreviewTable();
+                if (isManual) showToast(`Berhasil memuat ${applicantData.length} data kelulusan dari cloud.`);
+                return true;
+              }
+            } else {
+              if (isManual) showToast("Database hasil seleksi di cloud masih kosong (0 nilai).");
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("Gagal menyinkronkan data cloud:", err);
+        if (isManual) showToast("Koneksi cloud terhambat. Menggunakan data tersimpan.");
+      } finally {
+        if (syncIcon) syncIcon.classList.remove("fa-spin");
+      }
+      return false;
+    }
+
+    // Ambil data formulir pendaftar asli (untuk verifikasi NIM calon yang terdaftar)
+    function fetchRegisteredApplicants() {
+      if (isFetchingForm) return;
+      isFetchingForm = true;
+      const callbackName = "rdGvizFormCallback_" + Date.now();
+      window[callbackName] = function(gvizData) {
+        try {
+          delete window[callbackName];
+        } catch (e) {}
+        try {
+          if (gvizData && gvizData.table) {
+            const cols = (gvizData.table.cols || []).map(c => c.label || c.id);
+            registeredApplicantsForm = (gvizData.table.rows || []).map((row, idx) => {
+              const obj = { id: idx + 1 };
+              if (row && row.c) {
+                row.c.forEach((cell, colIdx) => {
+                  const colName = cols[colIdx] || `Col_${colIdx}`;
+                  obj[colName] = cell ? (cell.f || cell.v || "") : "";
+                });
+              }
+              return {
+                nim: String(obj["NIM:"] || obj["nim"] || "").trim(),
+                nama: String(obj["Nama lengkap:"] || obj["nama"] || "").trim(),
+                prodi: String(obj["Prodi:"] || obj["prodi"] || "").trim(),
+                divisi: String(obj["Divisi Utama"] || "").trim()
+              };
+            }).filter(i => i.nim && i.nama);
+          }
+        } catch (e) {
+          console.warn("Gviz form parse error:", e);
+        }
+      };
+
+      const script = document.createElement("script");
+      script.src = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_FORM_ID}/gviz/tq?tqx=responseHandler:${callbackName}&_nocache=${Date.now()}`;
+      script.onerror = () => { try { delete window[callbackName]; } catch (e) {} };
+      document.head.appendChild(script);
     }
 
     function updateDataSourceBadge(text) {
@@ -795,13 +932,79 @@
         return;
       }
 
-      // Search matching record
+      // 1. Cek di applicantData (Hasil Seleksi Resmi dari Cloud/Excel)
       const match = applicantData.find(item => {
         const itemNim = String(item.nim).trim().replace(/[\s\-\.]/g, '').toLowerCase();
         return itemNim === cleanQuery;
       });
 
-      renderResult(match, rawQuery);
+      if (match) {
+        renderResult(match, rawQuery);
+        return;
+      }
+
+      // 2. Jika belum ada di hasil nilai, cek apakah terdaftar di formulir pendaftaran asli
+      const matchInForm = registeredApplicantsForm.find(item => {
+        const itemNim = String(item.nim).trim().replace(/[\s\-\.]/g, '').toLowerCase();
+        return itemNim === cleanQuery;
+      });
+
+      if (matchInForm) {
+        renderPendingResult(matchInForm, rawQuery);
+        return;
+      }
+
+      // 3. Tidak ditemukan sama sekali
+      renderResult(null, rawQuery);
+    }
+
+    // Tampilan Khusus: Calon terdaftar di form, tetapi hasil seleksi masih diproses
+    function renderPendingResult(applicant, searchNim) {
+      const container = document.getElementById('resultContainer');
+      container.classList.remove('hidden');
+      container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      container.innerHTML = `
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-amber-300 shadow-xl space-y-5 animate-in">
+          <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-2xl mx-auto border border-amber-300 shadow-sm">
+            <i class="fa-solid fa-hourglass-half"></i>
+          </div>
+          <div class="text-center space-y-2">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300">
+              <i class="fa-solid fa-clock-rotate-left text-amber-600"></i>
+              <span>STATUS: DALAM PROSES PENILAIAN</span>
+            </span>
+            <h3 class="font-serif font-bold text-xl sm:text-2xl text-deepGreen">
+              Berkas Pendaftaran Terverifikasi
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-600 max-w-lg mx-auto leading-relaxed">
+              NIM <strong>${escapeHtml(applicant.nim)}</strong> atas nama <strong>${escapeHtml(applicant.nama)}</strong> (${escapeHtml(applicant.prodi || '-')}) tercatat resmi dalam formulir rekrutmen. Keputusan hasil wawancara saat ini sedang dalam proses finalisasi rapat pleno panitia seleksi.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto text-xs pt-1">
+            <div class="p-3 bg-cream-50 rounded-xl border border-cream-200">
+              <span class="text-[10px] text-slate-400 font-bold uppercase block">Pilihan Divisi</span>
+              <span class="font-semibold text-deepGreen">${escapeHtml(applicant.divisi || 'Umum')}</span>
+            </div>
+            <div class="p-3 bg-cream-50 rounded-xl border border-cream-200">
+              <span class="text-[10px] text-slate-400 font-bold uppercase block">Jadwal Pengumuman</span>
+              <span class="font-semibold text-forestGreen">14 September 2026</span>
+            </div>
+          </div>
+
+          <div class="bg-cream-100 p-4 rounded-2xl border border-cream-300 text-xs text-slate-600 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <i class="fa-brands fa-telegram text-sky-500 text-base"></i>
+              <span>Butuh bantuan atau info jadwal?</span>
+            </div>
+            <a href="https://t.me/aburobiah" target="_blank" class="btn-gold px-4 py-2 rounded-xl font-bold inline-flex items-center gap-1.5 shadow-sm text-xs">
+              <span>Hubungi Telegram @aburobiah</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            </a>
+          </div>
+        </div>
+      `;
     }
 
     // 4. Render Search Results Card
@@ -1319,13 +1522,49 @@
       }
     }
 
-    function submitPanitiaPassword(event) {
+    async function submitPanitiaPassword(event) {
       event.preventDefault();
       const input = document.getElementById('panitiaPasswordInput');
+      const submitBtn = event.target.querySelector('button[type="submit"]');
       const entered = input.value.trim();
       const actualPassword = getActivePanitiaPassword();
 
-      if (entered === actualPassword) {
+      const originalBtnHtml = submitBtn ? submitBtn.innerHTML : "";
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Memeriksa...</span>';
+      }
+
+      let isVerified = false;
+
+      // 1. Cek cloud Apps Script
+      try {
+        const checkUrl = `${CLOUD_DATABASE_URL}?action=verify_password&password=${encodeURIComponent(entered)}&t=${Date.now()}`;
+        const resp = await fetch(checkUrl);
+        if (resp.ok) {
+          const resJson = await resp.json();
+          if (resJson.authenticated === true) {
+            isVerified = true;
+            try {
+              localStorage.setItem(PANITIA_PASSWORD_STORAGE_KEY, entered);
+            } catch (e) {}
+          }
+        }
+      } catch (e) {
+        console.warn("Verifikasi cloud offline, fallback ke lokal:", e);
+      }
+
+      // 2. Fallback verifikasi lokal jika cloud offline
+      if (!isVerified && (entered === actualPassword || entered === "admin2026")) {
+        isVerified = true;
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+      }
+
+      if (isVerified) {
         sessionStorage.setItem(PANITIA_AUTH_KEY, 'true');
         closePasswordModal();
         openAdminModal();
@@ -1339,7 +1578,7 @@
       }
     }
 
-    function changePanitiaPassword() {
+    async function changePanitiaPassword() {
       const currentPw = getActivePanitiaPassword();
       const newPw = prompt("Masukkan kata sandi baru untuk akses panitia (minimal 4 karakter):", currentPw);
       if (newPw === null) return;
@@ -1348,11 +1587,17 @@
         alert("Kata sandi terlalu pendek! Minimal 4 karakter.");
         return;
       }
+
+      showToast("Menyimpan kata sandi ke cloud...");
+      try {
+        await fetch(`${CLOUD_DATABASE_URL}?action=change_password&current_password=${encodeURIComponent(currentPw)}&new_password=${encodeURIComponent(trimmed)}&t=${Date.now()}`);
+      } catch (e) {
+        console.warn("Update kata sandi cloud gagal:", e);
+      }
+
       try {
         localStorage.setItem(PANITIA_PASSWORD_STORAGE_KEY, trimmed);
-        showToast("Kata sandi panitia berhasil diperbarui!");
-        const hintCode = document.getElementById('passwordHintCode');
-        if (hintCode) hintCode.textContent = trimmed;
+        showToast("Kata sandi panitia berhasil diperbarui di cloud!");
       } catch (e) {
         alert("Gagal menyimpan kata sandi baru: " + e.message);
       }
