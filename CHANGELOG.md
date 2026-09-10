@@ -14,8 +14,12 @@ Semua catatan pembaruan, perubahan teknis, dan riwayat pengerjaan proyek.
   - Akses penuh tanpa hambatan ke seluruh modal konfigurasi dan fitur dev.
 - **Panitia Evaluator (`panitia2026`)**:
   - Tampilan disederhanakan total agar bersih, fokus, dan bebas risiko salah klik.
-  - **Navbar**: Hanya menyisakan tombol esensial dan sinkron: **Perbarui** (*Sync Data Google Sheets*), **Kunci** (*Logout*), dan **Web Utama**.
-  - **Top Bar**: Menampilkan status live dan nama pewawancara (`👤 Pewawancara: [nama]` / `👤 Mode: Panitia`). Indikator Cloud Sync disembunyikan.
+  - **Navbar**: Menampilkan tombol esensial dan sinkron:
+    - **Cloud Sync** (`[Cloud Sync •]`): Tetap ditampilkan dengan dot hijau berdenyut sebagai jaminan visual bahwa penilaian terhubung dan tersinkronisasi real-time ke cloud. Klik panitia langsung memicu sinkronisasi manual kilat (*instant sync*) tanpa membuka modal konfigurasi sensitif.
+    - **Perbarui**: Menyinkronkan antrean pendaftar dan lembar nilai dari Google Sheets.
+    - **Kunci**: Logout dan penguncian sesi aman.
+    - **Web Utama**: Tautan kembali ke beranda.
+  - **Top Bar**: Menampilkan status live, indikator koneksi cloud, dan nama pewawancara (`👤 Pewawancara: [nama]` / `👤 Mode: Panitia`).
   - **Hero Section**: Mengeliminasi seluruh tombol dev/admin (*Sheet Pendaftar*, *Database Nilai Private*, *Backup Nilai*, dan *Reset Nilai Dev* disembunyikan total). Badge disesuaikan menjadi `PANEL EVALUATOR WAWANCARA (PANITIA)`.
   - Proteksi ketat (*Security Guards*): Fungsi admin seperti `openCloudSyncModal()`, `openBackupModal()`, `openChangePasswordModal()`, `exportInterviewRecap()`, dan `handleDevResetAllScores()` otomatis menolak eksekusi jika pengguna bukan Super User.
 

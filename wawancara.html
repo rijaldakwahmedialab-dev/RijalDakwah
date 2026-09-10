@@ -215,7 +215,7 @@
             <span id="liveStatusText">Live Google Sheets</span>
           </span>
           <span id="topBarRoleTag" class="hidden text-[10px] px-2 py-0.5 rounded-full font-semibold"></span>
-          <button type="button" onclick="openCloudSyncModal()" id="cloudSyncIndicatorBar" class="hidden sm:inline-flex items-center gap-1.5 text-[11px] sm:text-xs px-2.5 py-0.5 rounded-full bg-white/10 text-cream-200 border border-white/20 hover:bg-white/20 transition-colors cursor-pointer">
+          <button type="button" onclick="handleCloudSyncButtonClick()" id="cloudSyncIndicatorBar" class="hidden sm:inline-flex items-center gap-1.5 text-[11px] sm:text-xs px-2.5 py-0.5 rounded-full bg-white/10 text-cream-200 border border-white/20 hover:bg-white/20 transition-colors cursor-pointer">
             <i class="fa-solid fa-cloud text-gold text-[10px]"></i>
             <span id="cloudSyncBarText">Cloud Sync</span>
           </button>
@@ -273,13 +273,13 @@
 
           <!-- Protected Action Buttons (Visible ONLY when authenticated) -->
           <div id="navProtectedActions" class="hidden items-center space-x-1.5 sm:space-x-2.5">
-            <!-- Cloud Sync Button -->
+            <!-- Cloud Sync Button (Indikator Sinkronisasi Real-Time) -->
             <button 
               type="button" 
-              onclick="openCloudSyncModal()" 
+              onclick="handleCloudSyncButtonClick()" 
               id="btnCloudSync"
               class="h-9 px-2.5 sm:px-3 rounded-xl text-xs font-semibold bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1.5 transition-all shadow-sm active:scale-95 cursor-pointer"
-              title="Pengaturan Sinkronisasi Nilai Cloud Antar-Perangkat (Google Sheets / Apps Script)"
+              title="Indikator Cloud Sync: Sinkronisasi Nilai Real-Time Aktif (Klik untuk perbarui)"
             >
               <i class="fa-solid fa-cloud-arrow-up text-amber-600 text-xs sm:text-sm"></i>
               <span class="hidden md:inline text-xs">Cloud Sync</span>
@@ -1497,15 +1497,15 @@
       const role = getCurrentUserRole();
       const isAdmin = (role === "admin");
 
-      // 1. Cloud Sync button in navbar (Admin Only)
+      // 1. Cloud Sync button in navbar (Visible for both Panitia & Admin as live indicator)
       const btnCloudSync = document.getElementById("btnCloudSync");
       if (btnCloudSync) {
+        btnCloudSync.classList.remove("hidden");
+        btnCloudSync.classList.add("flex");
         if (isAdmin) {
-          btnCloudSync.classList.remove("hidden");
-          btnCloudSync.classList.add("flex");
+          btnCloudSync.title = "Pengaturan Cloud Sync (Super User: Kelola Endpoint & Link)";
         } else {
-          btnCloudSync.classList.add("hidden");
-          btnCloudSync.classList.remove("flex");
+          btnCloudSync.title = "Indikator Cloud Sync Aktif: Data selalu up-to-date (Klik untuk sinkronkan)";
         }
       }
 
@@ -1543,16 +1543,16 @@
         }
       }
 
-      // 5. Cloud Sync indicator in Top Bar
+      // 5. Cloud Sync indicator in Top Bar (Visible for both Panitia & Admin)
       const cloudSyncIndicatorBar = document.getElementById("cloudSyncIndicatorBar");
       if (cloudSyncIndicatorBar) {
+        cloudSyncIndicatorBar.classList.remove("hidden");
         if (isAdmin) {
-          cloudSyncIndicatorBar.classList.remove("hidden");
+          cloudSyncIndicatorBar.title = "Pengaturan Cloud Sync (Super User)";
         } else {
-          cloudSyncIndicatorBar.classList.add("hidden");
+          cloudSyncIndicatorBar.title = "Indikator Cloud Sync Real-Time: Data selalu up-to-date";
         }
       }
-
       // 6. Top Bar Role Tag
       const topBarRoleTag = document.getElementById("topBarRoleTag");
       if (topBarRoleTag) {
@@ -1594,6 +1594,15 @@
           heroAdminActions.classList.add("hidden");
           heroAdminActions.classList.remove("flex");
         }
+      }
+    }
+
+    function handleCloudSyncButtonClick() {
+      if (getCurrentUserRole() === "admin") {
+        openCloudSyncModal();
+      } else {
+        syncDataFromSheets(true);
+        showToast("Cloud Sync Aktif", "Menyinkronkan data pendaftar & nilai terbaru dari Google Sheets...", "emerald");
       }
     }
 
