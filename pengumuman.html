@@ -672,6 +672,10 @@
   <!-- 7. SCRIPT LOGIC (EXCEL PARSING, STORAGE, & STATUS SEARCH) -->
   <!-- ========================================================================= -->
   <script>
+    // Official Telegram group links
+    const TELEGRAM_LINK_PENGURUS = "https://t.me/+XXU4dg7faDs1NWQ9";
+    const TELEGRAM_LINK_ANGGOTA = "https://t.me/+EEiLGLZDzkAzM2Q9";
+
     // Initial sample dataset for instant out-of-the-box demo & testing
     const defaultSampleData = [
       {
@@ -680,7 +684,8 @@
         prodi: "S1 Hukum Keluarga Islam (Ahwal Syakhshiyyah)",
         divisi: "Divisi Keilmuan",
         status: "DITERIMA",
-        catatan: "Diterima sebagai Anggota Divisi Keilmuan. Harap hadir dalam Briefing Orientasi Perdana pada Ahad, 13 September 2026 pukul 08.00 WIB."
+        tipe: "pengurus",
+        catatan: "Diterima sebagai Pengurus Divisi Keilmuan. Harap hadir dalam Briefing Orientasi Perdana pada Ahad, 13 September 2026 pukul 08.00 WIB."
       },
       {
         nim: "20260102",
@@ -688,7 +693,8 @@
         prodi: "S1 Ilmu Hadits",
         divisi: "Divisi Dakwah Digital",
         status: "DITERIMA",
-        catatan: "Diterima sebagai Anggota Divisi Dakwah Digital. Persiapkan portofolio karya desain / video dakwah untuk pemetaan tugas divisi."
+        tipe: "pengurus",
+        catatan: "Diterima sebagai Pengurus Divisi Dakwah Digital. Persiapkan portofolio karya desain / video dakwah untuk pemetaan tugas divisi."
       },
       {
         nim: "20260103",
@@ -696,7 +702,8 @@
         prodi: "Program I'dad Lughawi",
         divisi: "Divisi Media",
         status: "DITERIMA",
-        catatan: "Diterima sebagai Anggota Divisi Media. Konfirmasi kehadiran melalui pengurus divisi di grup koordinasi."
+        tipe: "pengurus",
+        catatan: "Diterima sebagai Pengurus Divisi Media. Konfirmasi kehadiran melalui pengurus divisi di grup koordinasi."
       },
       {
         nim: "20260104",
@@ -704,6 +711,7 @@
         prodi: "S1 Hukum Keluarga Islam",
         divisi: "Divisi Humas & Eksternal",
         status: "CADANGAN",
+        tipe: "cadangan",
         catatan: "Status antum berada dalam daftar cadangan (waiting list). Panitia akan menghubungi jika kuota tambahan dibuka."
       },
       {
@@ -712,9 +720,46 @@
         prodi: "S1 Ilmu Hadits",
         divisi: "-",
         status: "TIDAK DITERIMA",
+        tipe: "belum_diterima",
         catatan: "Jazaakallahu khairan atas keikutsertaan antum. Jangan berkecil hati, pintu dakwah dan ukhuwah tetap terbuka luas di kegiatan umum Rijal Dakwah."
+      },
+      {
+        nim: "20260106",
+        nama: "Ibrahim Khalid Al-Atsary",
+        prodi: "S1 Ilmu Hadits",
+        divisi: "Keanggotaan Umum",
+        status: "DITERIMA",
+        tipe: "anggota",
+        catatan: "Diterima sebagai Anggota Umum UKM Rijal Dakwah STDIIS. Silakan bergabung ke grup Telegram Anggota."
       }
     ];
+
+    // Helper untuk mengecek apakah peserta diterima sebagai Anggota atau Pengurus
+    function isApplicantAnggota(data) {
+      if (!data) return false;
+      const tipe = String(data.tipe || '').toLowerCase().trim();
+      const recom = String(data.recommendation || '').toLowerCase().trim();
+      const divisi = String(data.divisi || '').toLowerCase().trim();
+      const status = String(data.status || '').toLowerCase().trim();
+      const catatan = String(data.catatan || '').toLowerCase().trim();
+
+      if (tipe === 'anggota' || recom === 'anggota' || recom === 'redirect_member' || recom === 'redirect_div') {
+        return true;
+      }
+      if (tipe === 'pengurus' || recom === 'pengurus') {
+        return false;
+      }
+      if (divisi.includes('keanggotaan') || divisi === 'anggota' || divisi.includes('anggota umum')) {
+        return true;
+      }
+      if (status.includes('anggota') && !status.includes('pengurus')) {
+        return true;
+      }
+      if (catatan.includes('sebagai anggota umum') || catatan.includes('keanggotaan umum')) {
+        return true;
+      }
+      return false;
+    }
 
     // App state & Cloud Database Configuration
     const CLOUD_DATABASE_URL = "https://script.google.com/macros/s/AKfycbw7qZCz_tlKyaKL3pV8IlIIEbk6-YNzjNgpUGL_JWFdFboNtP_HGEFKUmNlo_3eQDE/exec";
@@ -786,20 +831,26 @@
                 let status = 'TIDAK DITERIMA';
                 let divisi = s.applicantDivisi || '-';
                 const recom = (s.recommendation || '').toLowerCase().trim();
+                let tipe = 'pengurus';
 
                 if (recom === 'pengurus') {
                   status = 'DITERIMA';
+                  tipe = 'pengurus';
                   divisi = s.applicantDivisi ? `Pengurus Divisi ${s.applicantDivisi}` : 'Pengurus Divisi';
                 } else if (recom === 'cadangan') {
                   status = 'CADANGAN';
+                  tipe = 'cadangan';
                   divisi = s.applicantDivisi ? `Cadangan Divisi ${s.applicantDivisi}` : 'Cadangan Divisi';
-                } else if (recom === 'anggota') {
+                } else if (recom === 'anggota' || recom === 'redirect_member' || recom === 'redirect_div') {
                   status = 'DITERIMA';
+                  tipe = 'anggota';
                   divisi = 'Keanggotaan Umum';
-                } else if (recom === 'belum_diterima') {
+                } else if (recom === 'belum_diterima' || recom === 'reject') {
                   status = 'TIDAK DITERIMA';
+                  tipe = 'belum_diterima';
                 } else if (s.status === 'scored') {
                   status = 'DITERIMA';
+                  tipe = 'pengurus';
                 }
 
                 return {
@@ -808,7 +859,13 @@
                   prodi: s.applicantProdi || '-',
                   divisi: divisi,
                   status: status,
-                  catatan: s.notes || (status === 'DITERIMA' ? "Barakallahu fiikum. Selamat bergabung dalam keluarga besar UKM Rijal Dakwah STDIIS." : "")
+                  tipe: tipe,
+                  recommendation: recom,
+                  catatan: s.notes || (status === 'DITERIMA' 
+                    ? (tipe === 'anggota' 
+                        ? "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS." 
+                        : "Barakallahu fiikum. Selamat bergabung sebagai Pengurus UKM Rijal Dakwah STDIIS.") 
+                    : "")
                 };
               }).filter(item => item.nim && item.nama);
 
@@ -905,6 +962,7 @@
         const divisi = getField('divisi', 'divisiditerima', 'pilihandivisi', 'departemen') || '-';
         let status = getField('status', 'statuskelulusan', 'hasil', 'keterangan').toUpperCase();
         const catatan = getField('catatan', 'keterangantambahan', 'note', 'pesan') || '';
+        const recomRaw = getField('rekomendasi', 'recommendation', 'tipe', 'jalur', 'peran', 'kategori').toLowerCase();
 
         // Standardize status
         if (status.includes('LULUS') || status.includes('TERIMA') || status.includes('LOLOS') || status === 'PASSED') {
@@ -917,7 +975,16 @@
           status = 'DITERIMA'; // Default assumption if absent in accepted list
         }
 
-        return { nim, nama, prodi, divisi, status, catatan };
+        let tipe = 'pengurus';
+        if (recomRaw.includes('anggota') || divisi.toLowerCase().includes('keanggotaan') || divisi.toLowerCase().includes('anggota umum') || divisi.toLowerCase() === 'anggota' || status.includes('ANGGOTA')) {
+          tipe = 'anggota';
+        } else if (status === 'CADANGAN' || recomRaw.includes('cadang')) {
+          tipe = 'cadangan';
+        } else if (status === 'TIDAK DITERIMA' || recomRaw.includes('belum')) {
+          tipe = 'belum_diterima';
+        }
+
+        return { nim, nama, prodi, divisi, status, tipe, recommendation: recomRaw, catatan };
       }).filter(item => item.nim && item.nama); // Ensure valid record
     }
 
@@ -1052,6 +1119,13 @@
 
       // ACCEPTED / DITERIMA
       if (data.status === 'DITERIMA') {
+        const isAnggota = isApplicantAnggota(data);
+        const telegramLink = isAnggota ? TELEGRAM_LINK_ANGGOTA : TELEGRAM_LINK_PENGURUS;
+        const telegramBtnText = isAnggota ? "Join Telegram Anggota" : "Join Telegram Pengurus";
+        const roleBadgeText = isAnggota ? "DINYATAKAN DITERIMA (ANGGOTA)" : "DINYATAKAN DITERIMA (PENGURUS)";
+        const roleCardTitle = isAnggota ? "Status Penerimaan" : "Divisi Diterima";
+        const roleCardValue = isAnggota ? (data.divisi && data.divisi !== '-' ? data.divisi : 'Keanggotaan Umum') : (data.divisi || 'Divisi Kepengurusan');
+
         container.innerHTML = `
           <div id="printableCard" class="bg-white rounded-3xl border-4 border-gold shadow-2xl overflow-hidden animate-in">
             <!-- Grand Header -->
@@ -1071,7 +1145,7 @@
                 <!-- Accepted Badge -->
                 <div class="inline-flex items-center gap-2 bg-emerald-500/30 border-2 border-emerald-400 text-emerald-300 px-4 py-2 rounded-2xl font-bold text-sm shadow-lg">
                   <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
-                  <span>DINYATAKAN DITERIMA</span>
+                  <span>${roleBadgeText}</span>
                 </div>
               </div>
 
@@ -1104,10 +1178,10 @@
                 </div>
 
                 <div class="p-4 rounded-2xl bg-emerald-50 border-2 border-emerald-300/80">
-                  <span class="text-[11px] font-bold text-emerald-800 uppercase tracking-wider">Divisi Diterima</span>
+                  <span class="text-[11px] font-bold text-emerald-800 uppercase tracking-wider">${roleCardTitle}</span>
                   <p class="font-serif font-bold text-lg text-emerald-900 mt-0.5 flex items-center gap-1.5">
                     <i class="fa-solid fa-tag text-emerald-600 text-sm"></i>
-                    <span>${escapeHtml(data.divisi || 'Divisi Kepengurusan')}</span>
+                    <span>${escapeHtml(roleCardValue)}</span>
                   </p>
                 </div>
               </div>
@@ -1119,7 +1193,9 @@
                   <span>Langkah Selanjutnya & Arahan Panitia:</span>
                 </h4>
                 <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  ${escapeHtml(data.catatan || "Silakan bergabung ke grup koordinasi anggota baru dan ikuti temu ta'aruf perdana yang akan diumumkan oleh pengurus divisi.")}
+                  ${escapeHtml(data.catatan || (isAnggota 
+                    ? "Silakan bergabung ke grup Telegram resmi Anggota melalui tombol di bawah ini untuk koordinasi dan informasi kegiatan dakwah UKM Rijal Dakwah STDIIS." 
+                    : "Silakan bergabung ke grup Telegram resmi Pengurus melalui tombol di bawah ini untuk koordinasi dan arahan kepengurusan divisi antum."))}
                 </p>
                 <div class="pt-2 flex flex-wrap items-center gap-3 text-xs">
                   <span class="inline-flex items-center gap-1.5 text-forestGreen font-semibold">
@@ -1151,12 +1227,12 @@
                   </button>
 
                   <a 
-                    href="https://t.me/aburobiah" 
+                    href="${telegramLink}" 
                     target="_blank" 
                     class="flex-1 sm:flex-none btn-gold px-5 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow"
                   >
-                    <i class="fa-brands fa-telegram"></i>
-                    <span>Konfirmasi via Telegram</span>
+                    <i class="fa-brands fa-telegram text-base"></i>
+                    <span>${telegramBtnText}</span>
                   </a>
                 </div>
               </div>
