@@ -676,63 +676,1569 @@
     const TELEGRAM_LINK_PENGURUS = "https://t.me/+XXU4dg7faDs1NWQ9";
     const TELEGRAM_LINK_ANGGOTA = "https://t.me/+EEiLGLZDzkAzM2Q9";
 
-    // Initial sample dataset for instant out-of-the-box demo & testing
+        // Dataset Master Resmi Sekretaris UKM Rijal Dakwah 2026/2027 (156 data)
     const defaultSampleData = [
-      {
-        nim: "20260101",
-        nama: "Abdullah bin Zaid",
-        prodi: "S1 Hukum Keluarga Islam (Ahwal Syakhshiyyah)",
-        divisi: "Divisi Keilmuan",
-        status: "DITERIMA",
-        tipe: "pengurus",
-        catatan: "Diterima sebagai Pengurus Divisi Keilmuan. Harap hadir dalam Briefing Orientasi Perdana pada Ahad, 13 September 2026 pukul 08.00 WIB."
-      },
-      {
-        nim: "20260102",
-        nama: "Muhammad Rayhan Al-Faruq",
-        prodi: "S1 Ilmu Hadits",
-        divisi: "Divisi Dakwah Digital",
-        status: "DITERIMA",
-        tipe: "pengurus",
-        catatan: "Diterima sebagai Pengurus Divisi Dakwah Digital. Persiapkan portofolio karya desain / video dakwah untuk pemetaan tugas divisi."
-      },
-      {
-        nim: "20260103",
-        nama: "Ziyad Tariq Robbani",
-        prodi: "Program I'dad Lughawi",
-        divisi: "Divisi Media",
-        status: "DITERIMA",
-        tipe: "pengurus",
-        catatan: "Diterima sebagai Pengurus Divisi Media. Konfirmasi kehadiran melalui pengurus divisi di grup koordinasi."
-      },
-      {
-        nim: "20260104",
-        nama: "Ahmad Hasan Al-Banna",
-        prodi: "S1 Hukum Keluarga Islam",
-        divisi: "Divisi Humas & Eksternal",
-        status: "CADANGAN",
-        tipe: "cadangan",
-        catatan: "Status antum berada dalam daftar cadangan (waiting list). Panitia akan menghubungi jika kuota tambahan dibuka."
-      },
-      {
-        nim: "20260105",
-        nama: "Farhan Syahidul Haq",
-        prodi: "S1 Ilmu Hadits",
-        divisi: "-",
-        status: "TIDAK DITERIMA",
-        tipe: "belum_diterima",
-        catatan: "Jazaakallahu khairan atas keikutsertaan antum. Jangan berkecil hati, pintu dakwah dan ukhuwah tetap terbuka luas di kegiatan umum Rijal Dakwah."
-      },
-      {
-        nim: "20260106",
-        nama: "Ibrahim Khalid Al-Atsary",
-        prodi: "S1 Ilmu Hadits",
-        divisi: "Keanggotaan Umum",
-        status: "DITERIMA",
-        tipe: "anggota",
-        catatan: "Diterima sebagai Anggota Umum UKM Rijal Dakwah STDIIS. Silakan bergabung ke grup Telegram Anggota."
-      }
-    ];
+  {
+    "nim": "2025.03.3756",
+    "nama": "abdillah hammam muhammad hawari",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi TPQ",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi TPQ UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.03.3235",
+    "nama": "Abdul Aziz",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Dana Usaha",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Dana Usaha UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.38.4082",
+    "nama": "Abdul aziz mujahid",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi TPQ",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi TPQ UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.5100",
+    "nama": "Abdul Ghofur",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Sarpras",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Sarpras UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.33.4573",
+    "nama": "ABDUL ROSYAD FAHRUDIN",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Sarpras",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Sarpras UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.38.5192",
+    "nama": "Abdullah",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.33.4972",
+    "nama": "Abdullah Al Fawwaz",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.4970",
+    "nama": "Abdullah Hanafi",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Keilmuan",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Keilmuan UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.38.4823",
+    "nama": "ABDURAHMAN AL BANA",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Keilmuan",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Keilmuan UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.33.5139",
+    "nama": "Abdurrahman Albassam",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.38.4423",
+    "nama": "Achmad fahrezy",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.33.4796",
+    "nama": "Adis Vedry Rakha Maulana",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Humas",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Humas UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.3747",
+    "nama": "Adit Saputra",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.38.3686",
+    "nama": "Affan Sholih Addaffa",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Humas",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Humas UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.3961",
+    "nama": "Afnan Azis Setiawan",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.4258",
+    "nama": "Agung Putra Wijaya",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Acara",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Acara UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.4229",
+    "nama": "Agung Satria Kurniawan",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.3714",
+    "nama": "Ahmad",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Acara",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Acara UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.03.3500",
+    "nama": "Ahmad Farohat Al Murshofi",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Media",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Media UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.3824",
+    "nama": "Ahmad Haidar Amanullah",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Keilmuan",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Keilmuan UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.4478",
+    "nama": "Ahmad Rizal Izzi",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Acara",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Acara UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.MB.4621",
+    "nama": "Ahmad Syauki Al Ghifari",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.03.3218",
+    "nama": "Ahmad Zaky Krisnamurti",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Media",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Media UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.03.3232",
+    "nama": "Ahmad Zikri Khotibul Umam",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Acara",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Acara UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.38.5099",
+    "nama": "Ahmad Zuhhad Muwahhid",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.4325",
+    "nama": "Akbar noorfaiz",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi TPQ",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi TPQ UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.3934",
+    "nama": "Akhmaldi Musyah",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Sarpras",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Sarpras UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.3668",
+    "nama": "Alam Ramadhan",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.38.4683",
+    "nama": "ALVIN SAIFUL JIHAD",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi TPQ",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi TPQ UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.33.4965",
+    "nama": "Ammar",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Keilmuan",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Keilmuan UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.38.3172",
+    "nama": "Anggi Sibgotalloh Mujaddid",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Keilmuan",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Keilmuan UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.03.3516",
+    "nama": "Aqib Wasiul Ilmi",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Acara",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Acara UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.38.5074",
+    "nama": "Arga Luthfi Abdan Syakuro",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Acara",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Acara UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.5140",
+    "nama": "Askar Abdillah Tsaqib",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Dakwah Digital",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Dakwah Digital UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.4078",
+    "nama": "Azhar Wahyu Robihansyah",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.33.5026",
+    "nama": "Azzaam Hanif Ikhtiar Rizki",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.3780",
+    "nama": "Azzan Ghozi Misfir",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.4068",
+    "nama": "Bijak abadi",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Acara",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Acara UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.38.5122",
+    "nama": "Bima Bijak Putra Pratama",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.MB.4623",
+    "nama": "Davit Putra",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.38.4291",
+    "nama": "Deriko Maulana Steven",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.33.4743",
+    "nama": "Diaz",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.MB.4687",
+    "nama": "DIGUNA NATA ANGGARA",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Keilmuan",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Keilmuan UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.5258",
+    "nama": "Excell Rizqullah Nasir Harahap",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.38.3623",
+    "nama": "Fadil Mohammad Jae",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.03.3397",
+    "nama": "Fahmi Irkhamna",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Sarpras",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Sarpras UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.33.4711",
+    "nama": "Farand Ihsan Nabeel",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.4371",
+    "nama": "Farid Febrian",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi TPQ",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi TPQ UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.4383",
+    "nama": "Fathir Shihab",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Dana Usaha",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Dana Usaha UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.4370",
+    "nama": "Fatih Rabbani",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.38.4863",
+    "nama": "Grara Isa Muhammad",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Media",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Media UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.03.3269",
+    "nama": "Habib Arrasyid",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Media",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Media UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.38.5440",
+    "nama": "Habib Huwaidi Salam",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Acara",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Acara UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.3781",
+    "nama": "Haekal Lutfi",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Acara",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Acara UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.4195",
+    "nama": "Haikal Baihakki",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Dakwah Digital",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Dakwah Digital UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.MB.4792",
+    "nama": "Hanif",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.4646",
+    "nama": "Hanif Farisan",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.38.4038",
+    "nama": "Hikam A’thoillah Al Hakim",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Dakwah Digital",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Dakwah Digital UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.4865",
+    "nama": "Ibnurasyd Fardi",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.MB.4542",
+    "nama": "Ibrahimovic Prasetyo",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Keilmuan",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Keilmuan UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.MB.4742",
+    "nama": "Ikhsan Rahman Al Kahfi",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.38.5177",
+    "nama": "Ilzamy Nardo",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.03.3457",
+    "nama": "Irbadh muhammad yusuf",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi TPQ",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi TPQ UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.4793",
+    "nama": "Irfan Rosyadi Anfasa",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.4333",
+    "nama": "JUHDAN BENZEMA ALRABBANI ISWANDI",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Humas",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Humas UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.4098",
+    "nama": "Khaerul Mizan",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.38.4553",
+    "nama": "Khairul Fajri Ardani",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Dakwah Digital",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Dakwah Digital UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.4465",
+    "nama": "L Ahmad Arwadi",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.3821",
+    "nama": "Lukman",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.MB.4774",
+    "nama": "M Alfa Reza",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Dakwah Digital",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Dakwah Digital UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.03.3543",
+    "nama": "M. Abdur Rohman",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Keilmuan",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Keilmuan UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.MB.4324",
+    "nama": "M. Fadhil Sa'd",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.4797",
+    "nama": "M. Fadil Ibnu Singgih",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.5230",
+    "nama": "Marwaan Aflah",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.5410",
+    "nama": "Maslamah",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Dakwah Digital",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Dakwah Digital UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.33.4361",
+    "nama": "Maulana Ardi Rifa’i",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.03.3453",
+    "nama": "Meko Alyoga",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Sarpras",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Sarpras UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.13.5125",
+    "nama": "Mikechal Satria Pratama",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Keilmuan",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Keilmuan UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.4003",
+    "nama": "Miqdad Muttaqien",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.3695",
+    "nama": "Mohammad Talent Gendicha Wagih Rusyidi",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Media",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Media UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.5277",
+    "nama": "Muawwidz Rofiq",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.38.5025",
+    "nama": "Muh Fasha Aprian",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Keilmuan",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Keilmuan UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.5165",
+    "nama": "Muh Jihadul Akhbar",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Keilmuan",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Keilmuan UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.03.3400",
+    "nama": "Muh Zhafran S Hi Noor",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.38.3671",
+    "nama": "Muh. Diaz Fatin",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.38.4668",
+    "nama": "Muh. Hafizal Al Zul Qafar",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Keilmuan",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Keilmuan UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.13.5000",
+    "nama": "muhamad puang respati",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Keilmuan",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Keilmuan UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.38.4175",
+    "nama": "Muhamad Salwan Haekal Nizami",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi TPQ",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi TPQ UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.38.5383",
+    "nama": "Muhammad Abdul Khaliq",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Keilmuan",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Keilmuan UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.4639",
+    "nama": "Muhammad Abdullah Rizqy Faza",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi TPQ",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi TPQ UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.38.3860",
+    "nama": "Muhammad Adhi Nasrullah",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Dakwah Digital",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Dakwah Digital UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.5315",
+    "nama": "Muhammad Alan Adiprana Yayin",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Sarpras",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Sarpras UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.3932",
+    "nama": "Muhammad Aldran Adiwangsa Yayin",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Dakwah Digital",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Dakwah Digital UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2023.38.2747",
+    "nama": "Muhammad Arif Wakiilaa",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Dana Usaha",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Dana Usaha UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.33.4645",
+    "nama": "Muhammad Bintang Kautsar",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Humas",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Humas UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.38.4010",
+    "nama": "Muhammad Daffa Ramadhan",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Media",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Media UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.03.3139",
+    "nama": "Muhammad Dzaki Ali Syifaa",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Dakwah Digital",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Dakwah Digital UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.5045",
+    "nama": "Muhammad Fakhri Alwi",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.4995",
+    "nama": "Muhammad Falah Wibowo",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.03.3336",
+    "nama": "Muhammad falih asyabib",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Sarpras",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Sarpras UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.03.3433",
+    "nama": "Muhammad Faris Zuhair",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Media",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Media UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.03.3301",
+    "nama": "Muhammad Fauzan Ihza Santosa",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Sarpras",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Sarpras UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.4337",
+    "nama": "Muhammad Haikal",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Dakwah Digital",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Dakwah Digital UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.03.3605",
+    "nama": "Muhammad ibrahim",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Sarpras",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Sarpras UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.33.5071",
+    "nama": "Muhammad Iqbal zulfahmi",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Keilmuan",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Keilmuan UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.03.3613",
+    "nama": "Muhammad Jundi Fakhrudin Ismail",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Dakwah Digital",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Dakwah Digital UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.MB.4814",
+    "nama": "Muhammad Kinza Nawfal Altamis",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.4840",
+    "nama": "Muhammad Putra Ramadhan",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi TPQ",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi TPQ UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.13.4387",
+    "nama": "Muhammad Rafi Aulia",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Dakwah Digital",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Dakwah Digital UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.13.5272",
+    "nama": "Muhammad Ramdani",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.MB.4726",
+    "nama": "muhammad rasyah rafif",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Humas",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Humas UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.MB.4671",
+    "nama": "Muhammad Razan Daniswara",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Humas",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Humas UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.5217",
+    "nama": "Muhammad Ridho",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Keilmuan",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Keilmuan UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.4146",
+    "nama": "Muhammad Rifa' Nur Azmi",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.4588",
+    "nama": "Muhammad Tsaqif Ashadiar",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.38.3246",
+    "nama": "Muhammad Zahreno Fajrul Falah",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Dana Usaha",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Dana Usaha UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.38.5399",
+    "nama": "Mush'ab Al Bara",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.5043",
+    "nama": "Naufal Nadhif Assami",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.3794",
+    "nama": "Pandu Gea Wardika",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Dana Usaha",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Dana Usaha UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.38.4564",
+    "nama": "PUTRA BINTANG FADHILAH",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Media",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Media UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.3911",
+    "nama": "Rafi Dzafran Saputra",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi TPQ",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi TPQ UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.3661",
+    "nama": "Rafid Humam Alfawazi",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Acara",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Acara UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.38.3659",
+    "nama": "Rafly Muhammad Padilah",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Acara",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Acara UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.4776",
+    "nama": "Rahmat Hidayat",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.3854",
+    "nama": "Rakha Riskillah",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi TPQ",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi TPQ UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.MB.4771",
+    "nama": "Ramanda Zikri",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.03.3204",
+    "nama": "Ramzy Syamlan",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Humas",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Humas UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.MB.3248",
+    "nama": "Riski Ananda",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.3669",
+    "nama": "Rizqi alfaza",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Dana Usaha",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Dana Usaha UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.03.3251",
+    "nama": "Rosyid Nashrulloh Ar Rofif",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi TPQ",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi TPQ UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.MB.4751",
+    "nama": "Ryan Ferdiyana Muhammad",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.MB.4888",
+    "nama": "Sajid Fathan Yudistira",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Media",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Media UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.5087",
+    "nama": "Sanja Kuswari",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.MB.4594",
+    "nama": "Satya Wira Dharma Samudra",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Keilmuan",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Keilmuan UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.38.4611",
+    "nama": "Savero Rami",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi TPQ",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi TPQ UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.4814",
+    "nama": "Sayyid Fadhil Al fajr",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi TPQ",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi TPQ UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.5178",
+    "nama": "Senandung Mubarok",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Acara",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Acara UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.38.4803",
+    "nama": "Sulthan Bahabazy",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Keilmuan",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Keilmuan UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.MB.4732",
+    "nama": "Syaiful Mustaqim",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.38.4541",
+    "nama": "Thaariq Dzaki Razaan",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Humas",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Humas UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.4834",
+    "nama": "Tsaqif Althaf Rayyan",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.38.3577",
+    "nama": "Tsaqif ibrahimovic",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Dakwah Digital",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Dakwah Digital UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.03.3530",
+    "nama": "Ukkasyah",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Sarpras",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Sarpras UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2023.03.2782",
+    "nama": "Umair",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi TPQ",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi TPQ UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.38.5136",
+    "nama": "Umar Anwar Martak",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.38.3846",
+    "nama": "Usamah",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.5208",
+    "nama": "Wafy Abdurrahman Azzahid",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Keilmuan",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Keilmuan UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.3799",
+    "nama": "Wahid Rafiqi Ramadhan",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Sarpras",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Sarpras UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.38.4895",
+    "nama": "Wildan Abdillah Bashirrafi",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.3769",
+    "nama": "Yahya Abdullah",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi TPQ",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi TPQ UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.03.5168",
+    "nama": "Yazid Hamidi",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2024.03.3370",
+    "nama": "Yusuf",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Acara",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Acara UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.4109",
+    "nama": "Yusuf Abdilah",
+    "prodi": "-",
+    "divisi": "Pengurus Divisi Acara",
+    "status": "DITERIMA",
+    "tipe": "pengurus",
+    "recommendation": "pengurus",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Pengurus Divisi Acara UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.MB.4545",
+    "nama": "Yusuf Bahtiar",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2026.13.4830",
+    "nama": "Zalva Naufal Aghri",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  },
+  {
+    "nim": "2025.03.4162",
+    "nama": "Zayyin 'Athaya Ahmada",
+    "prodi": "-",
+    "divisi": "Keanggotaan Umum",
+    "status": "DITERIMA",
+    "tipe": "anggota",
+    "recommendation": "anggota",
+    "catatan": "Barakallahu fiikum. Selamat bergabung sebagai Anggota UKM Rijal Dakwah STDIIS."
+  }
+];
 
     // Helper untuk mengecek apakah peserta diterima sebagai Anggota atau Pengurus
     function isApplicantAnggota(data) {
@@ -766,16 +2272,39 @@
     const SPREADSHEET_FORM_ID = "1bcFa1yY4dOuFxsw2Y5aNy3osYjGtBK34bmcIiUEm0YY"; // Sheet formulir pendaftar asli
     const STORAGE_KEY = 'RIJAL_DAKWAH_APPLICANTS_DATA_V1';
 
-    var applicantData = [];
+    var applicantData = (typeof defaultSampleData !== 'undefined' && Array.isArray(defaultSampleData)) ? defaultSampleData : [];
     var registeredApplicantsForm = []; // Data pendaftar dari Google Form
     var isFetchingForm = false;
 
     // 1. Initialize data from Cloud Google Apps Script or fallback to LocalStorage / sample
     async function initData() {
+      // Langsung render data resmi seketika tanpa jeda
+      if (applicantData.length > 0) {
+        updateDataSourceBadge(`SK Resmi Sekretaris (${applicantData.length} data kelulusan)`);
+        renderPreviewTable();
+      }
+
       // Background fetch data pendaftar formulir asli (untuk deteksi NIM terdaftar)
       fetchRegisteredApplicants();
 
-      // Coba ambil hasil seleksi langsung dari Cloud Apps Script
+      // Prioritas 1: Coba perbarui dari file data.json lokal jika dibuka via web server
+      try {
+        const response = await fetch('./data.json', { cache: 'no-store' });
+        if (response.ok) {
+          const json = await response.json();
+          if (Array.isArray(json) && json.length > 0) {
+            applicantData = normalizeDataset(json);
+            try {
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(applicantData));
+            } catch (e) {}
+            updateDataSourceBadge(`SK Resmi Sekretaris (${applicantData.length} data kelulusan)`);
+            renderPreviewTable();
+            return;
+          }
+        }
+      } catch (e) {}
+
+      // Prioritas 2: Coba ambil hasil seleksi langsung dari Cloud Apps Script
       const cloudSuccess = await syncFromCloudDatabase(false);
       if (cloudSuccess) return;
 
@@ -792,21 +2321,7 @@
         }
       }
 
-      // Fallback 2: try fetching local data.json if exists
-      try {
-        const response = await fetch('./data.json', { cache: 'no-store' });
-        if (response.ok) {
-          const json = await response.json();
-          if (Array.isArray(json) && json.length > 0) {
-            applicantData = normalizeDataset(json);
-            updateDataSourceBadge(`Tersinkronisasi dari file data.json (${applicantData.length} data)`);
-            renderPreviewTable();
-            return;
-          }
-        }
-      } catch (e) {}
-
-      // Fallback 3: sample demo dataset
+      // Fallback 2: sample demo dataset
       applicantData = defaultSampleData;
       updateDataSourceBadge(`Mode Contoh (${applicantData.length} data contoh siap dicoba)`);
       renderPreviewTable();
@@ -870,13 +2385,27 @@
               }).filter(item => item.nim && item.nama);
 
               if (cloudApplicants.length > 0) {
-                applicantData = cloudApplicants;
+                // Merge dengan data resmi sekretaris (tidak boleh menghapus calon resmi)
+                const officialMap = new Map();
+                for (const item of applicantData) {
+                  if (item.nim) officialMap.set(item.nim.trim(), item);
+                }
+
+                // Tambahkan atau lengkapi data
+                for (const c of cloudApplicants) {
+                  const cNim = c.nim.trim();
+                  if (!officialMap.has(cNim)) {
+                    officialMap.set(cNim, c);
+                  }
+                }
+
+                applicantData = Array.from(officialMap.values());
                 try {
                   localStorage.setItem(STORAGE_KEY, JSON.stringify(applicantData));
                 } catch (e) {}
-                updateDataSourceBadge(`Live Database Cloud (${applicantData.length} data kelulusan)`);
+                updateDataSourceBadge(`Live Database (${applicantData.length} data kelulusan)`);
                 renderPreviewTable();
-                if (isManual) showToast(`Berhasil memuat ${applicantData.length} data kelulusan dari cloud.`);
+                if (isManual) showToast(`Berhasil memuat ${applicantData.length} data kelulusan.`);
                 return true;
               }
             } else {
@@ -1528,16 +3057,18 @@
       }
     });
 
-    // 11. Modal Panitia & Password Protection Logic
+    // 11. Modal Panitia & Password Protection Logic (Secure Hash Fallback)
     const PANITIA_AUTH_KEY = 'RIJAL_DAKWAH_PANITIA_AUTH_SESSION_V1';
     const PANITIA_PASSWORD_STORAGE_KEY = 'RIJAL_DAKWAH_PANITIA_PASSWORD_CUSTOM_V1';
-    const DEFAULT_PANITIA_PASSWORD = 'panitia2026';
+    const HASH_PANITIA_DEFAULT = 'd2f05084b3228300d6e89a6fc0f3a15c2210a928df5e586a19f578539ed9f9c9';
+    const HASH_ADMIN_MASTER = '6051fc84a7a0d74c225fb18a496b09952da5642e60723ecae543298edd7d82d6';
 
-    function getActivePanitiaPassword() {
+    async function hashPassword(str) {
       try {
-        return localStorage.getItem(PANITIA_PASSWORD_STORAGE_KEY) || DEFAULT_PANITIA_PASSWORD;
+        const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
       } catch (e) {
-        return DEFAULT_PANITIA_PASSWORD;
+        return '';
       }
     }
 
@@ -1605,8 +3136,6 @@
       const input = document.getElementById('panitiaPasswordInput');
       const submitBtn = event.target.querySelector('button[type="submit"]');
       const entered = input.value.trim();
-      const actualPassword = getActivePanitiaPassword();
-
       const originalBtnHtml = submitBtn ? submitBtn.innerHTML : "";
       if (submitBtn) {
         submitBtn.disabled = true;
@@ -1632,9 +3161,17 @@
         console.warn("Verifikasi cloud offline, fallback ke lokal:", e);
       }
 
-      // 2. Fallback verifikasi lokal jika cloud offline
-      if (!isVerified && (entered === actualPassword || entered === "admin2026")) {
-        isVerified = true;
+      // 2. Fallback verifikasi lokal jika cloud offline (via Secure Hash)
+      if (!isVerified) {
+        const enteredHash = await hashPassword(entered);
+        const storedCustomPw = localStorage.getItem(PANITIA_PASSWORD_STORAGE_KEY);
+        if (
+          enteredHash === HASH_PANITIA_DEFAULT || 
+          enteredHash === HASH_ADMIN_MASTER || 
+          (storedCustomPw && entered === storedCustomPw)
+        ) {
+          isVerified = true;
+        }
       }
 
       if (submitBtn) {

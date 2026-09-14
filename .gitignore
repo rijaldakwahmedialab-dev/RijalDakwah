@@ -1,4 +1,22 @@
+# Environment & Credentials
 .env
-node_modules/
-*.tmp
+.env.*
+KODE_APPS_SCRIPT*.txt
+google-apps-script.js
+
+# Local Databases & Rekap
+database-penilaian.json
 extracted_data.json
+rekap-resmi-diterima.csv
+
+# Temporary Files & Backups
+*.active_backup
+*.backup
+*.bak
+*.tmp
+*.log
+schedule_commit.log
+schedule_commit.ps1
+
+# Dependencies
+node_modules/

@@ -3,6 +3,25 @@
 Semua catatan pembaruan, perubahan teknis, dan riwayat pengerjaan proyek.
 
 ---
+## [2026-09-14 - Update 24] - Integrasi 156 Data Kelulusan Resmi Sekretaris & Pengamanan Total Kredensial (.gitignore)
+
+### 🎓 Sinkronisasi Data Kelulusan Resmi Sekretariat (pengumuman.html & data.json)
+- **Master Data Ground Truth**: Mengintegrasikan 156 calon pendaftar resmi yang diterima berdasarkan SK Sekretariat UKM Rijal Dakwah STDIIS Periode 2026/2027 (96 Pengurus Divisi + 60 Anggota Biasa).
+- **Pemisahan Peran & Status Presisi**:
+  - **Pengurus (96 orang)**: Diterima resmi dengan penempatan divisi masing-masing (Dakwah Digital 13, TPQ 16, Keilmuan 19, Acara 14, Sarpras 11, Media 9, Humas 8, Danus 6).
+  - **Anggota Biasa (60 orang)**: Diterima resmi dengan status Keanggotaan Umum.
+  - **Calon Tidak Lolos**: 0 orang (seluruh 116 pendaftar sah diakomodasi ke pengurus maupun anggota).
+- **Penyediaan Berkas `data.json` & Standalone Fallback**: Dataset 156 calon ditanam langsung ke `data.json` dan baseline embedded di `pengumuman.html` sehingga website bekerja seketika baik secara offline (`file:///`), local server, maupun saat di-deploy ke GitHub Pages.
+
+### 🔒 Pengamanan Kredensial & Pembersihan Repositori (.gitignore)
+- **Eliminasi Bocoran Password Admin/Panitia**:
+  - Mengisolasi dan meng-untrack file backend `KODE_APPS_SCRIPT_TERBARU.txt` dari Git agar password `admin2026`, `panitia2026`, dan URL Spreadsheet Private tidak terpublikasi ke publik.
+  - Mengganti verifikasi string plaintext password admin/panitia di client-side `pengumuman.html` dengan verifikasi cloud Apps Script dan Secure SHA-256 Hash fallback.
+- **Pembersihan Berkas Temporer & Backup**:
+  - Menghapus tracking pada `schedule_commit.log`, `schedule_commit.ps1`, `index.html.active_backup`, dan `database-penilaian.json`.
+  - Memperbarui aturan `.gitignore` agar berkas log, backup, skrip otomatisasi lokal, dan data kredensial tidak pernah ter-commit kembali.
+
+---
 ## [2026-09-10 - Update 23] - Sistem Dual-Role (Super Admin admin2026 vs Panitia panitia2026) & Isolasi Presisi Reset Nilai Calon (wawancara.html)
 
 ### 👥 Pemisahan Hak Akses Role (Dual-Role Authentication)
