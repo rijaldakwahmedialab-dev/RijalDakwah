@@ -3,6 +3,22 @@
 Semua catatan pembaruan, perubahan teknis, dan riwayat pengerjaan proyek.
 
 ---
+## [2026-09-14 - Update 25] - Rilis Resmi Publik Portal Pengumuman (Go-Live & Sanitasi UI Publik)
+
+### 🚀 Pembukaan Akses Cek Hasil Seleksi (pengumuman.html)
+- **Aktivasi Form Pencarian**: Melepas atribut `disabled` pada input NIM dan tombol submit. Mahasiswa dan pendaftar kini dapat langsung memasukkan NIM untuk memeriksa kelulusan.
+- **Pembaruan Teks & Placeholder**:
+  - Tombol aksi diperbarui dari *"Terbuka setelah tanggal 14"* menjadi *"Cek Hasil Seleksi"*.
+  - Placeholder input disesuaikan menjadi panduan contoh format: `"Masukkan NIM cth: 3030.03.3030"`.
+
+### 🛡️ Sanitasi Antarmuka Publik (Production Clean-Up)
+- **Eliminasi Tombol Manajemen Internal**:
+  - Menghapus tombol *"Sinkron Cloud"* dari navbar publik.
+  - Menghapus tombol modal *"Kelola Excel (Panitia)"* dari navbar untuk mencegah upaya tebak kata sandi oleh pihak luar.
+  - Menghapus tombol *"Coba NIM Contoh"* agar antarmuka fokus murni pada pencarian mandiri mahasiswa pendaftar.
+- **Final Ready-to-Serve**: Portal pengumuman resmi beroperasi secara mandiri (*standalone*), aman, dan siap diakses publik.
+
+---
 ## [2026-09-14 - Update 24] - Integrasi 156 Data Kelulusan Resmi Sekretaris & Pengamanan Total Kredensial (.gitignore)
 
 ### 🎓 Sinkronisasi Data Kelulusan Resmi Sekretariat (pengumuman.html & data.json)
