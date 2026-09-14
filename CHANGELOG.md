@@ -3,6 +3,24 @@
 Semua catatan pembaruan, perubahan teknis, dan riwayat pengerjaan proyek.
 
 ---
+## [2026-09-14 - Update 26] - Sinkronisasi Final SK Pengurus 109 Orang & Koreksi Total Kelulusan (183 Mahasiswa Diterima)
+
+### 📜 Integrasi Dokumen Final SK Pengurus Sekretariat (Pengurus Rijal Dakwah 2026-2027.pdf)
+- **Master Dataset Pengurus (109 Orang Presisi)**:
+  - **Badan Pengurus Harian (BPH)**: 6 pimpinan resmi (Ketua Umum, 3 Wakil Ketua, Sekretaris, Bendahara) dimasukkan ke database sistem.
+  - **Kepala Divisi & Anggota Divisi**: 103 pengurus terdistribusi di 8 divisi (TPQ 18, Keilmuan 16, Acara 14, Humas 13, Sarpras 12, Dakwah Digital 11, Media 13, Danus 6).
+- **Penyelarasan Calon Anggota Biasa (74 Orang)**:
+  - Calon pendaftar yang terdaftar di SK Anggota Baru namun tidak masuk struktur 109 Pengurus secara otomatis ditetapkan sebagai **Anggota Biasa (Keanggotaan Umum)**.
+- **Eliminasi Permanen Data Anomali/Glitch PDF Lama**:
+  - Menghapus tuntas data calon yang sempat terglitch/menempel di sel tabel draf lama dan berstatus wawancara *belum_diterima / ga hadir / mengundurkan diri* (Akhmaldi Musyah, Askar Abdillah Tsaqib, M Alfa Reza, Muhammad Alan Adiprana Yayin, Rafid Humam Alfawazi).
+- **Total Hasil Penerimaan Resmi UKM Rijal Dakwah 2026/2027**:
+  $$\text{Total Diterima} = 109 \text{ Pengurus} + 74 \text{ Anggota Biasa} = 183 \text{ Mahasiswa}$$
+- **Pembaruan Menyeluruh Berkas Sistem**:
+  - `data.json`: 183 entri terverifikasi.
+  - `pengumuman.html`: `defaultSampleData` offline baseline diperbarui 183 entri.
+  - `Rekap_Resmi_Penerimaan_Rijal_Dakwah_2026-2027.csv`: Format CSV baru siap pakai.
+
+---
 ## [2026-09-14 - Update 25] - Rilis Resmi Publik Portal Pengumuman (Go-Live & Sanitasi UI Publik)
 
 ### 🚀 Pembukaan Akses Cek Hasil Seleksi (pengumuman.html)
